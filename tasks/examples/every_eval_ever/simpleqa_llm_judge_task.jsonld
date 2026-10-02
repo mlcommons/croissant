@@ -1,0 +1,354 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "cr": "http://mlcommons.org/croissant/",
+    "croissant": "http://mlcommons.org/croissant/",
+    "sc": "https://schema.org/",
+    "schema": "https://schema.org/",
+    "dct": "http://purl.org/dc/terms/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "stato": "http://purl.obolibrary.org/obo/STATO_",
+    "e3": "https://evalevalai.com/schema/0.3.0/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "subField": "cr:subField",
+    "extract": "cr:extract",
+    "jsonPath": "cr:jsonPath",
+    "fileObject": "cr:fileObject",
+    "isArray": "cr:isArray",
+    "lowerIsBetter": "cr:lowerIsBetter",
+    "standardError": "stato:0000037",
+    "confidenceInterval": "stato:0000198",
+    "confidenceLevel": "stato:0000088",
+    "sampleSize": "stato:0000047",
+    "standardDeviation": "stato:0000164"
+  },
+  "@type": "croissant:Task",
+  "@id": "https://github.com/evaleval/every_eval_ever/blob/main/tests/data/inspect/data_with_llm_scoring.json#task",
+  "dct:conformsTo": "http://mlcommons.org/croissant/1.1",
+  "schema:name": "SimpleQA-Verified (LLM-as-a-Judge & Discrete Rubric Enumeration)",
+  "schema:description": "Factuality benchmark (codelion/SimpleQA-Verified, N=1000) where short-form factual answers are graded by an LLM Judge (GPT-4o) into discrete rubric levels (CORRECT, INCORRECT, NOT_ATTEMPTED) defined as a Croissant 1.1 sc:Enumeration RecordSet.",
+  "schema:identifier": "inspect_ai/simpleqa_verified/PFfdNSGwJKxLer5wYteEqu",
+  "prov:generatedAtTime": "2026-02-06T02:15:41Z",
+  "schema:provider": {
+    "@type": "schema:Organization",
+    "schema:name": "OpenAI / Codelion (Inspect AI)",
+    "schema:url": "https://huggingface.co/datasets/codelion/SimpleQA-Verified"
+  },
+  "e3:schemaVersion": "0.3.0",
+  "e3:sourceName": "inspect_ai",
+  "e3:sourceType": "evaluation_run",
+  "e3:evaluatorRelationship": "third_party",
+  "e3:evalLibrary": {
+    "@type": "schema:SoftwareApplication",
+    "schema:name": "inspect_ai",
+    "schema:version": "0.3.88"
+  },
+  "croissant:input": {
+    "@type": "schema:Dataset",
+    "@id": "https://huggingface.co/datasets/codelion/SimpleQA-Verified",
+    "dct:conformsTo": "http://mlcommons.org/croissant/1.1",
+    "schema:name": "SimpleQA-Verified",
+    "e3:sourceType": "hf_dataset",
+    "e3:hfRepo": "codelion/SimpleQA-Verified",
+    "e3:hfSplit": "test",
+    "sampleSize": 1000
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "https://huggingface.co/Qwen/Qwen2.5-72B-Instruct",
+    "schema:name": "Qwen2.5-72B-Instruct",
+    "schema:identifier": "Qwen/Qwen2.5-72B-Instruct",
+    "schema:author": {
+      "@type": "schema:Organization",
+      "schema:name": "Alibaba Cloud (Qwen)"
+    },
+    "e3:inferencePlatform": "Together AI",
+    "e3:inferenceEngine": {
+      "@type": "schema:SoftwareApplication",
+      "schema:name": "vLLM",
+      "schema:version": "0.7.2"
+    },
+    "e3:deploymentType": "externally_managed",
+    "e3:modelAvailability": "open_weights"
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionInfo",
+    "@id": "#execution_simpleqa",
+    "schema:description": "Direct short-answer factual response generation without external search tools.",
+    "e3:interactionType": "single_turn",
+    "e3:reasoning": false,
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "temperature",
+        "schema:value": 0.0
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "max_tokens",
+        "schema:value": 512
+      }
+    ]
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "#simpleqa_outputs",
+    "dct:conformsTo": "http://mlcommons.org/croissant/1.1",
+    "schema:name": "SimpleQA-Verified LLM-Judge Graded Predictions and Rubric Enumeration",
+    "schema:distribution": [
+      {
+        "@type": "cr:FileObject",
+        "@id": "simpleqa_samples_jsonl",
+        "schema:name": "Q7FaUG2XfWePaAjfapJ9dr_samples.jsonl",
+        "schema:contentUrl": "data/simpleqa_verified/Qwen/Qwen2.5-72B-Instruct/Q7FaUG2XfWePaAjfapJ9dr_samples.jsonl",
+        "schema:encodingFormat": "application/jsonlines",
+        "schema:sha256": "9c12b4f8e21a34567890fedcba0987654321123456789abcdef0123456789abc"
+      }
+    ],
+    "cr:recordSet": [
+      {
+        "@type": "cr:RecordSet",
+        "@id": "simpleqa_rubric_levels",
+        "schema:name": "simpleqa_rubric_levels",
+        "schema:description": "Croissant 1.1 sc:Enumeration RecordSet defining the 3 discrete grading levels for E3 score_type = 'levels'.",
+        "cr:dataType": "sc:Enumeration",
+        "cr:key": [
+          {
+            "@id": "simpleqa_rubric_levels/level_code"
+          }
+        ],
+        "cr:field": [
+          {
+            "@type": "cr:Field",
+            "@id": "simpleqa_rubric_levels/level_code",
+            "schema:name": "level_code",
+            "schema:description": "Canonical symbol emitted by the GPT-4o judge (A/B/C).",
+            "cr:dataType": "sc:Text"
+          },
+          {
+            "@type": "cr:Field",
+            "@id": "simpleqa_rubric_levels/level_name",
+            "schema:name": "level_name",
+            "schema:description": "E3 level_names label.",
+            "cr:dataType": "sc:Text"
+          },
+          {
+            "@type": "cr:Field",
+            "@id": "simpleqa_rubric_levels/numeric_score",
+            "schema:name": "numeric_score",
+            "schema:description": "Mapped numeric value for accuracy aggregation.",
+            "cr:dataType": "sc:Float"
+          },
+          {
+            "@type": "cr:Field",
+            "@id": "simpleqa_rubric_levels/level_description",
+            "schema:name": "level_description",
+            "schema:description": "E3 level_metadata rubric criteria.",
+            "cr:dataType": "sc:Text"
+          }
+        ],
+        "data": [
+          {
+            "level_code": "A",
+            "level_name": "CORRECT",
+            "numeric_score": 1.0,
+            "level_description": "The predicted answer fully contains the ground-truth fact with zero contradiction."
+          },
+          {
+            "level_code": "B",
+            "level_name": "INCORRECT",
+            "numeric_score": 0.0,
+            "level_description": "The predicted answer contradicts or fabricates facts relative to the reference target."
+          },
+          {
+            "level_code": "C",
+            "level_name": "NOT_ATTEMPTED",
+            "numeric_score": 0.0,
+            "level_description": "The model abstained or stated it did not know without guessing."
+          }
+        ]
+      },
+      {
+        "@type": "cr:RecordSet",
+        "@id": "simpleqa_instance_predictions",
+        "schema:name": "simpleqa_instance_predictions",
+        "sampleSize": 1000,
+        "cr:key": [
+          {
+            "@id": "simpleqa_instance_predictions/sample_id"
+          }
+        ],
+        "cr:field": [
+          {
+            "@type": "cr:Field",
+            "@id": "simpleqa_instance_predictions/sample_id",
+            "schema:name": "sample_id",
+            "schema:description": "Verified question ID (1..1000).",
+            "cr:dataType": "sc:Text",
+            "cr:extract": {
+              "jsonPath": "$.sample_id"
+            }
+          },
+          {
+            "@type": "cr:Field",
+            "@id": "simpleqa_instance_predictions/answer_attribution",
+            "schema:name": "answer_attribution",
+            "schema:description": "LLM-Judge verdict attribution.",
+            "cr:isArray": true,
+            "cr:subField": [
+              {
+                "@type": "cr:Field",
+                "@id": "simpleqa_instance_predictions/answer_attribution/extracted_value",
+                "schema:name": "extracted_value",
+                "schema:description": "Assigned rubric level (CORRECT, INCORRECT, NOT_ATTEMPTED) referencing simpleqa_rubric_levels.",
+                "cr:dataType": "sc:Enumeration",
+                "cr:references": {
+                  "field": {
+                    "@id": "simpleqa_rubric_levels/level_name"
+                  }
+                },
+                "cr:extract": {
+                  "jsonPath": "$.answer_attribution[*].extracted_value"
+                }
+              },
+              {
+                "@type": "cr:Field",
+                "@id": "simpleqa_instance_predictions/answer_attribution/extraction_method",
+                "schema:name": "extraction_method",
+                "schema:description": "Graded via llm_judge (gpt-4o-2024-08-06).",
+                "cr:dataType": "sc:Text",
+                "cr:extract": {
+                  "jsonPath": "$.answer_attribution[*].extraction_method"
+                }
+              }
+            ]
+          }
+        ],
+        "examples": [
+          {
+            "schema_version": "0.3.0",
+            "evaluation_id": "inspect_ai/simpleqa_verified/PFfdNSGwJKxLer5wYteEqu",
+            "evaluation_result_id": "simpleqa_verified_accuracy",
+            "model_id": "Qwen/Qwen2.5-72B-Instruct",
+            "evaluation_name": "simpleqa_verified",
+            "sample_id": "simpleqa_42",
+            "interaction_type": "single_turn",
+            "input": {
+              "raw": "Who received the IEEE Frank Rosenblatt Award in 2010?",
+              "reference": [
+                "Michio Sugeno"
+              ]
+            },
+            "output": {
+              "raw": [
+                "The 2010 IEEE Frank Rosenblatt Award was awarded to Michio Sugeno for his pioneering contributions to fuzzy systems."
+              ]
+            },
+            "answer_attribution": [
+              {
+                "turn_idx": 0,
+                "source": "output.raw",
+                "extracted_value": "CORRECT",
+                "extraction_method": "llm_judge",
+                "is_terminal": true
+              }
+            ],
+            "evaluation": {
+              "score": 1.0,
+              "is_correct": true
+            },
+            "token_usage": {
+              "input_tokens": 48,
+              "output_tokens": 29,
+              "total_tokens": 77
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "#evaluation_simpleqa_llm_judge",
+    "schema:name": "SimpleQA-Verified LLM-as-a-Judge Evaluation",
+    "croissant:implementation": {
+      "@type": "schema:SoftwareApplication",
+      "@id": "https://platform.openai.com/docs/models/gpt-4o",
+      "schema:name": "GPT-4o Judge (gpt-4o-2024-08-06)",
+      "schema:identifier": "openai/gpt-4o-2024-08-06",
+      "schema:author": {
+        "@type": "schema:Organization",
+        "schema:name": "OpenAI"
+      },
+      "e3:judgeWeight": 1.0,
+      "e3:aggregationMethod": "majority_vote",
+      "e3:expertBaseline": 0.965
+    },
+    "croissant:expectedMetric": [
+      {
+        "@type": "croissant:MetricSpec",
+        "@id": "#metric_simpleqa_graded_accuracy",
+        "schema:name": "Graded Factuality Accuracy",
+        "schema:description": "Proportion of questions judged CORRECT by the GPT-4o rubric grader.",
+        "cr:dataType": [
+          "sc:Float",
+          "sc:Enumeration"
+        ],
+        "croissant:lowerIsBetter": false,
+        "schema:minValue": 0.0,
+        "schema:maxValue": 1.0,
+        "schema:unitText": "proportion",
+        "e3:metricId": "simpleqa_accuracy",
+        "e3:metricKind": "accuracy"
+      }
+    ],
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "@id": "#result_simpleqa_accuracy",
+        "schema:identifier": "simpleqa_verified_accuracy",
+        "schema:name": "SimpleQA-Verified - Overall Graded Accuracy",
+        "schema:description": "Proportion of 1,000 factual questions graded CORRECT by GPT-4o judge.",
+        "prov:generatedAtTime": "2026-02-06T02:15:41Z",
+        "croissant:metric": {
+          "@id": "#metric_simpleqa_graded_accuracy"
+        },
+        "croissant:lowerIsBetter": false,
+        "croissant:value": {
+          "@type": "schema:QuantitativeValue",
+          "schema:value": 0.416,
+          "schema:minValue": 0.0,
+          "schema:maxValue": 1.0,
+          "schema:unitText": "proportion",
+          "standardError": {
+            "schema:value": 0.0156,
+            "schema:measurementMethod": "analytic"
+          },
+          "confidenceInterval": {
+            "schema:minValue": 0.385,
+            "schema:maxValue": 0.447,
+            "confidenceLevel": 0.95,
+            "schema:measurementMethod": "bootstrap"
+          },
+          "standardDeviation": 0.493,
+          "sampleSize": 1000
+        }
+      }
+    ],
+    "croissant:evaluatedSolution": {
+      "@id": "https://github.com/evaleval/every_eval_ever/blob/main/tests/data/inspect/data_with_llm_scoring.json#task"
+    }
+  }
+}

@@ -1,0 +1,344 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "cr": "http://mlcommons.org/croissant/",
+    "croissant": "http://mlcommons.org/croissant/",
+    "sc": "https://schema.org/",
+    "schema": "https://schema.org/",
+    "dct": "http://purl.org/dc/terms/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "stato": "http://purl.obolibrary.org/obo/STATO_",
+    "e3": "https://evalevalai.com/schema/0.3.0/",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "subField": "cr:subField",
+    "extract": "cr:extract",
+    "jsonPath": "cr:jsonPath",
+    "fileObject": "cr:fileObject",
+    "isArray": "cr:isArray",
+    "lowerIsBetter": "cr:lowerIsBetter",
+    "standardError": "stato:0000037",
+    "confidenceInterval": "stato:0000198",
+    "confidenceLevel": "stato:0000088",
+    "sampleSize": "stato:0000047",
+    "standardDeviation": "stato:0000164"
+  },
+  "@type": "croissant:Task",
+  "@id": "https://github.com/evaleval/every_eval_ever/blob/main/tests/data/vectara_hallucination_leaderboard/source_rows.json#task_gemini_2_5_flash_lite",
+  "dct:conformsTo": "http://mlcommons.org/croissant/1.1",
+  "schema:name": "Vectara Hallucination Leaderboard - Gemini 2.5 Flash-Lite",
+  "schema:description": "Evaluates factual consistency and hallucination rate (lowerIsBetter = true) of abstractive document summarization across 7 domain subtasks (Medicine, Education, Politics, Science, Law, Finance, Business) using the Hughes Hallucination Evaluation Model (HHEM-2.1).",
+  "schema:identifier": "vectara_hhem/google/gemini-2.5-flash-lite/2025-12-10",
+  "prov:generatedAtTime": "2025-12-10T14:57:20.585062Z",
+  "schema:provider": {
+    "@type": "schema:Organization",
+    "schema:name": "Vectara",
+    "schema:url": "https://github.com/vectara/hallucination-leaderboard"
+  },
+  "e3:schemaVersion": "0.3.0",
+  "e3:sourceName": "Vectara Hallucination Leaderboard",
+  "e3:sourceType": "documentation",
+  "e3:evaluatorRelationship": "third_party",
+  "e3:evalLibrary": {
+    "@type": "schema:SoftwareApplication",
+    "schema:name": "vectara-hhem",
+    "schema:version": "2.1"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:Task",
+      "@id": "#subtask_medicine",
+      "schema:name": "Medicine Summarization Split",
+      "e3:hfSplit": "medicine"
+    },
+    {
+      "@type": "croissant:Task",
+      "@id": "#subtask_education",
+      "schema:name": "Education Summarization Split",
+      "e3:hfSplit": "education"
+    },
+    {
+      "@type": "croissant:Task",
+      "@id": "#subtask_politics",
+      "schema:name": "Politics Summarization Split",
+      "e3:hfSplit": "politics"
+    },
+    {
+      "@type": "croissant:Task",
+      "@id": "#subtask_science",
+      "schema:name": "Science Summarization Split",
+      "e3:hfSplit": "science"
+    },
+    {
+      "@type": "croissant:Task",
+      "@id": "#subtask_law",
+      "schema:name": "Law Summarization Split",
+      "e3:hfSplit": "law"
+    },
+    {
+      "@type": "croissant:Task",
+      "@id": "#subtask_finance",
+      "schema:name": "Finance Summarization Split",
+      "e3:hfSplit": "finance"
+    },
+    {
+      "@type": "croissant:Task",
+      "@id": "#subtask_business",
+      "schema:name": "Business Summarization Split",
+      "e3:hfSplit": "business"
+    }
+  ],
+  "croissant:input": {
+    "@type": "schema:Dataset",
+    "@id": "https://huggingface.co/datasets/vectara/leaderboard_source_articles",
+    "dct:conformsTo": "http://mlcommons.org/croissant/1.1",
+    "schema:name": "Vectara Hallucination Evaluation Corpus",
+    "e3:sourceType": "hf_dataset",
+    "e3:hfRepo": "vectara/leaderboard_source_articles",
+    "e3:hfSplit": "test",
+    "sampleSize": 1000
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "https://deepmind.google/technologies/gemini/flash-lite/",
+    "schema:name": "Gemini 2.5 Flash-Lite",
+    "schema:identifier": "google/gemini-2.5-flash-lite",
+    "schema:author": {
+      "@type": "schema:Organization",
+      "schema:name": "Google DeepMind"
+    },
+    "e3:inferencePlatform": "Google Vertex AI / Gemini API",
+    "e3:deploymentType": "externally_managed",
+    "e3:modelAvailability": "closed_weights"
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionInfo",
+    "@id": "#execution_summarization",
+    "schema:description": "Zero-shot document summarization constrained strictly to facts stated in the provided source passage.",
+    "e3:interactionType": "single_turn",
+    "e3:reasoning": false,
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "temperature",
+        "schema:value": 0.0
+      }
+    ]
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "#vectara_category_outputs",
+    "dct:conformsTo": "http://mlcommons.org/croissant/1.1",
+    "schema:name": "Domain-sliced hallucination and answer rate summaries for Gemini 2.5 Flash-Lite",
+    "cr:recordSet": [
+      {
+        "@type": "cr:RecordSet",
+        "@id": "vectara_domain_slices",
+        "schema:name": "vectara_domain_slices",
+        "sampleSize": 7,
+        "cr:key": [
+          {
+            "@id": "vectara_domain_slices/domain"
+          }
+        ],
+        "cr:field": [
+          {
+            "@type": "cr:Field",
+            "@id": "vectara_domain_slices/domain",
+            "schema:name": "domain",
+            "schema:description": "Subtask domain category from Vectara leaderboard.",
+            "cr:dataType": "sc:Text",
+            "cr:extract": {
+              "jsonPath": "$.domain"
+            }
+          },
+          {
+            "@type": "cr:Field",
+            "@id": "vectara_domain_slices/hallucination_rate",
+            "schema:name": "hallucination_rate",
+            "schema:description": "Percentage of summaries containing fabricated/unsupported claims (lowerIsBetter = true).",
+            "cr:dataType": "sc:Float",
+            "cr:extract": {
+              "jsonPath": "$.hallucination_rate"
+            }
+          },
+          {
+            "@type": "cr:Field",
+            "@id": "vectara_domain_slices/answer_rate",
+            "schema:name": "answer_rate",
+            "schema:description": "Percentage of source documents non-refused by the model (lowerIsBetter = false).",
+            "cr:dataType": "sc:Float",
+            "cr:extract": {
+              "jsonPath": "$.answer_rate"
+            }
+          },
+          {
+            "@type": "cr:Field",
+            "@id": "vectara_domain_slices/average_summary_length",
+            "schema:name": "average_summary_length",
+            "schema:description": "Mean word count of generated summaries.",
+            "cr:dataType": "sc:Float",
+            "cr:extract": {
+              "jsonPath": "$.average_summary_length"
+            }
+          }
+        ],
+        "examples": [
+          {
+            "domain": "medicine",
+            "hallucination_rate": 0.985,
+            "answer_rate": 99.441,
+            "average_summary_length": 89.639
+          },
+          {
+            "domain": "education",
+            "hallucination_rate": 1.009,
+            "answer_rate": 99.623,
+            "average_summary_length": 102.82
+          },
+          {
+            "domain": "politics",
+            "hallucination_rate": 2.075,
+            "answer_rate": 99.724,
+            "average_summary_length": 109.824
+          },
+          {
+            "domain": "science",
+            "hallucination_rate": 2.144,
+            "answer_rate": 100.0,
+            "average_summary_length": 89.666
+          },
+          {
+            "domain": "law",
+            "hallucination_rate": 2.751,
+            "answer_rate": 99.052,
+            "average_summary_length": 88.645
+          },
+          {
+            "domain": "finance",
+            "hallucination_rate": 3.295,
+            "answer_rate": 99.873,
+            "average_summary_length": 76.632
+          },
+          {
+            "domain": "business",
+            "hallucination_rate": 3.429,
+            "answer_rate": 99.857,
+            "average_summary_length": 90.459
+          }
+        ]
+      }
+    ]
+  },
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "#evaluation_vectara",
+    "schema:name": "Vectara HHEM-2.1 Hallucination Evaluation",
+    "croissant:expectedMetric": [
+      {
+        "@type": "croissant:MetricSpec",
+        "@id": "#metric_hallucination_rate",
+        "schema:name": "Hallucination Rate (%)",
+        "schema:description": "Percentage of summaries classified as containing factual hallucinations relative to the source document.",
+        "cr:dataType": "sc:Float",
+        "croissant:lowerIsBetter": true,
+        "schema:minValue": 0.0,
+        "schema:maxValue": 100.0,
+        "schema:unitText": "percent",
+        "e3:metricId": "hallucination_rate",
+        "e3:metricKind": "error_rate"
+      },
+      {
+        "@type": "croissant:MetricSpec",
+        "@id": "#metric_answer_rate",
+        "schema:name": "Answer Rate (%)",
+        "schema:description": "Percentage of prompts where the model produced a valid summary rather than refusing.",
+        "cr:dataType": "sc:Float",
+        "croissant:lowerIsBetter": false,
+        "schema:minValue": 0.0,
+        "schema:maxValue": 100.0,
+        "schema:unitText": "percent",
+        "e3:metricId": "answer_rate",
+        "e3:metricKind": "accuracy"
+      }
+    ],
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "@id": "#result_hallucination_rate_overall",
+        "schema:identifier": "vectara_hallucination_rate_mean",
+        "schema:name": "Overall Hallucination Rate (Macro-Average across 7 Subtasks)",
+        "schema:description": "Lower values indicate fewer factual hallucinations (0.985% in Medicine up to 3.429% in Business).",
+        "prov:generatedAtTime": "2025-12-10T14:57:20.585062Z",
+        "croissant:metric": {
+          "@id": "#metric_hallucination_rate"
+        },
+        "croissant:lowerIsBetter": true,
+        "croissant:value": {
+          "@type": "schema:QuantitativeValue",
+          "schema:value": 2.241,
+          "schema:minValue": 0.0,
+          "schema:maxValue": 100.0,
+          "schema:unitText": "percent",
+          "standardError": {
+            "schema:value": 0.376,
+            "schema:measurementMethod": "analytic"
+          },
+          "confidenceInterval": {
+            "schema:minValue": 1.504,
+            "schema:maxValue": 2.978,
+            "confidenceLevel": 0.95,
+            "schema:measurementMethod": "analytic"
+          },
+          "standardDeviation": 0.995,
+          "sampleSize": 1000
+        }
+      },
+      {
+        "@type": "croissant:EvaluationResult",
+        "@id": "#result_answer_rate_overall",
+        "schema:identifier": "vectara_answer_rate_mean",
+        "schema:name": "Overall Answer Rate (Non-Refusal %)",
+        "schema:description": "Percentage of source articles summarized without refusal.",
+        "prov:generatedAtTime": "2025-12-10T14:57:20.585062Z",
+        "croissant:metric": {
+          "@id": "#metric_answer_rate"
+        },
+        "croissant:lowerIsBetter": false,
+        "croissant:value": {
+          "@type": "schema:QuantitativeValue",
+          "schema:value": 99.653,
+          "schema:minValue": 0.0,
+          "schema:maxValue": 100.0,
+          "schema:unitText": "percent",
+          "standardError": {
+            "schema:value": 0.121,
+            "schema:measurementMethod": "analytic"
+          },
+          "confidenceInterval": {
+            "schema:minValue": 99.416,
+            "schema:maxValue": 99.89,
+            "confidenceLevel": 0.95,
+            "schema:measurementMethod": "analytic"
+          },
+          "standardDeviation": 0.32,
+          "sampleSize": 1000
+        }
+      }
+    ],
+    "croissant:evaluatedSolution": {
+      "@id": "https://github.com/evaleval/every_eval_ever/blob/main/tests/data/vectara_hallucination_leaderboard/source_rows.json#task_gemini_2_5_flash_lite"
+    }
+  }
+}
