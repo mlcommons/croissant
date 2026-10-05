@@ -209,6 +209,28 @@ def test_hermetic_loading(version, dataset_name, record_set_name, num_records):
 
 
 @parametrize_version()
+def test_reading_a_joined_record_set_twice_yields_the_same_records(version):
+    """A Dataset can be read more than once.
+
+    Regression test: the operation graph lives on the Dataset and every operation
+    memoized its output, so the generator produced by the first read was handed
+    back — exhausted — to the second, which silently yielded nothing. Only
+    RecordSets reached through a join were affected, because those take the
+    sequential path; a streamable RecordSet never populates the cache.
+    """
+    jsonld = constants.DATASETS_FOLDER / version / "simple-join/metadata.json"
+    dataset = datasets.Dataset(jsonld)
+
+    first = list(dataset.records("publications_by_user"))
+    second = list(dataset.records("publications_by_user"))
+
+    assert first
+    assert [record_to_python(record) for record in second] == [
+        record_to_python(record) for record in first
+    ]
+
+
+@parametrize_version()
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name"],
     [
