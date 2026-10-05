@@ -1,6 +1,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix croissant: <http://mlcommons.org/croissant/> .
 
 # Top-level classes
@@ -29,6 +30,14 @@ croissant:EvaluationResult a rdf:Class ;
   rdfs:label "EvaluationResult" ;
   rdfs:comment "A structured result of an evaluation, pairing a metric with its value." .
 
+croissant:ExecutionInfo a rdf:Class ;
+  rdfs:label "ExecutionInfo" ;
+  rdfs:comment "Information and hyperparameters describing the execution of a task." .
+
+croissant:MetricSpec a rdf:Class ;
+  rdfs:label "MetricSpec" ;
+  rdfs:comment "Specification of an evaluation metric, including its data type, bounds, unit, and optimization directionality (lowerIsBetter)." .
+
 # Task properties
 
 croissant:input a rdf:Property ;
@@ -45,7 +54,7 @@ croissant:output a rdf:Property ;
 
 croissant:implementation a rdf:Property ;
   rdfs:label "implementation" ;
-  rdfs:comment "The specific program that executes the task. This can be source code, or an an executable representation, such as a docker container." ;
+  rdfs:comment "The specific program that executes the task. This can be source code, or an executable representation, such as a docker container." ;
   schema:domainIncludes croissant:Task ;  
   schema:rangeIncludes schema:SoftwareApplication, schema:SoftwareSourceCode, croissant:ImplementationSpec .
 
@@ -81,17 +90,29 @@ croissant:evaluatedSolution a rdf:Property ;
   schema:domainIncludes croissant:EvaluationTask ;
   schema:rangeIncludes croissant:TaskSolution .
 
+croissant:expectedMetric a rdf:Property ;
+  rdfs:label "expectedMetric" ;
+  rdfs:comment "Expected metric(s) for evaluating solutions to a TaskProblem." ;
+  schema:domainIncludes croissant:EvaluationSpec, croissant:EvaluationTask ;
+  schema:rangeIncludes croissant:MetricSpec, schema:Text, schema:URL .
+
 croissant:metric a rdf:Property ;
   rdfs:label "metric" ;
   rdfs:comment "The metric used for a specific result." ;
   schema:domainIncludes croissant:EvaluationResult ;
-  schema:rangeIncludes schema:Text, schema:URL .
+  schema:rangeIncludes croissant:MetricSpec, schema:Text, schema:URL .
 
 croissant:value a rdf:Property ;
   rdfs:label "value" ;
   rdfs:comment "The value of the result." ;
   schema:domainIncludes croissant:EvaluationResult ;
   schema:rangeIncludes schema:QuantitativeValue, schema:Text, schema:Number .
+
+croissant:lowerIsBetter a rdf:Property ;
+  rdfs:label "lowerIsBetter" ;
+  rdfs:comment "Indicates whether lower metric scores represent better performance (e.g. error rate, perplexity, latency). Defaults to false (higher is better)." ;
+  schema:domainIncludes croissant:MetricSpec, croissant:EvaluationResult ;
+  schema:rangeIncludes schema:Boolean, xsd:boolean .
 
 # Reusing schema:isBasedOn to link a TaskSolution to the TaskProblem it solves.
 schema:isBasedOn schema:domainIncludes croissant:TaskSolution ;
@@ -117,7 +138,8 @@ croissant:ImplementationSpec a rdf:Class ;
 
 croissant:ExecutionSpec a rdf:Class ;
   rdfs:label "ExecutionSpec" ;
-  rdfs:comment "A placeholder for execution information that has not yet been logged because an experiment has not yet been run." .
+  rdfs:comment "A placeholder for execution information that has not yet been logged because an experiment has not yet been run." ;
+  rdfs:subClassOf croissant:ExecutionInfo .
 
 croissant:EvaluationSpec a rdf:Class ;
   rdfs:label "EvaluationSpec" ;
@@ -139,6 +161,6 @@ croissant:tests a rdf:Property ;
 
 croissant:environment a rdf:Property ;
   rdfs:label "environment" ;
-  rdfs:comment "A description of or link to the required execution environment (e.g., a requirements.txt file)." ;
-  schema:domainIncludes croissant:ImplementationSpec ;
-  schema:rangeIncludes schema:CreativeWork, schema:URL .
+  rdfs:comment "A description of or link to the required execution environment (e.g., a requirements.txt file or Docker container spec)." ;
+  schema:domainIncludes croissant:ImplementationSpec, croissant:ExecutionInfo, croissant:ExecutionSpec ;
+  schema:rangeIncludes schema:CreativeWork, schema:SoftwareApplication, schema:URL .

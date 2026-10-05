@@ -7,7 +7,14 @@
   "@type": "croissant:EvaluationTask",
   "croissant:evaluatedSolution": {
     "@type": "croissant:TaskSolution",
-    "@id": "http://example.org/my-solution"
+    "@id": "http://example.org/my-solution",
+    "schema:isBasedOn": {
+      "@id": "http://example.org/my-problem"
+    },
+    "croissant:implementation": {
+      "@type": "schema:SoftwareApplication",
+      "@id": "http://example.org/my-model"
+    }
   },
   "croissant:evaluationResults": [
     {
