@@ -1,0 +1,271 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "geocr": "http://mlcommons.org/croissant/geocr/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "sc": "https://schema.org/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "ICESat-2-Boreal-v2-1--Gridded-Aboveground-Biomass-Density",
+  "description": "This dataset provides predictions of woody Aboveground Biomass Density (AGBD) and vegetation height for high northern latitude forests at a 30-m spatial resolution. It is designed both for circumpolar boreal-wide mapping and filling the northern spatial data gap from NASA's Global Ecosystem Dynamics Investigation (GEDI) mission. Mapping woody AGBD and height is essential for understanding, monitoring, and managing forest carbon stocks and fluxes. The AGBD and height predictions cover the extent of high latitude boreal forests and shrublands, and extend southward outside the boreal domain to 51.6\u00b0N. These maps represent conditions in 2020.\n\nICESat-2 ATL08 represented the training data for these mapped products, with ATL08\u2019s maximum height (h_canopy) used to train the height product, and estimates of 30-m AGBD from ATL08 used to train the AGBD product. AGBD and vegetation models were developed using local moving window models, with models produced for a suite of 90 km tiles.\n\nPrediction of AGBD involved two modeling steps: (1) regression with ordinary least squares (OLS) to relate field plot measurements of AGBD to NASA's ICESat-2 30-m ATL08 lidar samples, and (2) machine learning modeling with random forest to extend estimates beyond the field plots by relating ICESat-2 AGBD predictions to wall-to-wall gridded covariate stacks from Harmonized Landsat/Sentinel-2 (HLS) and the Copernicus GLO30 DEM. Per-pixel uncertainties are estimated from bootstrapping both models.\n\nPrediction of vegetation height used the second of the two steps for AGBD, since what would otherwise be the dependent variable (height) is a direct measurement from ICESat-2 ATL08. Uncertainty was therefore estimated from bootstrapping the random forest model, with no propagation of any uncertainties from the ICESat-2 height measurements.\n\nUncertainties were estimated using bootstrapping of training data to produce a suite of models and maps, which were then summarized to produce pixel-level standard error estimates. Models were re-fit for each 90 km tile until the variance of the 90 km AGBD total stabilized (less than 5% change in the variance of tile total AGBD). The pixel-level SD is calculated as the SD of the set of pixel predictions from these iterations.\n\nThis dataset features predictions for landcovers that are associated with the full woody structure gradient according to the European Space Agency\u2019s Worldcover v1.0 2020 dataset. This primarily includes forests, shrubs, and grass extents in which woody vegetation is present. Importantly, predictions were also made for the \u2018moss/lichen\u2019 land cover. The decision to include these pixels considered the broad domain of this study, where areas from the far north down to southern portions featured this classification, but represented very different apparent land uses. In northern portions, this classification occurs frequently across tundra extents (eg, the Brooks Range), whereas in the south it appears at sites of recent forest clearing. Non-vegetated land covers (e.g. built up, water, rock, ice) were masked out of our predictions.\n\nHLS composites and ICESat-2 data were from 2020 to produce a single-year 2020 map. ICESat-2 data were filtered to include only strong beams, growing seasons (June through September), solar elevations less than 5 degrees, snow free land (snow flag set to 1), and \"msw_flag\" equal to 0 (clear skies and no observed atmospheric scattering). ICESat-2's ATL08 product was resampled to a 30-m spatial resolution to better match both the field plots and mapped pixels, which involved reprocessing the nominal 100-m segments to 30-m segments. HLS data (both the L30 and S30 products) were used to create a harmonized (HLSH30) greenest pixel composite of growing season multispectral data, which was then used to compute a suite of vegetation indices: NDVI, NDWI, NBR, NBR2, TCW, TCG. These were then used, in combination with a suite of topographic information (elevation, slope, topographic solar radiation index, topographic position index, and a binary slope mask indicating flat pixels) from the Copernicus DEM product, to predict 30-m AGBD per 90-km tile. Estimates of mean AGBD and mean vegetation height with standard deviation are provided in cloud-optimized GeoTIFF (CoG) format. The product consists of a set of raster grids and tabular (CSV) files referenced to a set of 90-km tiles that cover the circumpolar boreal domain and south to 51.6\u00b0N (Figure 1). Each raster grid is a 2-band file where the first and second band represent the mean and standard deviation pixel values that result from the bootstrapped prediction. The CSV files feature the ICESat-2 ATL08 30 m segment centroids that were used as training data in the prediction of each raster. A polygon map of these data tiles is included as a GeoPackage file and a Shapefile. This product was generated on the NASA-ESA Multi-Mission Algorithm and Analysis Platform (MAAP, https://scimaap.net), an open science platform. All code and input files are publicly available: [https://github.com/lauraduncanson/icesat2_boreal.git](https://repo.ops.maap-project.org/icesat2_boreal/icesat2_boreal.git).\n\nFor each product (AGB and height) there are 3902 cloud-optimized GeoTIFFs, 3902 tables in comma-separated values (CSV) format, and 1 geopackage tile index.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "version": "2.1.0",
+  "license": "CC-BY",
+  "@id": "icesat2-boreal-v2.1-agb",
+  "citeAs": "Duncanson, L., P.M. Montesano, A. Neuenschwander, A. Zarringhalam, N. Thomas, A. Mandel, D. Minor, E. Guenther, S. Hancock, T. Feng, A. Barciauskas, G.W. Chang, S. Shah, and B.P. Satorius. Circumpolar boreal aboveground biomass mapping with ICESat-2. (in prep.)",
+  "creator": {
+    "@type": "Organization",
+    "name": "MAAP",
+    "url": "https://maap-project.org"
+  },
+  "keywords": [
+    "geospatial",
+    "ABoVE",
+    "satellite data",
+    "Advanced Topographic Laser Altimeter System",
+    "Sentinel-2 Multispectral Imager",
+    "remote sensing",
+    "SENTINEL-2A",
+    "Operational Land Imager 2",
+    "Operational Land Imager",
+    "LANDSAT-9",
+    "SENTINEL-2B",
+    "ICESat-2",
+    "LANDSAT-8"
+  ],
+  "url": "https://stac.maap-project.org/collections/icesat2-boreal-v2.1-agb",
+  "references": [
+    {
+      "@type": "CreativeWork",
+      "url": "https://stac.maap-project.org/collections/icesat2-boreal-v2.1-agb/items",
+      "name": "STAC item list",
+      "encodingFormat": "application/geo+json"
+    },
+    {
+      "@type": "CreativeWork",
+      "url": "https://stac.maap-project.org/",
+      "name": "STAC parent catalog",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "CreativeWork",
+      "url": "https://stac.maap-project.org/",
+      "name": "STAC root catalog",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "CreativeWork",
+      "url": "https://github.com/lauraduncanson/icesat2_boreal",
+      "name": "GitHub Repository",
+      "encodingFormat": "text/html"
+    },
+    {
+      "@type": "CreativeWork",
+      "url": "https://stac.maap-project.org/collections/icesat2-boreal",
+      "name": "Previous version",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "CreativeWork",
+      "url": "https://stac.maap-project.org/collections/icesat2-boreal-v2.1-agb/queryables",
+      "name": "Queryables",
+      "encodingFormat": "application/schema+json"
+    }
+  ],
+  "geocr:BoundingBox": [
+    -180,
+    51.6,
+    180,
+    78
+  ],
+  "geocr:temporalExtent": {
+    "startDate": "2020-01-01T00:00:00Z",
+    "endDate": "2020-12-31T23:59:59Z"
+  },
+  "datePublished": "2020-01-01T00:00:00Z",
+  "geocr:spatialResolution": "30m",
+  "geocr:coordinateReferenceSystem": "EPSG:4326",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "tiles",
+      "name": "tiles",
+      "description": "90 km tile geometries for processing AGB predictions",
+      "contentUrl": "s3://nasa-maap-data-store/file-staging/nasa-map/icesat2-boreal-v2.1/agb/boreal_tiles_v004_AGB_H30_2020_ORNLDAAC.gpkg",
+      "encodingFormat": "application/geopackage+sqlite3",
+      "sha256": "placeholder_hash",
+      "md5": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "icesat2-boreal-v2.1-agb-files",
+      "name": "icesat2-boreal-v2.1-agb data files",
+      "description": "Collection of data files for this dataset",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "includes": "**/*"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "icesat2-boreal-v2.1-agb_records",
+      "name": "icesat2-boreal-v2.1-agb data records",
+      "description": "Data records for this dataset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "data/cog",
+          "name": "data/cog",
+          "description": "Gridded predictions of aboveground biomass (Mg/ha)",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "icesat2-boreal-v2.1-agb-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*cog.*"
+            }
+          },
+          "geocr:dataType": "float32"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/training_data_csv",
+          "name": "data/training_data_csv",
+          "description": "Tabular training data with latitude, longitude, and biomass observations",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "icesat2-boreal-v2.1-agb-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*training_data_csv.*"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "geocr:visualizations": {
+    "agb_viridis": {
+      "title": "Aboveground biomass (Mg/ha)",
+      "assets": [
+        "cog"
+      ],
+      "rescale": [
+        [
+          0,
+          125
+        ]
+      ],
+      "expression": "cog_b1",
+      "minmax_zoom": [
+        6,
+        18
+      ],
+      "colormap_name": "viridis"
+    },
+    "agb_gist_earth_r": {
+      "title": "Aboveground biomass (Mg/ha)",
+      "assets": [
+        "cog"
+      ],
+      "rescale": [
+        [
+          0,
+          400
+        ]
+      ],
+      "expression": "cog_b1",
+      "minmax_zoom": [
+        6,
+        18
+      ],
+      "color_formula": "gamma r 1.05",
+      "colormap_name": "gist_earth_r"
+    }
+  },
+  "geocr:summaries": {
+    "gsd": {
+      "maximum": 30,
+      "minimum": 30
+    },
+    "mission": [
+      "ABoVE"
+    ],
+    "platform": [
+      "LANDSAT-8",
+      "LANDSAT-9",
+      "SENTINEL-2A",
+      "SENTINEL-2B",
+      "ICESat-2"
+    ],
+    "instruments": [
+      "Advanced Topographic Laser Altimeter System",
+      "Operational Land Imager",
+      "Operational Land Imager 2",
+      "Sentinel-2 Multispectral Imager"
+    ],
+    "processing:level": [
+      "L4"
+    ]
+  },
+  "geocr:stac_extensions": [
+    "https://stac-extensions.github.io/version/v1.2.0/schema.json",
+    "https://stac-extensions.github.io/processing/v1.2.0/schema.json",
+    "https://stac-extensions.github.io/render/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json"
+  ],
+  "geocr:stac_version": "1.1.0",
+  "isLiveDataset": true
+}

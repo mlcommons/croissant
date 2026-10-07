@@ -1,0 +1,432 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "geocr": "http://mlcommons.org/croissant/geocr/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "sc": "https://schema.org/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106",
+  "alternateName": [
+    "CMIP6-tas",
+    "KIOST-tas",
+    "ssp585-tas"
+  ],
+  "description": "CMIP6 dataset for Near-Surface Air Temperature (tas) from KIOST model. This dataset contains Near-Surface Air Temperature data for the update of RCP8.5 based on SSP5 scenario.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "version": "1.0.0",
+  "creator": {
+    "@type": "Organization",
+    "name": "KIOST",
+    "url": "https://www.wcrp-climate.org/wgcm-cmip/wgcm-cmip6"
+  },
+  "url": "https://api.stac.ceda.ac.uk/collections/cmip6/items/CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106",
+  "keywords": [
+    "CMIP6",
+    "climate modeling",
+    "near-surface air temperature",
+    "tas",
+    "scenariomip",
+    "ssp585",
+    "kiost",
+    "netcdf",
+    "geospatial",
+    "climate data",
+    "temperature",
+    "atmospheric data",
+    "model output"
+  ],
+  "citeAs": "http://cera-www.dkrz.de/WDCC/meta/CMIP6/CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106.json",
+  "datePublished": "2025-01-24T20:07:51.314164Z",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "geocr:BoundingBox": [
+    -179.0625,
+    -90.0,
+    179.0625,
+    90.0
+  ],
+  "geocr:temporalExtent": {
+    "startDate": "2015-01-17T12:00:00Z",
+    "endDate": "2100-12-17T12:00:00Z"
+  },
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "reference_file",
+      "name": "tas_Amon_KIOST-ESM_ssp585_r1i1p1f1_gr1_201501-210012.nc",
+      "description": "reference_file asset for CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106",
+      "contentUrl": "https://api.stac.ceda.ac.uk/collections/cmip6/items/CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106",
+      "encodingFormat": "application/json",
+      "md5": "placeholder_hash",
+      "sha256": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "data0001",
+      "name": "tas_Amon_KIOST-ESM_ssp585_r1i1p1f1_gr1_201501-210012.nc",
+      "description": "data0001 asset for CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106",
+      "contentUrl": "https://dap.ceda.ac.uk/badc/cmip6/data/CMIP6/ScenarioMIP/KIOST/KIOST-ESM/ssp585/r1i1p1f1/Amon/tas/gr1/v20191106/tas_Amon_KIOST-ESM_ssp585_r1i1p1f1_gr1_201501-210012.nc",
+      "encodingFormat": "application/netcdf",
+      "md5": "placeholder_hash",
+      "sha256": "placeholder_hash"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "data_files",
+      "name": "data_files",
+      "description": "NetCDF data files",
+      "includes": "*.nc",
+      "encodingFormat": "application/netcdf"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "geospatial_metadata",
+      "name": "geospatial_metadata",
+      "description": "Geospatial metadata extracted from STAC",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "geospatial_metadata/bounding_box",
+          "name": "bounding_box",
+          "description": "Dataset bounding box",
+          "dataType": "sc:Text",
+          "data": [
+            -179.0625,
+            -90.0,
+            179.0625,
+            90.0
+          ],
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "geospatial_metadata/geometry",
+          "name": "geometry",
+          "description": "Dataset geometry",
+          "dataType": "sc:Text",
+          "data": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -179.0625,
+                  -90.0
+                ],
+                [
+                  179.0625,
+                  -90.0
+                ],
+                [
+                  179.0625,
+                  90.0
+                ],
+                [
+                  -179.0625,
+                  90.0
+                ],
+                [
+                  -179.0625,
+                  -90.0
+                ]
+              ]
+            ]
+          },
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "geospatial_metadata/temporal_coverage",
+          "name": "temporal_coverage",
+          "description": "Temporal coverage",
+          "dataType": "sc:Text",
+          "data": "2015-01-17T12:00:00Z/2100-12-17T12:00:00Z",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "cmip6_metadata",
+      "name": "cmip6_metadata",
+      "description": "CMIP6-specific metadata",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "cmip6_metadata/activity_id",
+          "name": "activity_id",
+          "description": "CMIP6 activity ID",
+          "dataType": "sc:Text",
+          "data": "ScenarioMIP",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cmip6_metadata/experiment_id",
+          "name": "experiment_id",
+          "description": "CMIP6 experiment ID",
+          "dataType": "sc:Text",
+          "data": "ssp585",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cmip6_metadata/variable_id",
+          "name": "variable_id",
+          "description": "CMIP6 variable ID",
+          "dataType": "sc:Text",
+          "data": "tas",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cmip6_metadata/variable_long_name",
+          "name": "variable_long_name",
+          "description": "CMIP6 variable long name",
+          "dataType": "sc:Text",
+          "data": "Near-Surface Air Temperature",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cmip6_metadata/variable_units",
+          "name": "variable_units",
+          "description": "CMIP6 variable units",
+          "dataType": "sc:Text",
+          "data": "K",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cmip6_metadata/experiment_title",
+          "name": "experiment_title",
+          "description": "CMIP6 experiment title",
+          "dataType": "sc:Text",
+          "data": "update of RCP8.5 based on SSP5",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cmip6_metadata/frequency",
+          "name": "frequency",
+          "description": "CMIP6 data frequency",
+          "dataType": "sc:Text",
+          "data": "mon",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cmip6_metadata/realm",
+          "name": "realm",
+          "description": "CMIP6 realm",
+          "dataType": "sc:Text",
+          "data": [
+            "atmos"
+          ],
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cmip6_metadata/cf_standard_name",
+          "name": "cf_standard_name",
+          "description": "CF standard name",
+          "dataType": "sc:Text",
+          "data": "air_temperature",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "variable_metadata",
+      "name": "variable_metadata",
+      "description": "Variables and coordinates found in NetCDF file",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "variable_metadata/lat_bnds",
+          "name": "lat_bnds",
+          "description": "Data variable: lat_bnds",
+          "dataType": "sc:Text",
+          "data": "Data variable from NetCDF file",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "variable_metadata/lon_bnds",
+          "name": "lon_bnds",
+          "description": "Data variable: lon_bnds",
+          "dataType": "sc:Text",
+          "data": "Data variable from NetCDF file",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "variable_metadata/tas",
+          "name": "tas",
+          "description": "Data variable: tas",
+          "dataType": "sc:Text",
+          "data": "Data variable from NetCDF file",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "variable_metadata/time_bnds",
+          "name": "time_bnds",
+          "description": "Data variable: time_bnds",
+          "dataType": "sc:Text",
+          "data": "Data variable from NetCDF file",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "variable_metadata/lat",
+          "name": "lat",
+          "description": "Coordinate variable: lat",
+          "dataType": "sc:Text",
+          "data": "Coordinate variable from NetCDF file",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "variable_metadata/lon",
+          "name": "lon",
+          "description": "Coordinate variable: lon",
+          "dataType": "sc:Text",
+          "data": "Coordinate variable from NetCDF file",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "variable_metadata/time",
+          "name": "time",
+          "description": "Coordinate variable: time",
+          "dataType": "sc:Text",
+          "data": "Coordinate variable from NetCDF file",
+          "source": {
+            "fileSet": {
+              "@id": "data_files"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
