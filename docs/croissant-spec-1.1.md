@@ -2277,7 +2277,6 @@ Here is an example that shows how to use the DUO term [DUO_0000042](http://purl.
       "@id": "http://purl.obolibrary.org/obo/DUO_0000042",
       "name": "General Research Use",
       "termCode": "DUO_0000042",
-      "url": "http://purl.obolibrary.org/obo/DUO_0000042",
       "inDefinedTermSet": "http://purl.obolibrary.org/obo/duo.owl"
     }
   ]
