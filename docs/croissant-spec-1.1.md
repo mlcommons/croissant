@@ -2285,7 +2285,7 @@ Here is an example that shows how to use the DUO term [DUO_0000042](http://purl.
 
 To represent more complex restrictions, such as hierarchical permissions and modifiers, Croissant recommends using [ODRL](https://www.w3.org/TR/odrl-model/), a W3C standard that provides a rich framework for representing permissions and restrictions
 
-To use ODRL in Croissant, `sc:usageInfo` is used as a container for an `odrl:Offer`, which represents a set of permissions. The permission is expressed with `odrl:permission`: its `odrl:action` is `odrl:use`, and an `odrl:purpose` constraint takes the DUO permission term as its right operand. Modifiers that limit the use, such as non-commercial use, are expressed with `odrl:prohibition`. The `odrl:profile` property gives the IRI of the ODRL profile that declares the vocabulary used by the policy beyond the ODRL Core Vocabulary; the IRI in the examples below is a placeholder.
+To use ODRL in Croissant, `sc:usageInfo` is used as a container for an `odrl:Offer`, which represents a set of permissions. The usage permission are expressed with `odrl:permission` and the usage limitations with `odrl:prohibition`. The `odrl:profile` property gives the IRI of the ODRL profile that declares the vocabulary used by the policy beyond the ODRL Core Vocabulary; the IRI in the examples below is a placeholder.
 
 The following example shows how to combine DUO and ODRL to represent a data use policy that allows General  Research Use ([DUO_0000042](http://purl.obolibrary.org/obo/DUO_0000042)), but only for non-commercial purposes ([DUO_0000046](http://purl.obolibrary.org/obo/DUO_0000046)):
 
