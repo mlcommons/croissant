@@ -2260,8 +2260,7 @@ Here is an example that shows how to use the DUO term [DUO_0000042](http://purl.
 {
   "@context": {
     "@vocab": "http://schema.org/",
-    "cr": "http://mlcommons.org/croissant/",
-    "dct": "http://purl.org/dc/terms/",
+    "cr": "http://mlcommons.org/croissant/"
   },
   "@type": "Dataset",
   "name": "Global Health Imagery Dataset",
@@ -2274,8 +2273,7 @@ Here is an example that shows how to use the DUO term [DUO_0000042](http://purl.
       "@type": "DefinedTerm",
       "@id": "http://purl.obolibrary.org/obo/DUO_0000042",
       "name": "General Research Use",
-      "termCode": "DUO_0000042",
-      "inDefinedTermSet": "http://purl.obolibrary.org/obo/duo.owl"
+      "termCode": "DUO_0000042"
     }
   ]
 }
@@ -2285,7 +2283,7 @@ Here is an example that shows how to use the DUO term [DUO_0000042](http://purl.
 
 To represent more complex restrictions, such as hierarchical permissions and modifiers, Croissant recommends using [ODRL](https://www.w3.org/TR/odrl-model/), a W3C standard that provides a rich framework for representing permissions and restrictions
 
-To use ODRL in Croissant, `sc:usageInfo` is used as a container for an `odrl:Offer`, which represents a set of permissions. The usage permission are expressed with `odrl:permission` and the usage limitations with `odrl:prohibition`. The `odrl:profile` property gives the IRI of the ODRL profile that declares the vocabulary used by the policy beyond the ODRL Core Vocabulary; the IRI in the examples below is a placeholder.
+To use ODRL in Croissant, `sc:usageInfo` is used as a container for an `odrl:Offer`, which represents a set of permissions. Usage permissions are expressed with `odrl:permission` and usage limitations with `odrl:prohibition`. The `odrl:profile` property gives the IRI of the ODRL profile that declares the vocabulary used by the policy beyond the ODRL Core Vocabulary; the IRI in the examples below is a placeholder.
 
 The following example shows how to combine DUO and ODRL to represent a data use policy that allows General  Research Use ([DUO_0000042](http://purl.obolibrary.org/obo/DUO_0000042)), but only for non-commercial purposes ([DUO_0000046](http://purl.obolibrary.org/obo/DUO_0000046)):
 
@@ -2296,30 +2294,20 @@ The following example shows how to combine DUO and ODRL to represent a data use 
     "cr": "http://mlcommons.org/croissant/",
     "duo": { "@id": "http://purl.obolibrary.org/obo/DUO_", "@prefix": true },
     "odrl": "http://www.w3.org/ns/odrl/2/",
-    "dct": "http://purl.org/dc/terms/"
+    "dct": "http://purl.org/dc/terms/",
+    "cc": "http://creativecommons.org/ns#"
   },
   "@type": "Dataset",
-  "@id": "https://example.org/datasets/restricted-health-1",
   "name": "Restricted Health Data",
-  "description": "Example restricted health dataset, released for general research use but not for commercial purposes.",
-  "dct:conformsTo": "http://mlcommons.org/croissant/1.1",
-  "url": "https://example.org/dataset/restricted-health-1",
-  "license": "https://example.org/licenses/data-use-agreement",
-  "creator": {
-    "@type": "Organization",
-    "@id": "https://example.org/org/ghdo",
-    "name": "Example Global Health Data Office"
-  },
-  "datePublished": "2026-10-01",
+
   "usageInfo": {
     "@type": ["CreativeWork", "odrl:Offer"],
-    "@id": "https://example.org/policies/restricted-health-1/use",
+    "url": "https://example.org/policies/data-use-agreement",
     "name": "DUO Usage Policy",
     "odrl:profile": { "@id": "https://example.org/odrl/profile/duo" },
+
     "odrl:permission": {
       "@type": "odrl:Permission",
-      "odrl:target": { "@id": "https://example.org/datasets/restricted-health-1" },
-      "odrl:assigner": { "@id": "https://example.org/org/ghdo" },
       "odrl:action": { "@id": "odrl:use" },
       "odrl:constraint": [
         {
@@ -2334,9 +2322,7 @@ The following example shows how to combine DUO and ODRL to represent a data use 
     "odrl:prohibition": {
       "@type": "odrl:Prohibition",
       "name": "Non-commercial use only",
-      "odrl:target": { "@id": "https://example.org/datasets/restricted-health-1" },
-      "odrl:assigner": { "@id": "https://example.org/org/ghdo" },
-      "odrl:action": { "@id": "odrl:commercialize" },
+      "odrl:action": { "@id": "cc:CommercialUse" },
       "dct:source": { "@id": "duo:0000046" }
     }
   }
@@ -2359,30 +2345,18 @@ The example below shows how to use MONDO in combination with DUO and ODRL to spe
     "duo": { "@id": "http://purl.obolibrary.org/obo/DUO_", "@prefix": true },
     "mondo": { "@id": "http://purl.obolibrary.org/obo/MONDO_", "@prefix": true },
     "odrl": "http://www.w3.org/ns/odrl/2/",
-    "dct": "http://purl.org/dc/terms/"
+    "dct": "http://purl.org/dc/terms/",
+    "cc": "http://creativecommons.org/ns#"
   },
   "@type": "Dataset",
-  "@id": "https://example.org/datasets/restricted-health-2",
   "name": "Restricted Health Data",
-  "description": "Example restricted health dataset, released only for non-commercial research on Alzheimer disease.",
-  "dct:conformsTo": "http://mlcommons.org/croissant/1.1",
-  "url": "https://example.org/dataset/restricted-health-2",
-  "license": "https://example.org/licenses/data-use-agreement",
-  "creator": {
-    "@type": "Organization",
-    "@id": "https://example.org/org/ghdo",
-    "name": "Example Global Health Data Office"
-  },
-  "datePublished": "2026-10-01",
   "usageInfo": {
     "@type": ["CreativeWork", "odrl:Offer"],
-    "@id": "https://example.org/policies/restricted-health-2/use",
+    "url": "https://example.org/policies/data-use-agreement",
     "name": "DUO Usage Policy",
     "odrl:profile": { "@id": "https://example.org/odrl/profile/duo" },
     "odrl:permission": {
       "@type": "odrl:Permission",
-      "odrl:target": { "@id": "https://example.org/datasets/restricted-health-2" },
-      "odrl:assigner": { "@id": "https://example.org/org/ghdo" },
       "odrl:action": { "@id": "odrl:use" },
       "odrl:constraint": [
         {
@@ -2394,7 +2368,7 @@ The example below shows how to use MONDO in combination with DUO and ODRL to spe
         },
         {
           "@type": "odrl:Constraint",
-          "odrl:leftOperand": { "@id": "duo:0000010"},
+          "odrl:leftOperand": { "@id": "duo:0000010" },
           "odrl:operator": { "@id": "odrl:isA" },
           "odrl:rightOperand": { "@id": "mondo:0004975" }
         }
@@ -2403,9 +2377,7 @@ The example below shows how to use MONDO in combination with DUO and ODRL to spe
     "odrl:prohibition": {
       "@type": "odrl:Prohibition",
       "name": "Non-commercial use only",
-      "odrl:target": { "@id": "https://example.org/datasets/restricted-health-2" },
-      "odrl:assigner": { "@id": "https://example.org/org/ghdo" },
-      "odrl:action": { "@id": "odrl:commercialize" },
+      "odrl:action": { "@id": "cc:CommercialUse" },
       "dct:source": { "@id": "duo:0000046" }
     }
   }
@@ -2413,9 +2385,6 @@ The example below shows how to use MONDO in combination with DUO and ODRL to spe
 ```
 
 This approach can be extended to other domain-specific ontologies.
-
-**Note**: Alignment with established vocabularies such as DUO is essential for interoperability. The W3C ODRL Community Group is also developing an [ODRL Profile: AI Vocabulary](https://w3c.github.io/odrl/ai-vocab/) (a draft Community Group report, not a W3C Standard), which defines AI-related actions such as AI training. ODRL profiles of this kind can supply shared vocabulary for use with `odrl:profile`.
-
 
 ## Appendix 1: JSON-LD context
 
