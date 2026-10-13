@@ -2267,10 +2267,8 @@ Here is an example that shows how to use the DUO term [DUO_0000042](http://purl.
   "name": "Global Health Imagery Dataset",
   "description": "A dataset of public health imagery for research purposes.",
   "url": "https://example.org/dataset/global-health-1",
-  "dct:conformsTo": "http://mlcommons.org/croissant/1.1",
   "license": "https://example.org/licenses/data-use-agreement",
   "creator": { "@type": "Organization", "name": "Example Global Health Data Office" },
-  "datePublished": "2026-10-01",
   "usageInfo": [
     {
       "@type": "DefinedTerm",
