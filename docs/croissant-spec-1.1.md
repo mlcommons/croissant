@@ -2266,8 +2266,6 @@ Here is an example that shows how to use the DUO term [DUO_0000042](http://purl.
   "name": "Global Health Imagery Dataset",
   "description": "A dataset of public health imagery for research purposes.",
   "url": "https://example.org/dataset/global-health-1",
-  "license": "https://example.org/licenses/data-use-agreement",
-  "creator": { "@type": "Organization", "name": "Example Global Health Data Office" },
   "usageInfo": [
     {
       "@type": "DefinedTerm",
@@ -2283,9 +2281,10 @@ Here is an example that shows how to use the DUO term [DUO_0000042](http://purl.
 
 To represent more complex restrictions, such as hierarchical permissions and modifiers, Croissant recommends using [ODRL](https://www.w3.org/TR/odrl-model/), a W3C standard that provides a rich framework for representing permissions and restrictions
 
-To use ODRL in Croissant, `sc:usageInfo` is used as a container for an `odrl:Offer`, which represents a set of permissions. Usage permissions are expressed with `odrl:permission` and usage limitations with `odrl:prohibition`. The `odrl:profile` property gives the IRI of the ODRL profile that declares the vocabulary used by the policy beyond the ODRL Core Vocabulary; the IRI in the examples below is a placeholder.
+To use ODRL in Croissant, `sc:usageInfo` is used as a container for an `odrl:Offer`, which represents a set of permissions. Usage permissions are expressed with `odrl:permission` and usage limitations with `odrl:prohibition`. `odrl:target` at the top of the offer identifies the dataset (here by a placeholder DOI) and applies to every rule in the offer; it can also point to a part of the dataset for finer control. `odrl:conflict` states which rule wins when a permission and a prohibition overlap: here `odrl:use` is the most generic action and commercial use is prohibited, so `odrl:prohibit` gives the prohibition precedence. Terms beyond the ODRL Core Vocabulary can be declared in an ODRL profile (`odrl:profile`), so that policies using the same vocabulary stay interoperable and reusable; see the upcoming Croissant RAI guidelines for more detail.
 
-The following example shows how to combine DUO and ODRL to represent a data use policy that allows General  Research Use ([DUO_0000042](http://purl.obolibrary.org/obo/DUO_0000042)), but only for non-commercial purposes ([DUO_0000046](http://purl.obolibrary.org/obo/DUO_0000046)):
+
+The following example shows how to combine DUO and ODRL to represent a data use policy that allows General Research Use ([DUO_0000042](http://purl.obolibrary.org/obo/DUO_0000042)), but only for non-commercial purposes ([DUO_0000046](http://purl.obolibrary.org/obo/DUO_0000046)):
 
 ```json
 {
@@ -2304,8 +2303,8 @@ The following example shows how to combine DUO and ODRL to represent a data use 
     "@type": ["CreativeWork", "odrl:Offer"],
     "url": "https://example.org/policies/data-use-agreement",
     "name": "DUO Usage Policy",
-    "odrl:profile": { "@id": "https://example.org/odrl/profile/duo" },
-
+    "odrl:target": { "@id": "https://doi.org/10.xxxx/restricted-health-1" },
+    "odrl:conflict": { "@id": "odrl:prohibit" },
     "odrl:permission": {
       "@type": "odrl:Permission",
       "odrl:action": { "@id": "odrl:use" },
@@ -2328,8 +2327,6 @@ The following example shows how to combine DUO and ODRL to represent a data use 
   }
 }
 ```
-
-Note that the `duo` prefix is declared with `"@prefix": true`. DUO IRIs end in an underscore, not `/` or `#`, so JSON-LD 1.1 does not treat the prefix as one unless this flag is set; without it, `duo:0000042` is not expanded to a full IRI. The same applies to the `mondo` prefix below.
 
 ### Integration with Domain-Specific Ontologies
 
@@ -2354,7 +2351,8 @@ The example below shows how to use MONDO in combination with DUO and ODRL to spe
     "@type": ["CreativeWork", "odrl:Offer"],
     "url": "https://example.org/policies/data-use-agreement",
     "name": "DUO Usage Policy",
-    "odrl:profile": { "@id": "https://example.org/odrl/profile/duo" },
+    "odrl:target": { "@id": "https://doi.org/10.xxxx/restricted-health-2" },
+    "odrl:conflict": { "@id": "odrl:prohibit" },
     "odrl:permission": {
       "@type": "odrl:Permission",
       "odrl:action": { "@id": "odrl:use" },
