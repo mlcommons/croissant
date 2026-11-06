@@ -86,3 +86,46 @@ def test_expand_and_reduce_language_tagged():
     actual = metadata.to_json()
     assert actual["name"] == {"en": "a", "fr": "b"}
     assert actual["description"] == {"en": "A", "de": "B"}
+
+
+def test_expand_json_ld_with_a_reference_back_to_a_containing_node():
+    # A place whose contained place refers back to it (sc:geoWithin, the inverse of
+    # sc:containsPlace): the reference is kept as a reference instead of looping.
+    ctx = Context(conforms_to=CroissantVersion.V_1_1)
+    dataset = Dataset({
+        "@context": make_context(ctx),
+        "@type": "sc:Dataset",
+        "conformsTo": CroissantVersion.V_1_1.value,
+        "name": "a",
+        "description": "A",
+        "sc:spatialCoverage": {
+            "@type": "sc:Place",
+            "@id": "bbox",
+            "sc:containsPlace": {
+                "@type": "sc:Place",
+                "@id": "hull",
+                "sc:geoWithin": {"@id": "bbox"},
+            },
+        },
+    })
+    spatial_coverage = dataset.metadata.to_json()["spatialCoverage"]
+    assert spatial_coverage["@id"] == "bbox"
+    assert spatial_coverage["containsPlace"]["@id"] == "hull"
+    assert spatial_coverage["containsPlace"]["geoWithin"] == {"@id": "bbox"}
+
+
+def test_expand_json_ld_with_a_node_that_has_the_id_of_the_dataset():
+    # A nested node with the @id of the dataset is the dataset itself in JSON-LD: it
+    # refers to the dataset from inside it.
+    ctx = Context(conforms_to=CroissantVersion.V_1_1)
+    dataset = Dataset({
+        "@context": make_context(ctx),
+        "@type": "sc:Dataset",
+        "@id": "https://doi.org/10.1234/a",
+        "conformsTo": CroissantVersion.V_1_1.value,
+        "name": "a",
+        "description": "A",
+        "sc:identifier": {"@id": "https://doi.org/10.1234/a", "sc:propertyID": "DOI"},
+    })
+    assert dataset.metadata.name == "a"
+    assert dataset.metadata.to_json()["name"] == "a"
