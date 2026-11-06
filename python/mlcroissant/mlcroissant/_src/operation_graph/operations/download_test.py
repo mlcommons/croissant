@@ -167,6 +167,28 @@ def test_sha256_hashes_do_match(conforms_to, hash_value):
         download()
 
 
+@pytest.mark.parametrize("conforms_to", CroissantVersion)
+def test_uppercase_hex_hash_does_match(conforms_to):
+    # SHA-256 of empty content, published in uppercase hex - hex digests are
+    # case-insensitive by convention, unlike base64, so this must still match.
+    uppercase_hex_hash = (
+        "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    )
+    with tempfile.NamedTemporaryFile(delete=False) as f:
+        filepath = f.name
+        ctx = Context(conforms_to=conforms_to, folder=epath.Path())
+        metadata = Metadata(ctx=ctx, name="bar")
+        file_object = create_test_file_object(
+            name="foo",
+            id="file-object",
+            content_url=os.fspath(filepath),
+            sha256=uppercase_hex_hash,
+        )
+        file_object.parents = [metadata]
+        download = Download(operations=operations(), node=file_object)
+        download()
+
+
 @pytest.fixture()
 def dummy_ctx():
     return Context(
