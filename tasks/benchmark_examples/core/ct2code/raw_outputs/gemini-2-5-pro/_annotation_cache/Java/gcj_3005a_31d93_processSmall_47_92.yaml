@@ -1,0 +1,303 @@
+target_var: topleft 80
+other_vars: 
+  - xCoords 49
+  - xCoords 58
+  - yCoords 50
+  - yCoords 60
+early_return: 
+  - 86
+variables:
+  rchv 47:
+    datadep: Null
+    controldep: Null
+  caseList 47:
+    datadep: Null
+    controldep: Null
+  chipCoords 48:
+    datadep: Null
+    controldep: Null
+  i 51:
+    datadep:
+      - i 51
+    controldep:
+      - i 51
+      - rchv 51
+  rchv 51:
+    reset: False
+    datadep:
+      - rchv 47
+    controldep:
+      - i 51
+      - rchv 51
+  row 52:
+    datadep:
+      - caseList 47
+    controldep:
+      - i 51
+      - rchv 51
+  split 53:
+    datadep:
+      - row 52
+    controldep:
+      - i 51
+      - rchv 51
+  rchv 54:
+    reset: False
+    datadep:
+      - rchv 47
+    controldep:
+      - i 51
+      - rchv 51
+      - j 54
+      - rchv 54
+  j 54:
+    datadep:
+      - j 54
+    controldep:
+      - i 51
+      - rchv 51
+      - j 54
+      - rchv 54
+  split 55:
+    reset: False
+    datadep:
+      - split 53
+    controldep:
+      - j 54
+      - rchv 54
+  j 55:
+    reset: False
+    datadep:
+      - j 54
+    controldep:
+      - j 54
+      - rchv 54
+  coords 57:
+    datadep:
+      - i 51
+    controldep:
+      - split 55
+      - j 55
+  coords 59:
+    datadep:
+      - j 54
+    controldep:
+      - split 55
+      - j 55
+  chipCoords 61:
+    datadep:
+      - coords 59
+      - coords 57
+      - chipCoords 48
+      - chipCoords 61
+    controldep:
+      - split 55
+      - j 55
+  x 65:
+    datadep:
+      - x 65
+    controldep:
+      - rchv 65
+      - x 65
+  rchv 65:
+    reset: False
+    datadep:
+      - rchv 47
+    controldep:
+      - rchv 65
+      - x 65
+  y 66:
+    datadep:
+      - y 66
+    controldep:
+      - rchv 65
+      - x 65
+      - bottomRight 86
+      - bottomLeft 86
+      - topleft 86
+      - topright 86
+  rchv 66:
+    reset: False
+    datadep:
+      - rchv 47
+    controldep:
+      - rchv 65
+      - x 65
+      - bottomRight 86
+      - bottomLeft 86
+      - topleft 86
+      - topright 86
+  topright 67:
+    datadep: Null
+    controldep:
+      - y 66
+      - rchv 66
+  topleft 68:
+    datadep: Null
+    controldep:
+      - y 66
+      - rchv 66
+  bottomLeft 69:
+    datadep: Null
+    controldep:
+      - y 66
+      - rchv 66
+  bottomRight 70:
+    datadep: Null
+    controldep:
+      - y 66
+      - rchv 66
+  z 71:
+    datadep:
+      - z 71
+    controldep:
+      - y 66
+      - rchv 66
+      - z 71
+      - chipCoords 71
+  chipCoords 71:
+    reset: False
+    datadep:
+      - chipCoords 48
+      - chipCoords 61
+    controldep:
+      - y 66
+      - rchv 66
+      - z 71
+      - chipCoords 71
+  chipCoords 72:
+    reset: False
+    datadep:
+      - chipCoords 48
+      - chipCoords 61
+    controldep:
+      - z 71
+      - chipCoords 71
+  z 72:
+    reset: False
+    datadep:
+      - z 71
+    controldep:
+      - z 71
+      - chipCoords 71
+  x 72:
+    reset: False
+    datadep:
+      - x 65
+    controldep:
+      - z 71
+      - chipCoords 71
+  chipCoords 73:
+    reset: False
+    datadep:
+      - chipCoords 48
+      - chipCoords 61
+    controldep:
+      - chipCoords 72
+      - z 72
+      - x 72
+  z 73:
+    reset: False
+    datadep:
+      - z 71
+    controldep:
+      - chipCoords 72
+      - z 72
+      - x 72
+  y 73:
+    reset: False
+    datadep:
+      - y 66
+    controldep:
+      - chipCoords 72
+      - z 72
+      - x 72
+  bottomLeft 74:
+    datadep:
+      - bottomLeft 69
+      - bottomLeft 74
+    controldep:
+      - chipCoords 73
+      - z 73
+      - y 73
+  bottomRight 76:
+    datadep:
+      - bottomRight 70
+      - bottomRight 76
+    controldep:
+      - chipCoords 73
+      - z 73
+      - y 73
+  chipCoords 79:
+    reset: False
+    datadep:
+      - chipCoords 48
+      - chipCoords 61
+    controldep:
+      - chipCoords 72
+      - z 72
+      - x 72
+  z 79:
+    reset: False
+    datadep:
+      - z 71
+    controldep:
+      - chipCoords 72
+      - z 72
+      - x 72
+  y 79:
+    reset: False
+    datadep:
+      - y 66
+    controldep:
+      - chipCoords 72
+      - z 72
+      - x 72
+  topleft 80:
+    datadep:
+      - topleft 68
+      - topleft 80
+    controldep:
+      - chipCoords 79
+      - z 79
+      - y 79
+  topright 82:
+    datadep:
+      - topright 67
+      - topright 82
+    controldep:
+      - chipCoords 79
+      - z 79
+      - y 79
+  bottomRight 86:
+    reset: False
+    datadep:
+      - bottomRight 70
+      - bottomRight 76
+    controldep:
+      - y 66
+      - rchv 66
+  bottomLeft 86:
+    reset: False
+    datadep:
+      - bottomLeft 69
+      - bottomLeft 74
+    controldep:
+      - y 66
+      - rchv 66
+  topleft 86:
+    reset: False
+    datadep:
+      - topleft 68
+      - topleft 80
+    controldep:
+      - y 66
+      - rchv 66
+  topright 86:
+    reset: False
+    datadep:
+      - topright 67
+      - topright 82
+    controldep:
+      - y 66
+      - rchv 66

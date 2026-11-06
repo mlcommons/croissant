@@ -1,0 +1,204 @@
+target_var: longn 41
+other_vars: 
+  - longm 26
+  - longm 30
+  - longm 33
+  - j 34
+  - j 37
+  - longm 36
+variables:
+  longn 41:
+    datadep:
+      - longn 27
+      - longn 41
+      - longn 44
+      - longn 47
+      - i 28
+    controldep:
+      - N 40
+      - i 40
+  longn 44:
+    datadep:
+      - i 28
+    controldep:
+      - N 40
+      - i 40
+  longn 47:
+    datadep:
+      - longn 44
+      - longn 47
+      - i 28
+    controldep:
+      - j 46
+      - N 46
+      - i 46
+      - M 46
+  longn 27:
+    datadep: Null
+    controldep:
+      - test 19
+      - ntests 19
+  ntests 19:
+    reset: False
+    datadep:
+      - ntests 7
+    controldep:
+      - test 19
+      - ntests 19
+  test 19:
+    datadep:
+      - test 19
+    controldep:
+      - test 19
+      - ntests 19
+  ntests 7:
+    datadep: Null
+    controldep: Null
+  s 28:
+    reset: False
+    datadep:
+      - s 20
+    controldep:
+      - test 19
+      - ntests 19
+      - s 28
+      - i 28
+  s 20:
+    datadep: Null
+    controldep:
+      - test 19
+      - ntests 19
+  i 28:
+    datadep:
+      - i 28
+    controldep:
+      - test 19
+      - ntests 19
+      - s 28
+      - i 28
+  N 40:
+    reset: False
+    datadep:
+      - N 24
+    controldep:
+      - i 28
+      - s 28
+  i 40:
+    reset: False
+    datadep:
+      - i 28
+    controldep:
+      - i 28
+      - s 28
+  j 45:
+    datadep:
+      - i 28
+    controldep:
+      - N 40
+      - i 40
+  j 46:
+    reset: False
+    datadep:
+      - j 45
+      - j 48
+    controldep:
+      - j 46
+      - N 46
+      - i 46
+      - M 46
+      - N 40
+      - i 40
+  N 46:
+    reset: False
+    datadep:
+      - N 24
+    controldep:
+      - j 46
+      - N 46
+      - i 46
+      - M 46
+      - N 40
+      - i 40
+  M 46:
+    reset: False
+    datadep:
+      - M 23
+    controldep:
+      - j 46
+      - N 46
+      - i 46
+      - M 46
+      - N 40
+      - i 40
+  i 46:
+    reset: False
+    datadep:
+      - i 28
+    controldep:
+      - j 46
+      - N 46
+      - i 46
+      - M 46
+      - N 40
+      - i 40
+  j 48:
+    datadep:
+      - j 45
+      - j 48
+    controldep:
+      - j 46
+      - N 46
+      - i 46
+      - M 46
+  N 24:
+    datadep:
+      - D 22
+      - B 22
+      - i 21
+    controldep:
+      - i 21
+      - s 21
+  M 23:
+    datadep:
+      - D 22
+      - A 22
+      - i 21
+    controldep:
+      - i 21
+      - s 21
+  s 21:
+    reset: False
+    datadep:
+      - s 20
+    controldep:
+      - test 19
+      - ntests 19
+      - i 21
+      - s 21
+  i 21:
+    datadep:
+      - i 21
+    controldep:
+      - test 19
+      - ntests 19
+      - i 21
+      - s 21
+  D 22:
+    datadep:
+      - i 21
+    controldep:
+      - i 21
+      - s 21
+  A 22:
+    datadep:
+      - i 21
+    controldep:
+      - i 21
+      - s 21
+  B 22: 
+    datadep:
+      - i 21
+    controldep:
+      - i 21
+      - s 21
+  

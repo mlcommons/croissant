@@ -1,0 +1,270 @@
+target_var: m 89
+other_vars:
+  - n 14
+  - n 19
+  - l 47
+  - r 48
+  - shi 51
+  - ans 56
+  - S 58
+  - m 60
+  - S 74
+  - S 68
+  - ans 95
+  - ans 85
+early_return: 
+  - 36
+  - 42
+  - 65
+  - 71
+  - 94
+  - 100
+variables: 
+  m 89:
+    datadep:
+      - l 77
+      - l 104
+      - r 78
+      - r 98
+    controldep:
+      - Null 88
+  l 77:
+    datadep: Null
+    controldep:
+      - K 76
+  r 78:
+    datadep: Null
+    controldep:
+      - K 76
+  S 79:
+    datadep: Null
+    controldep:
+      - K 76
+  S 80:
+    datadep: Null
+    controldep:
+      - K 76
+  A 83:
+    datadep: Null
+    controldep:
+      - K 76
+  A 84:
+    reset: False
+    datadep:
+      - A 83
+    controldep:
+      - K 76
+  S 87:
+    datadep: Null
+    controldep:
+      - A 84
+  Null 88:
+    reset: False
+    datadep: Null
+    controldep:
+      - A 84
+      - Null 88
+      - S 94
+      - m 94
+      - S 100
+      - m 100
+  A 92:
+    datadep: Null
+    controldep:
+      - Null 88
+  A 93:
+    reset: False
+    datadep:
+      - A 92
+    controldep:
+      - Null 88
+  S 94:
+    reset: False
+    datadep:
+      - S 79
+      - S 80
+      - S 87
+      - S 97
+      - S 103
+    controldep:
+      - A 93
+  m 94:
+    reset: False
+    datadep:
+      - m 89
+    controldep:
+      - A 93
+  S 97:
+    datadep:
+      - m 89
+    controldep:
+      - S 94
+      - m 94
+  r 98:
+    datadep:
+      - m 89
+    controldep:
+      - S 94
+      - m 94
+  S 100:
+    reset: False
+    datadep:
+      - S 79
+      - S 80
+      - S 87
+      - S 97
+      - S 103
+    controldep:
+      - A 93
+  m 100:
+    reset: False
+    datadep:
+      - m 89
+    controldep:
+      - A 93
+  S 103:
+    datadep:
+      - m 89
+    controldep:
+      - S 100
+      - m 100
+  l 104:
+    datadep:
+      - m 89
+    controldep:
+      - S 100
+      - m 100
+  K 76:
+    reset: False
+    datadep:
+      - K 43
+      - K 37
+    controldep:
+      - A 13
+      - K 76
+  A 12:
+    datadep: Null
+    controldep: Null
+  A 13:
+    reset: False
+    datadep:
+      - A 12
+    controldep: Null
+  l 25:
+    datadep: Null
+    controldep:
+      - A 13
+  r 26:
+    datadep: Null
+    controldep:
+      - A 13
+  S 27:
+    datadep: Null
+    controldep:
+      - A 13
+  S 28:
+    datadep: Null
+    controldep:
+      - A 13
+  S 29:
+    datadep: Null
+    controldep:
+      - A 13
+  Null 30:
+    reset: False
+    datadep: Null
+    controldep:
+      - Null 30
+      - A 13
+      - S 36
+      - m 36
+      - S 42
+      - m 42
+  m 31:
+    datadep:
+      - r 46
+      - r 26
+      - l 25
+      - l 40
+    controldep:
+      - Null 30
+  A 34:
+    datadep: Null
+    controldep:
+      - Null 30
+  A 35:
+    reset: False
+    datadep:
+      - A 34
+    controldep:
+      - Null 30
+  S 36:
+    reset: False
+    datadep:
+      - S 27
+      - S 28
+      - S 29
+      - S 39
+      - S 45
+    controldep:
+      - A 35
+  m 36:
+    reset: False
+    datadep:
+      - m 31
+    controldep:
+      - A 35
+  K 37:
+    datadep:
+      - m 31
+    controldep:
+      - S 36
+      - m 36
+  S 39:
+    datadep:
+      - m 31
+    controldep:
+      - S 36
+      - m 36
+  l 40:
+    datadep:
+      - m 31
+    controldep:
+      - S 36
+      - m 36
+  S 42:
+    reset: False
+    datadep:
+      - S 27
+      - S 28
+      - S 29
+      - S 39
+      - S 45
+    controldep:
+      - A 35
+  m 42:
+    reset: False
+    datadep:
+      - m 31
+    controldep:
+      - A 35
+  K 43:
+    datadep:
+      - m 31
+    controldep:
+      - S 42
+      - m 42
+  S 45:
+    datadep:
+      - m 31
+    controldep:
+      - S 42
+      - m 42
+  r 46:
+    datadep:
+      - m 31
+    controldep:
+      - S 42
+      - m 42
+
+  

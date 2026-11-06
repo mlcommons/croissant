@@ -1,0 +1,669 @@
+target_var: all 76
+other_vars:
+  - par 33
+  - par 31
+early_return: 
+  - 28
+  - 47
+  - 57
+  - 69
+  - 86
+variables:
+  qq 14:
+    datadep: Null
+    controldep: Null
+  qq 15:
+    reset: False
+    datadep: 
+      - qq 14
+    controldep: 
+      - casenum 15
+      - qq 15
+  casenum 15:
+    datadep:
+      - casenum 15
+    controldep:
+      - casenum 15
+      - qq 15
+  r 17:
+    datadep: Null
+    controldep:
+      - casenum 15
+      - qq 15
+  c 18:
+    datadep: Null
+    controldep:
+      - casenum 15
+      - qq 15
+  ret 19:
+    datadep: Null
+    controldep:
+      - casenum 15
+      - qq 15
+  g 20:
+    datadep:
+      - r 17
+      - c 18
+    controldep:
+      - casenum 15
+      - qq 15
+  i 21:
+    datadep:
+      - i 21
+    controldep:
+      - casenum 15
+      - qq 15
+      - i 21
+      - r 21
+  r 21:
+    reset: False
+    datadep:
+      - r 17
+    controldep:
+      - casenum 15
+      - qq 15
+      - i 21
+      - r 21
+  s 22:
+    datadep: Null
+    controldep:
+      - i 21
+      - r 21
+  j 23:
+    datadep:
+      - j 23
+    controldep:
+      - i 21
+      - r 21
+      - j 23
+      - c 23
+  c 23:
+    reset: False
+    datadep:
+      - c 18
+    controldep:
+      - i 21
+      - r 21
+      - j 23
+      - c 23
+  g 24:
+    datadep:
+      - i 21
+      - j 23
+      - s 22
+    controldep:
+      - j 23
+      - c 23
+  mask 27:
+    datadep:
+      - mask 27
+    controldep:
+      - casenum 15
+      - qq 15
+      - mask 27
+      - r 27
+      - c 27
+  r 27:
+    reset: False
+    datadep:
+      - r 17
+    controldep:
+      - casenum 15
+      - qq 15
+      - mask 27
+      - r 27
+      - c 27
+  c 27:
+    reset: False
+    datadep:
+      - c 18
+    controldep:
+      - casenum 15
+      - qq 15
+      - mask 27
+      - r 27
+      - c 27
+  mask 28:
+    reset: False
+    datadep:
+      - mask 27
+    controldep:
+      - mask 27
+      - r 27
+      - c 27
+  ret 28:
+    reset: False
+    datadep:
+      - ret 19
+      - ret 88
+    controldep:
+      - mask 27
+      - r 27
+      - c 27
+  t 30:
+    datadep:
+      - mask 27
+    controldep:
+      - mask 28
+      - ret 28
+  use 35:
+    datadep:
+      - r 17
+      - c 18
+    controldep:
+      - mask 28
+      - ret 28
+  i 36:
+    datadep:
+      - i 36
+    controldep:
+      - mask 28
+      - ret 28
+      - i 36
+      - r 36
+  r 36:
+    reset: False
+    datadep:
+      - r 17
+    controldep:
+      - mask 28
+      - ret 28
+      - i 36
+      - r 36
+  j 37:
+    datadep:
+      - j 37
+    controldep:
+      - i 36
+      - r 36
+      - j 37
+      - c 37
+  c 37:
+    reset: False
+    datadep:
+      - c 18
+    controldep:
+      - i 36
+      - r 36
+      - j 37
+      - c 37
+  t 38:
+    reset: False
+    datadep:
+      - t 30
+      - t 41
+    controldep:
+      - j 37
+      - c 37
+  use 39:
+    datadep:
+      - i 36
+      - j 37
+    controldep:
+      - t 38
+  t 41:
+    datadep:
+      - t 30
+      - t 41
+    controldep:
+      - j 37
+      - c 37
+  numNeed 44:
+    datadep:
+      - mask 27
+    controldep:
+      - mask 28
+      - ret 28
+  i 45:
+    datadep:
+      - i 45
+    controldep:
+      - mask 28
+      - ret 28
+      - i 45
+      - r 45
+  r 45:
+    reset: False
+    datadep:
+      - r 17
+    controldep:
+      - mask 28
+      - ret 28
+      - i 45
+      - r 45
+  j 46:
+    datadep:
+      - j 46
+    controldep:
+      - i 45
+      - r 45
+      - j 46
+      - c 46
+  c 46:
+    reset: False
+    datadep:
+      - c 18
+    controldep:
+      - i 45
+      - r 45
+      - j 46
+      - c 46
+  use 47:
+    reset: False
+    datadep:
+      - use 35
+      - use 39
+    controldep:
+      - j 46
+      - c 46
+  i 47:
+    reset: False
+    datadep:
+      - i 45
+    controldep:
+      - j 46
+      - c 46
+  j 47:
+    reset: False
+    datadep:
+      - j 46
+    controldep:
+      - j 46
+      - c 46
+  i 49:
+    reset: False
+    datadep:
+      - i 45
+    controldep:
+      - use 47
+      - i 47
+      - j 47
+  r 49:
+    reset: False
+    datadep:
+      - r 17
+    controldep:
+      - use 47
+      - i 47
+      - j 47
+  use 49:
+    reset: False
+    datadep:
+      - use 35
+      - use 39
+    controldep:
+      - use 47
+      - i 47
+      - j 47
+  j 49:
+    reset: False
+    datadep:
+      - j 46
+    controldep:
+      - use 47
+      - i 47
+      - j 47
+  c 49:
+    reset: False
+    datadep:
+      - c 18
+    controldep:
+      - use 47
+      - i 47
+      - j 47
+  numNeed 50:
+    datadep:
+      - numNeed 44
+      - numNeed 50
+      - numNeed 53
+    controldep:
+      - i 49
+      - r 49
+      - use 49
+      - j 49
+      - c 49
+  i 52:
+    reset: False
+    datadep:
+      - i 45
+    controldep:
+      - use 47
+      - i 47
+      - j 47
+  use 52:
+    reset: False
+    datadep:
+      - use 35
+      - use 39
+    controldep:
+      - use 47
+      - i 47
+      - j 47
+  j 52:
+    reset: False
+    datadep:
+      - j 46
+    controldep:
+      - use 47
+      - i 47
+      - j 47
+  c 52:
+    reset: False
+    datadep:
+      - c 18
+    controldep:
+      - use 47
+      - i 47
+      - j 47
+  numNeed 53:
+    datadep:
+      - numNeed 44
+      - numNeed 50
+      - numNeed 53
+    controldep:
+      - j 52
+      - c 52
+      - i 52
+      - use 52
+  numNeed 57:
+    reset: False
+    datadep:
+      - numNeed 44
+      - numNeed 50
+      - numNeed 53
+    controldep:
+      - mask 28
+      - ret 28
+  valid 59:
+    datadep: Null
+    controldep:
+      - numNeed 57
+  valid 60:
+    reset: False
+    datadep:
+      - valid 59
+      - valid 83
+    controldep:
+      - numNeed 57
+      - valid 60
+      - i 60
+      - r 60
+  i 60:
+    datadep:
+      - i 60
+    controldep:
+      - numNeed 57
+      - valid 60
+      - i 60
+      - r 60
+  r 60:
+    reset: False
+    datadep:
+      - r 17
+    controldep:
+      - numNeed 57
+      - valid 60
+      - i 60
+      - r 60
+  valid 61:
+    reset: False
+    datadep:
+      - valid 59
+      - valid 83
+    controldep:
+      - valid 60
+      - i 60
+      - r 60
+      - valid 61
+      - j 61
+      - c 61
+  j 61:
+    datadep:
+      - j 61
+    controldep:
+      - valid 60
+      - i 60
+      - r 60
+      - valid 61
+      - j 61
+      - c 61
+  c 61:
+    reset: False
+    datadep:
+      - c 18
+    controldep:
+      - valid 60
+      - i 60
+      - r 60
+      - valid 61
+      - j 61
+      - c 61
+  a 63:
+    datadep:
+      - a 63
+    controldep:
+      - valid 61
+      - j 61
+      - c 61
+      - a 63
+  all 64:
+    datadep:
+      - a 63
+    controldep:
+      - a 63
+  good 66:
+    datadep: Null
+    controldep:
+      - valid 61
+      - j 61
+      - c 61
+  good 67:
+    reset: False
+    datadep:
+      - good 66
+      - good 78
+      - good 80
+    controldep:
+      - valid 61
+      - j 61
+      - c 61
+      - good 67
+      - x 67
+      - r 67
+  x 67:
+    datadep:
+      - x 67
+    controldep:
+      - valid 61
+      - j 61
+      - c 61
+      - good 67
+      - x 67
+      - r 67
+  r 67:
+    reset: False
+    datadep:
+      - r 17
+    controldep:
+      - valid 61
+      - j 61
+      - c 61
+      - good 67
+      - x 67
+      - r 67
+  good 68:
+    reset: False
+    datadep:
+      - good 66
+      - good 78
+      - good 80
+    controldep:
+      - good 67
+      - x 67
+      - r 67
+      - good 68
+      - y 68
+      - c 68
+  y 68:
+    datadep:
+      - y 68
+    controldep:
+      - good 67
+      - x 67
+      - r 67
+      - good 68
+      - y 68
+      - c 68
+  c 68:
+    reset: False
+    datadep:
+      - c 18
+    controldep:
+      - good 67
+      - x 67
+      - r 67
+      - good 68
+      - y 68
+      - c 68
+  use 69:
+    reset: False
+    datadep:
+      - use 35
+      - use 39
+    controldep:
+      - good 68
+      - y 68
+      - c 68
+  x 69:
+    reset: False
+    datadep:
+      - x 67
+    controldep:
+      - good 68
+      - y 68
+      - c 68
+  y 69:
+    reset: False
+    datadep:
+      - y 68
+    controldep:
+      - good 68
+      - y 68
+      - c 68
+  idx 71:
+    datadep: Null
+    controldep:
+      - use 69
+      - x 69
+      - y 69
+  x 72: 
+    reset: False
+    datadep:
+      - x 67
+    controldep:
+      - use 69
+      - x 69
+      - y 69
+  i 72:
+    reset: False
+    datadep:
+      - i 60
+    controldep:
+      - use 69
+      - x 69
+      - y 69
+  idx 73:
+    datadep:
+      - idx 71
+    controldep:
+      - x 72
+      - i 72
+  y 74:
+    reset: False
+    datadep:
+      - y 68
+    controldep:
+      - use 69
+      - x 69
+      - y 69
+  j 74:
+    reset: False
+    datadep:
+      - j 61
+    controldep:
+      - use 69
+      - x 69
+      - y 69
+  idx 75:
+    datadep:
+      - idx 71
+      - idx 73
+    controldep:
+      - y 74
+      - j 74
+  all 76:
+    datadep:
+      - idx 71
+      - idx 73
+      - idx 75
+      - all 64
+      - all 76
+      - g 24
+      - g 20
+      - x 67
+      - y 68
+      - all 64
+    controldep:
+      - use 69
+      - x 69
+      - y 69
+  all 77:
+    reset: False
+    datadep:
+      - all 76
+    controldep:
+      - use 69
+      - x 69
+      - y 69
+  idx 77:
+    reset: False
+    datadep:
+      - idx 71
+      - idx 73
+      - idx 75
+    controldep:
+      - use 69
+      - x 69
+      - y 69
+  good 78:
+    datadep: Null
+    controldep:
+      - all 77
+      - idx 77
+  good 80:
+    datadep: Null
+    controldep:
+      - all 77
+      - idx 77
+  valid 83:
+    datadep:
+      - good 66
+      - good 78
+      - good 80
+    controldep:
+      - valid 61
+      - j 61
+      - c 61
+  valid 86:
+    reset: False
+    datadep:
+      - valid 59
+      - valid 83
+    controldep:
+      - numNeed 57
+  ret 88:
+    datadep:
+      - mask 27
+    controldep:
+      - valid 86
+

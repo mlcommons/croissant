@@ -1,0 +1,447 @@
+target_var: xb2 86
+other_vars:
+  - next 18
+  - cca 62
+  - ccb 62
+  - cca 64
+  - ccb 67
+  - cca2 72
+  - ccb2 72
+  - ans 73
+  - vma2 78
+  - ma 76
+  - xa2 79
+  - cca2 91
+variables:
+  xb2 86:
+    datadep:
+      - var 82
+    controldep:
+      - var 84
+      - xb 84
+      - vmb2 84
+      - mb 84
+  var 82:
+    datadep:
+      - listB 42
+      - listB 21
+    controldep:
+      - xa 74
+      - xb 74
+      - listB 82
+  listB 82:
+    reset: False
+    datadep:
+      - listB 42
+      - listB 21
+    controldep:
+      - xa 74
+      - xb 74
+      - listB 82
+  mb 83:
+    datadep:
+      - var 82
+      - mapB 41
+      - mapB 39
+      - mapB 23
+    controldep:
+      - listB 82
+  var 84:
+    reset: False
+    datadep:
+      - var 82
+    controldep:
+      - listB 82
+  xb 84:
+    reset: False
+    datadep:
+      - xb 58
+      - xb 48
+    controldep:
+      - listB 82
+  vmb2 84:
+    reset: False
+    datadep:
+      - vmb2 85
+      - vmb2 70
+    controldep:
+      - listB 82
+  mb 84:
+    reset: False
+    datadep:
+      - mb 83
+    controldep:
+      - listB 82
+  vmb2 85:
+    datadep:
+      - mb 83
+    controldep:
+      - var 84
+      - xb 84
+      - vmb2 84
+      - mb 84
+  listB 21:
+    datadep: Null
+    controldep: Null
+  listA 20:
+    datadep: Null
+    controldep: Null
+  listB 42:
+    datadep:
+      - seqB 37
+      - j 24
+      - listB 42
+      - listB 21
+    controldep:
+      - mapB 38
+      - seqB 38
+      - j 38
+  i 24:
+    datadep:
+      - i 24
+    controldep:
+      - i 24
+      - n 24
+  n 24:
+    reset: False
+    datadep:
+      - n 14
+    controldep:
+      - i 24
+      - n 24
+  j 24:
+    datadep:
+      - i 24
+    controldep:
+      - i 24
+      - n 24
+  next 25:
+    datadep:
+      - line 15
+      - regx 19
+      - offset 18
+    controldep:
+      - i 24
+      - n 24
+  line 25:
+    reset: False
+    datadep:
+      - line 15
+    controldep:
+      - i 24
+      - n 24
+  regx 25:
+    reset: False
+    datadep:
+      - regx 19
+    controldep:
+      - i 24
+      - n 24
+  offset 25:
+    reset: False
+    datadep:
+      - offset 18
+      - offset 45
+    controldep:
+      - i 24
+      - n 24
+  next 26:
+    datadep:
+      - line 15
+    controldep:
+      - next 25
+      - line 25
+      - regx 25
+      - offset 25
+  i 27:
+    reset: False
+    datadep:
+      - i 24
+    controldep:
+      - i 24
+      - n 24
+  mapA 29:
+    reset: False
+    datadep:
+      - mapA 22
+      - mapA 30
+      - mapA 32
+    controldep:
+      - i 27
+  seqA 29:
+    reset: False
+    datadep:
+      - seqA 28
+    controldep:
+      - i 27
+  j 29:
+    reset: False
+    datadep:
+      - j 24
+    controldep:
+      - i 27
+  mapA 30:
+    datadep:
+      - mapA 22
+      - mapA 30
+      - mapA 32
+      - seqA 28
+      - j 24
+    controldep:
+      - mapA 29
+      - seqA 29
+      - j 29
+  mapA 32:
+    datadep:
+      - mapA 22
+      - mapA 30
+      - mapA 32
+      - seqA 28
+      - j 24
+    controldep:
+      - mapA 29
+      - seqA 29
+      - j 29
+  listA 33:
+    datadep:
+      - seqA 28
+      - j 24
+      - listA 33
+      - listA 20
+    controldep:
+      - mapA 29
+      - seqA 29
+      - j 29
+  seqA 28:
+    datadep:
+      - line 15
+      - offset 18
+      - offset 45
+      - j 24
+      - next 25
+      - next 26
+    controldep:
+      - i 27
+  seqB 37:
+    datadep:
+      - line 15
+      - offset 18
+      - offset 45
+      - j 24
+      - next 25
+      - next 26
+    controldep:
+      - i 27
+  mapB 38:
+    reset: False
+    datadep:
+      - mapB 41
+      - mapB 39
+      - mapB 23
+    controldep:
+      - i 27
+  seqB 38:
+    reset: False
+    datadep:
+      - seqB 37
+    controldep:
+      - i 27
+  j 38:
+    reset: False
+    datadep:
+      - j 24
+    controldep:
+      - i 27
+  mapB 39:
+    datadep:
+      - mapB 41
+      - mapB 39
+      - mapB 23
+      - seqB 37
+      - j 24
+    controldep:
+      - mapB 38
+      - seqB 38
+      - j 38
+  mapB 41:
+    datadep:
+      - mapB 41
+      - mapB 39
+      - mapB 23
+      - seqB 37
+      - j 24
+    controldep:
+      - mapB 38
+      - seqB 38
+      - j 38
+  mapB 23:
+    datadep: Null
+    controldep: Null
+  mapA 22:
+    datadep: Null
+    controldep: Null
+  n 14:
+    datadep: Null
+    controldep: Null
+  regx 19:
+    datadep: Null
+    controldep: Null
+  offset 18:
+    datadep: Null
+    controldep: Null
+  line 15:
+    datadep: Null
+    controldep: Null
+  offset 45:
+    datadep:
+      - next 45
+    controldep:
+      - i 24
+      - n 24
+  next 45:
+    datadep:
+      - next 25
+      - next 26
+    controldep:
+      - i 24
+      - n 24
+  vmb2 70:
+    datadep: 
+      - xa2 70
+    controldep: Null
+  xa2 70:
+    datadep:
+      - xb2 70
+    controldep: Null
+  xb2 70:
+    datadep: Null
+    controldep: Null
+  xa 48:
+    datadep: 
+      - xb 48
+    controldep: Null
+  xa 52:
+    datadep:
+      - var 49
+    controldep:
+      - vma 50
+      - mapA 50
+      - var 50
+  var 49:
+    datadep:
+      - listA 33
+      - listA 20
+    controldep:
+      - listA 49
+  listA 49:
+    reset: False
+    datadep:
+      - listA 33
+      - listA 20
+    controldep:
+      - listA 49
+  vma 50:
+    reset: False
+    datadep:
+      - vma 48
+      - vma 51
+    controldep:
+      - listA 49
+  var 50:
+    reset: False
+    datadep:
+      - var 49
+    controldep:
+      - listA 49
+  mapA 50:
+    reset: False
+    datadep:
+      - mapA 22
+      - mapA 30
+      - mapA 32
+    controldep:
+      - listA 49
+  vma 51:
+    datadep:
+      - mapA 22
+      - mapA 30
+      - mapA 32
+      - var 49
+    controldep:
+      - vma 50
+      - mapA 50
+      - var 50
+  xb 48:
+    datadep: Null
+    controldep: Null
+  vma 48:
+    datadep: 
+      - vmb 48
+    controldep: Null
+  vmb 48:
+    datadep: 
+      - xa 48
+    controldep: Null
+  var 55:
+    datadep:
+      - listB 42
+      - listB 21
+    controldep:
+      - listB 55
+  listB 55:
+    reset: False
+    datadep:
+      - listB 42
+      - listB 21
+    controldep:
+      - listB 55
+  vmb 56:
+    reset: False
+    datadep:
+      - vmb 48
+      - vmb 57
+    controldep:
+      - listB 55
+  mapB 56:
+    reset: False
+    datadep:
+      - mapB 41
+      - mapB 39
+      - mapB 23
+    controldep:
+      - listB 55
+  var 56:
+    reset: False
+    datadep:
+      - var 55
+    controldep:
+      - listB 55
+  vmb 57:
+    datadep:
+      - mapB 41
+      - mapB 39
+      - mapB 23
+      - var 55
+    controldep:
+      - vmb 56
+      - mapB 56
+      - var 56
+  xb 58:
+    datadep:
+      - var 55
+    controldep: 
+      - vmb 56
+      - mapB 56
+      - var 56
+  xa 74:
+    reset: False
+    datadep:
+      - xa 52
+      - xa 48
+    controldep: Null
+  xb 74:
+    reset: False
+    datadep:
+      - xb 58
+      - xb 48
+    controldep: Null

@@ -1,0 +1,143 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking",
+  "schema:name": "AbsenceBench Solution - Claude 3.7 Sonnet (thinking, paper-reported)",
+  "schema:description": "TaskSolution documenting the values reported by Fu et al. 2025 in Table 3 (claude-3-7-sonnet baseline with inference-time compute / thinking mode enabled). Generated via pdf2ct - numbers come from the paper, not from a re-run.",
+  "schema:isBasedOn": { "@id": "http://example.org/absencebench_problem" },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:absencebench-claude-3-7-sonnet-thinking-paper-output",
+    "schema:name": "Reported outputs of claude-3-7-sonnet (thinking) on AbsenceBench (paper Table 3)"
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "model",
+        "schema:value": "claude-3-7-sonnet-latest"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "context_length",
+        "schema:value": "200K"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "api_provider",
+        "schema:value": "Anthropic"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "thinking_mode",
+        "schema:value": true
+      }
+    ]
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#implementation",
+    "schema:name": "Anthropic Messages API - claude-3-7-sonnet-latest (thinking)"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#poetry_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/absencebench#poetry" },
+      "croissant:execution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#execution" },
+      "croissant:implementation": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:absencebench-claude-3-7-sonnet-thinking-paper-poetry-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/absencebench_evaluation_claude-3-7-sonnet-thinking#poetry",
+        "schema:name": "Evaluation on AbsenceBench - Poetry (paper-reported, thinking)",
+        "schema:isBasedOn": { "@id": "http://example.org/absencebench#poetry" },
+        "croissant:evaluatedSolution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#poetry_sol" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1-Score",
+            "croissant:value": "72.7",
+            "schema:description": "Micro F1-score on the poetry domain, as reported in Fu et al. 2025 Table 3."
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#numerical_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/absencebench#numerical" },
+      "croissant:execution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#execution" },
+      "croissant:implementation": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:absencebench-claude-3-7-sonnet-thinking-paper-numerical-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/absencebench_evaluation_claude-3-7-sonnet-thinking#numerical",
+        "schema:name": "Evaluation on AbsenceBench - Numerical Sequences (paper-reported, thinking)",
+        "schema:isBasedOn": { "@id": "http://example.org/absencebench#numerical" },
+        "croissant:evaluatedSolution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#numerical_sol" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1-Score",
+            "croissant:value": "96.0",
+            "schema:description": "Micro F1-score on the numerical sequences domain, as reported in Fu et al. 2025 Table 3."
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#github_prs_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/absencebench#github_prs" },
+      "croissant:execution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#execution" },
+      "croissant:implementation": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:absencebench-claude-3-7-sonnet-thinking-paper-github-prs-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/absencebench_evaluation_claude-3-7-sonnet-thinking#github_prs",
+        "schema:name": "Evaluation on AbsenceBench - GitHub PRs (paper-reported, thinking)",
+        "schema:isBasedOn": { "@id": "http://example.org/absencebench#github_prs" },
+        "croissant:evaluatedSolution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking#github_prs_sol" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1-Score",
+            "croissant:value": "40.0",
+            "schema:description": "Micro F1-score on the github_prs domain, as reported in Fu et al. 2025 Table 3."
+          }
+        ]
+      }
+    }
+  ],
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "http://example.org/absencebench_evaluation_claude-3-7-sonnet-thinking",
+    "schema:name": "AbsenceBench Evaluation - Claude 3.7 Sonnet, thinking (paper-reported)",
+    "schema:isBasedOn": { "@id": "http://example.org/absencebench_problem" },
+    "croissant:evaluatedSolution": { "@id": "http://example.org/absencebench_solution_claude-3-7-sonnet-thinking" },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "F1-Score",
+        "croissant:value": "69.6",
+        "schema:description": "Average Micro F1-score across the three domains with inference-time compute (thinking mode), as reported in Fu et al. 2025 Table 3."
+      }
+    ]
+  }
+}

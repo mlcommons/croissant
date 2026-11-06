@@ -1,0 +1,206 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/absencebench_solution_claude-4-sonnet",
+  "schema:name": "AbsenceBench Solution - Claude Sonnet 4 (zero-shot)",
+  "schema:isBasedOn": {
+    "@id": "http://example.org/absencebench_problem"
+  },
+  "schema:description": "Zero-shot baseline using Anthropic claude-4-sonnet with temperature=0 on the default prompt templates from Fu et al. 2025 (Appendix A). Hyperparameters and EvaluationResults are populated by absencebench_implementation.py at run time; values shown here are placeholders.",
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:absencebench-claude-4-sonnet-overall-output",
+    "schema:name": "AbsenceBench Claude Sonnet 4 Overall Outputs"
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "http://example.org/absencebench_solution_claude-4-sonnet#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "model",
+        "schema:value": "claude-4-sonnet"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "temperature",
+        "schema:value": 0.0
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "max_tokens",
+        "schema:value": 4096
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "instances_per_subset",
+        "schema:value": 5
+      }
+    ]
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "http://example.org/absencebench_solution_claude-4-sonnet#implementation",
+    "schema:name": "Anthropic Messages API - claude-4-sonnet"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/absencebench_solution_claude-4-sonnet#poetry_sol",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/absencebench#poetry"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/absencebench_solution_claude-4-sonnet#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/absencebench_solution_claude-4-sonnet#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:absencebench-claude-4-sonnet-poetry-output",
+        "schema:name": "Predictions on the poetry subtask (raw_outputs/claude-4-sonnet/outputs_poetry.jsonl)"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/absencebench_evaluation_claude-4-sonnet#poetry",
+        "schema:name": "Evaluation on AbsenceBench - Poetry",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/absencebench#poetry"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/absencebench_solution_claude-4-sonnet#poetry_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1-Score",
+            "croissant:value": "85.35",
+            "schema:description": "Micro F1-score on 5 instances of the poetry subtask."
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Exact Match",
+            "croissant:value": "20.00",
+            "schema:description": "Per-instance exact-match rate on 5 instances of the poetry subtask."
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/absencebench_solution_claude-4-sonnet#numerical_sol",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/absencebench#numerical"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/absencebench_solution_claude-4-sonnet#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/absencebench_solution_claude-4-sonnet#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:absencebench-claude-4-sonnet-numerical-output",
+        "schema:name": "Predictions on the numerical subtask (raw_outputs/claude-4-sonnet/outputs_numerical.jsonl)"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/absencebench_evaluation_claude-4-sonnet#numerical",
+        "schema:name": "Evaluation on AbsenceBench - Numerical Sequences",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/absencebench#numerical"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/absencebench_solution_claude-4-sonnet#numerical_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1-Score",
+            "croissant:value": "100.00",
+            "schema:description": "Micro F1-score on 5 instances of the numerical subtask."
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Exact Match",
+            "croissant:value": "100.00",
+            "schema:description": "Per-instance exact-match rate on 5 instances of the numerical subtask."
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/absencebench_solution_claude-4-sonnet#github_prs_sol",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/absencebench#github_prs"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/absencebench_solution_claude-4-sonnet#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/absencebench_solution_claude-4-sonnet#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:absencebench-claude-4-sonnet-github-prs-output",
+        "schema:name": "Predictions on the github_prs subtask (raw_outputs/claude-4-sonnet/outputs_github_prs.jsonl)"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/absencebench_evaluation_claude-4-sonnet#github_prs",
+        "schema:name": "Evaluation on AbsenceBench - GitHub PRs",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/absencebench#github_prs"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/absencebench_solution_claude-4-sonnet#github_prs_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1-Score",
+            "croissant:value": "9.77",
+            "schema:description": "Micro F1-score on 5 instances of the github_prs subtask."
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Exact Match",
+            "croissant:value": "0.00",
+            "schema:description": "Per-instance exact-match rate on 5 instances of the github_prs subtask."
+          }
+        ]
+      }
+    }
+  ],
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "http://example.org/absencebench_evaluation_claude-4-sonnet",
+    "schema:name": "AbsenceBench Evaluation - Claude Sonnet 4 (overall)",
+    "schema:isBasedOn": {
+      "@id": "http://example.org/absencebench_problem"
+    },
+    "croissant:evaluatedSolution": {
+      "@id": "http://example.org/absencebench_solution_claude-4-sonnet"
+    },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "F1-Score",
+        "croissant:value": "65.98",
+        "schema:description": "Overall (pooled) Micro F1-score across all 15 evaluated instances across the 3 subtasks."
+      },
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Exact Match",
+        "croissant:value": "40.00",
+        "schema:description": "Overall per-instance exact-match rate across all 15 evaluated instances."
+      }
+    ]
+  }
+}

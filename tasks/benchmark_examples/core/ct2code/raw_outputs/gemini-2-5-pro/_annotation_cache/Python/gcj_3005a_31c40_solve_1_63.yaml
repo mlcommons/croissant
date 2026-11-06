@@ -1,0 +1,238 @@
+target_var: vcuts 47
+other_vars:
+  - chips 7
+  - chip_rows 8
+  - chip_rows 15
+  - rows_chips 25
+  - hcuts 27
+  - chips_row_cnt 29
+  - chips_row_cnt 31
+  - chips_row_cnt 35
+  - hcuts 36
+early_return: 
+  - 17
+  - 21
+  - 32
+  - 34
+  - 43
+  - 45
+  - 59
+variables:
+  C 2:
+    datadep: Null
+    controldep: Null
+  R 2:
+    datadep: Null
+    controldep: Null
+  H 2:
+    datadep: Null
+    controldep: Null
+  V 2:
+    datadep: Null
+    controldep: Null
+  cakes 3:
+    datadep: Null
+    controldep: Null
+  R 4:
+    reset: False
+    datadep:
+      - R 2
+    controldep:
+      - R 4
+  row 5:
+    datadep: Null
+    controldep:
+      - R 4
+  cakes 6:
+    datadep:
+      - cakes 3
+      - cakes 6
+      - row 5
+    controldep:
+      - R 4
+  chip_cols 9:
+    datadep:
+      - C 2
+    controldep: Null
+  chips_cnt 10:
+    datadep: Null
+    controldep: Null
+  R 11:
+    reset: False
+    datadep:
+      - R 2
+    controldep:
+      - R 11
+  i 11:
+    datadep:
+      - R 2
+    controldep:
+      - R 11
+  j 12:
+    datadep:
+      - C 2
+    controldep:
+      - R 11
+      - C 12
+  C 12:
+    reset: False
+    datadep:
+      - C 2
+    controldep:
+      - R 11
+      - C 12
+  cakes 13:
+    reset: False
+    datadep:
+      - cakes 3
+      - cakes 6
+    controldep:
+      - C 12
+  i 13:
+    reset: False
+    datadep:
+      - i 11
+    controldep:
+      - C 12
+  j 13:
+    reset: False
+    datadep:
+      - j 12
+    controldep:
+      - C 12
+  chips_cnt 14:
+    datadep:
+      - chips_cnt 10
+      - chips_cnt 14
+    controldep:
+      - cakes 13
+      - i 13
+      - j 13
+  chip_cols 16:
+    datadep:
+      - chip_cols 9
+      - chip_cols 16
+      - j 12
+    controldep:
+      - cakes 13
+      - i 13
+      - j 13
+  chips_cnt 17:
+    reset: False
+    datadep:
+      - chips_cnt 10
+      - chips_cnt 14
+    controldep: Null
+  parts 20:
+    datadep:
+      - H 2
+      - V 2
+    controldep:
+      - chips_cnt 17
+  chips_cnt 21:
+    reset: False
+    datadep:
+      - chips_cnt 10
+      - chips_cnt 14
+    controldep:
+      - chips_cnt 17
+  parts 21:
+    reset: False
+    datadep:
+      - parts 20
+    controldep:
+      - chips_cnt 17
+  piece_chip 24:
+    datadep:
+      - chips_cnt 10
+      - chips_cnt 14
+      - parts 20
+    controldep:
+      - chips_cnt 21
+      - parts 21
+  cols_chips 26:
+    datadep:
+      - piece_chip 24
+      - H 2
+    controldep:
+      - chips_cnt 21
+      - parts 21
+  vcuts 28:
+    datadep: Null
+    controldep:
+      - chips_cnt 21
+      - parts 21
+  chips_col_cnt 40:
+    datadep: Null
+    controldep:
+      - chips_cnt 21
+      - parts 21
+  C 41:
+    reset: False
+    datadep:
+      - C 2
+    controldep:
+      - chips_cnt 21
+      - parts 21
+      - C 41
+      - chips_col_cnt 45
+      - cols_chips 45
+  i 41:
+    datadep:
+      - C 2
+    controldep:
+      - chips_cnt 21
+      - parts 21
+      - C 41
+      - chips_col_cnt 45
+      - cols_chips 45
+  chips_col_cnt 42:
+    datadep:
+      - chip_cols 9
+      - chip_cols 16
+      - i 41
+      - chips_col_cnt 40
+      - chips_col_cnt 42
+      - chips_col_cnt 46
+    controldep:
+      - C 41
+  chips_col_cnt 43:
+    reset: False
+    datadep:
+      - chips_col_cnt 42
+    controldep:
+      - C 41
+  cols_chips 43:
+    reset: False
+    datadep:
+      - cols_chips 26
+    controldep:
+      - C 41
+  chips_col_cnt 45:
+    reset: False
+    datadep:
+      - chips_col_cnt 42
+    controldep:
+      - chips_col_cnt 43
+      - cols_chips 43
+  cols_chips 45:
+    reset: False
+    datadep:
+      - cols_chips 26
+    controldep:
+      - chips_col_cnt 43
+      - cols_chips 43
+  chips_col_cnt 46:
+    datadep: Null
+    controldep:
+      - chips_col_cnt 45
+      - cols_chips 45
+  vcuts 47:
+    datadep:
+      - vcuts 28
+      - vcuts 47
+      - i 41
+    controldep:
+      - chips_col_cnt 45
+      - cols_chips 45
+  

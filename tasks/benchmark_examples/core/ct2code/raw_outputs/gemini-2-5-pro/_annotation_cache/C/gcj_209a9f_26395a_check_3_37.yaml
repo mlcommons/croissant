@@ -1,0 +1,181 @@
+target_var: str 32
+other_vars: 
+  - top 25
+variables:
+  S 3:
+    datadep: Null
+    controldep: Null
+  top 6:
+    datadep: Null
+    controldep: Null
+  i 7:
+    datadep:
+      - i 7
+    controldep:
+      - i 7
+      - S 7
+  S 7:
+    reset: False
+    datadep:
+      - S 3
+    controldep:
+      - i 7
+      - S 7
+  S 9:
+    reset: False
+    datadep:
+      - S 3
+    controldep:
+      - i 7
+      - S 7
+  i 9:
+    reset: False
+    datadep:
+      - i 7
+    controldep:
+      - i 7
+      - S 7
+  str 11:
+    datadep:
+      - top 6
+      - top 16
+      - top 21
+    controldep:
+      - S 9
+      - i 9
+  top 12:
+    datadep:
+      - top 6
+      - top 16
+      - top 21
+    controldep:
+      - S 9
+      - i 9
+  str 13:
+    datadep:
+      - top 12
+    controldep:
+      - S 9
+      - i 9
+  top 14:
+    datadep:
+      - top 12
+    controldep:
+      - S 9
+      - i 9
+  str 15:
+    datadep:
+      - top 14
+    controldep:
+      - S 9
+      - i 9
+  top 16:
+    datadep:
+      - top 14
+    controldep:
+      - S 9
+      - i 9
+  str 20:
+    datadep:
+      - top 6
+      - top 16
+      - top 21
+    controldep:
+      - S 9
+      - i 9
+  top 21:
+    datadep:
+      - top 6
+      - top 16
+      - top 21
+    controldep:
+      - S 9
+      - i 9
+  str 24:
+    datadep:
+      - top 6
+      - top 16
+      - top 21
+    controldep: Null
+  i 26:
+    datadep:
+      - i 26
+    controldep:
+      - i 26
+      - str 26
+  str 26:
+    reset: False
+    datadep:
+      - str 11
+      - str 13
+      - str 15
+      - str 20
+      - str 24
+      - str 32
+      - str 34
+    controldep:
+      - i 26
+      - str 26
+  str 28:
+    reset: False
+    datadep:
+      - str 11
+      - str 13
+      - str 15
+      - str 20
+      - str 24
+      - str 32
+      - str 34
+    controldep:
+      - i 26
+      - str 26
+  i 28:
+    reset: False
+    datadep:
+      - i 26
+    controldep:
+      - i 26
+      - str 26
+  j 30:
+    datadep:
+      - j 30
+      - i 26
+    controldep:
+      - str 28
+      - i 28
+      - j 30
+      - str 30
+  str 30:
+    reset: False
+    datadep:
+      - str 11
+      - str 13
+      - str 15
+      - str 20
+      - str 24
+      - str 32
+      - str 34
+    controldep:
+      - str 28
+      - i 28
+      - j 30
+      - str 30
+  str 32:
+    datadep:
+      - str 11
+      - str 13
+      - str 15
+      - str 20
+      - str 24
+      - str 32
+      - str 34
+      - j 30
+    controldep:
+      - j 30
+      - str 30
+  str 34:
+    datadep:
+      - j 30
+    controldep:
+      - str 28
+      - i 28

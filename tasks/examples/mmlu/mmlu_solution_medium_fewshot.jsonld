@@ -1,0 +1,159 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/mmlu_solution_medium_fewshot",
+  "schema:name": "MMLU Solution - Medium Model (Few-shot)",
+  "schema:isBasedOn": { "@id": "http://example.org/mmlu_problem" },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:medium-fewshot-overall-output",
+    "schema:name": "MMLU Medium Few-shot Overall Outputs"
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "http://example.org/mmlu_solution_medium_fewshot#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "temperature",
+        "schema:value": 0.0
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "top-p",
+        "schema:value": 1.0
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "generation_length",
+        "schema:value": 1
+      }
+    ]
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "http://example.org/mmlu_solution_medium_fewshot#implementation",
+    "schema:name": "OpenAI GPT API - Medium"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/mmlu_solution_medium_fewshot#humanities_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/mmlu#humanities_fewshot" },
+      "croissant:execution": { "@id": "http://example.org/mmlu_solution_medium_fewshot#execution" },
+      "croissant:implementation": { "@id": "http://example.org/mmlu_solution_medium_fewshot#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medium-fewshot-humanities-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/mmlu_evaluation_medium_fewshot#humanities",
+        "schema:isBasedOn": { "@id": "http://example.org/mmlu#humanities_fewshot" },
+        "schema:name": "Humanities",
+        "croissant:evaluatedSolution": { "@id": "http://example.org/mmlu_solution_medium_fewshot#humanities_sol" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Accuracy",
+            "croissant:value": "26.1"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/mmlu_solution_medium_fewshot#social_science_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/mmlu#social_sciences_fewshot" },
+      "croissant:execution": { "@id": "http://example.org/mmlu_solution_medium_fewshot#execution" },
+      "croissant:implementation": { "@id": "http://example.org/mmlu_solution_medium_fewshot#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medium-fewshot-social-science-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/mmlu_evaluation_medium_fewshot#social_science",
+        "schema:isBasedOn": { "@id": "http://example.org/mmlu#social_sciences_fewshot" },
+        "schema:name": "Social Science",
+        "croissant:evaluatedSolution": { "@id": "http://example.org/mmlu_solution_medium_fewshot#social_science_sol" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Accuracy",
+            "croissant:value": "21.6"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/mmlu_solution_medium_fewshot#stem_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/mmlu#stem_fewshot" },
+      "croissant:execution": { "@id": "http://example.org/mmlu_solution_medium_fewshot#execution" },
+      "croissant:implementation": { "@id": "http://example.org/mmlu_solution_medium_fewshot#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medium-fewshot-stem-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/mmlu_evaluation_medium_fewshot#stem",
+        "schema:isBasedOn": { "@id": "http://example.org/mmlu#stem_fewshot" },
+        "schema:name": "STEM",
+        "croissant:evaluatedSolution": { "@id": "http://example.org/mmlu_solution_medium_fewshot#stem_sol" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Accuracy",
+            "croissant:value": "25.6"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/mmlu_solution_medium_fewshot#other_sol",
+      "schema:isBasedOn": { "@id": "http://example.org/mmlu#other_fewshot" },
+      "croissant:execution": { "@id": "http://example.org/mmlu_solution_medium_fewshot#execution" },
+      "croissant:implementation": { "@id": "http://example.org/mmlu_solution_medium_fewshot#implementation" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medium-fewshot-other-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/mmlu_evaluation_medium_fewshot#other",
+        "schema:isBasedOn": { "@id": "http://example.org/mmlu#other_fewshot" },
+        "schema:name": "Other",
+        "croissant:evaluatedSolution": { "@id": "http://example.org/mmlu_solution_medium_fewshot#other_sol" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Accuracy",
+            "croissant:value": "25.5"
+          }
+        ]
+      }
+    }
+  ],
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "http://example.org/mmlu_evaluation_medium_fewshot",
+    "schema:name": "MMLU Evaluation - Medium Model (Few-shot)",
+    "schema:isBasedOn": { "@id": "http://example.org/mmlu#overall_fewshot" },
+    "croissant:evaluatedSolution": { "@id": "http://example.org/mmlu_solution_medium_fewshot" },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Accuracy",
+        "croissant:value": "24.9",
+        "schema:description": "Overall Average Accuracy"
+      }
+    ]
+  }
+}

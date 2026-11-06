@@ -1,0 +1,52 @@
+target_var: length 39
+other_vars: 
+  - sb 24
+  - sb 34
+  - sb 38
+early_return:
+  - 29
+  - 31
+  - 35
+variables: 
+  value 28:
+    datadep: Null
+    controldep:
+      - Null 26
+  Null 26:
+    reset: False
+    datadep: Null
+    controldep:
+      - Null 35
+  value 29:
+    reset: False
+    datadep: 
+      - value 28
+    controldep:
+      - Null 26
+  length 39:
+    datadep: 
+      - length 25
+      - length 39
+    controldep:
+      - Null 35
+  length 25:
+    datadep: Null
+    controldep: Null
+  length 31:
+    reset: False
+    datadep: 
+      - length 25
+      - length 39
+    controldep: 
+      - Null 30
+  Null 30:
+    reset: False
+    datadep: Null
+    controldep: 
+      - value 29
+  Null 35:
+    reset: False
+    datadep: Null
+    controldep: 
+      - length 31
+  

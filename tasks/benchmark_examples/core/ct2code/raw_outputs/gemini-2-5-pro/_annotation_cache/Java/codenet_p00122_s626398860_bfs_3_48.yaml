@@ -1,0 +1,316 @@
+target_var: spCnt 42
+other_vars: Null
+early_return: 
+  - 15
+variables:
+  spCnt 42:
+    datadep:
+      - spCnt 4
+      - spCnt 42
+    controldep:
+      - spCnt 15
+      - spx 15
+  spx 3:
+    datadep: Null
+    controldep: Null
+  spy 3:
+    datadep: Null
+    controldep: Null
+  queueX 12:
+    datadep:
+      - sx 3
+      - queueX 10
+    controldep: Null
+  sx 3:
+    datadep: Null
+    controldep: Null
+  spCnt 4:
+    datadep: Null
+    controldep: Null
+  queueX 14:
+    reset: False
+    datadep:
+      - queueX 12
+      - queueX 44
+    controldep:
+      - queueX 14
+      - spCnt 15
+      - spx 15
+  spCnt 15:
+    reset: False
+    datadep:
+      - spCnt 4
+      - spCnt 42
+    controldep:
+      - queueX 14
+  spx 15:
+    reset: False
+    datadep:
+      - spx 3
+    controldep:
+      - queueX 14
+  queueX 28:
+    reset: False
+    datadep:
+      - queueX 12
+      - queueX 44
+      - queueX 29
+    controldep:
+      - spCnt 15
+      - spx 15
+      - queueX 28
+  queueX 29:
+    datadep:
+      - queueX 12
+      - queueX 44
+      - queueX 29
+    controldep:
+      - queueX 28
+  queueY 30:
+    datadep:
+      - queueY 13
+      - queueY 30
+      - queueY 45
+    controldep:
+      - queueX 28
+  queueX 44:
+    datadep:
+      - nx 26
+      - nx 37
+    controldep:
+      - spCnt 15
+      - spx 15
+  nx 26:
+    datadep: Null
+    controldep:
+      - spCnt 15
+      - spx 15
+  ny 27:
+    datadep: Null
+    controldep:
+      - spCnt 15
+      - spx 15
+  dx 5:
+    datadep: Null
+    controldep: Null
+  dy 6:
+    datadep: Null
+    controldep: Null
+  dx 31:
+    reset: False
+    datadep:
+      - dx 5
+    controldep:
+      - queueX 28
+      - dx 31
+      - i 31
+  i 31:
+    datadep:
+      - i 31
+    controldep:
+      - queueX 28
+      - dx 31
+      - i 31
+  nextX 32:
+    datadep:
+      - dx 5
+      - x 29
+      - i 31
+    controldep:
+      - i 31
+      - dx 31
+  nextY 33:
+    datadep:
+      - dy 6
+      - y 30
+      - i 31
+    controldep:
+      - i 31
+      - dx 31
+  x 29:
+    datadep:
+      - queueX 12
+      - queueX 44
+      - queueX 29
+    controldep:
+      - queueX 28
+  y 30:
+    datadep:
+      - queueY 30
+      - queueY 13
+      - queueY 45
+    controldep:
+      - queueX 28
+  nextX 34:
+    reset: False
+    datadep:
+      - nextX 32
+    controldep:
+      - i 31
+      - dx 31
+  nextY 35:
+    reset: False
+    datadep:
+      - nextY 33
+    controldep:
+      - i 31
+      - dx 31
+  park 36:
+    reset: False
+    datadep:
+      - park 9
+      - park 23
+      - park 43
+    controldep:
+      - i 31
+      - dx 31
+  nextX 36:
+    reset: False
+    datadep:
+      - nextX 32
+    controldep:
+      - i 31
+      - dx 31
+  nextY 36:
+    reset: False
+    datadep:
+      - nextY 33
+    controldep:
+      - i 31
+      - dx 31
+  park 43:
+    datadep:
+      - size 4
+    controldep:
+      - spCnt 15
+      - spx 15
+  size 4:
+    datadep: Null
+    controldep: Null
+  nx 37:
+    datadep:
+      - nx 26
+      - nx 37
+      - nextX 32
+    controldep:
+      - nextX 34
+      - nextY 35
+      - park 36
+      - nextX 36
+      - nextY 36
+  ny 38:
+    datadep:
+      - ny 27
+      - ny 38
+      - nextY 33
+    controldep:
+      - nextX 34
+      - nextY 35
+      - park 36
+      - nextX 36
+      - nextY 36
+  queueY 45:
+    datadep:
+      - ny 27
+      - ny 38
+    controldep:
+      - spCnt 15
+      - spx 15
+  queueY 13:
+    datadep:
+      - sy 3
+      - queueY 11
+    controldep: Null
+  sy 3:
+    datadep: Null
+    controldep: Null
+  dx2 7:
+    datadep: Null
+    controldep: Null
+  dy2 8:
+    datadep: Null
+    controldep: Null
+  dx2 18:
+    reset: False
+    datadep:
+      - dx2 7
+    controldep:
+      - spCnt 15
+      - spx 15
+      - dx2 18
+      - i 18
+  i 18:
+    datadep:
+      - i 18
+    controldep:
+      - spCnt 15
+      - spx 15
+      - dx2 18
+      - i 18
+  y 19:
+    datadep:
+      - spCnt 4
+      - spCnt 42
+      - spy 3
+      - dy2 8
+      - i 18
+    controldep:
+      - dx2 18
+      - i 18
+  x 20:
+    datadep:
+      - spCnt 4
+      - spCnt 42
+      - spx 3
+      - dx2 7
+      - i 18
+    controldep:
+      - dx2 18
+      - i 18
+  y 21:
+    reset: False
+    datadep:
+      - y 19
+    controldep:
+      - dx2 18
+      - i 18
+  size 21:
+    reset: False
+    datadep:
+      - size 4
+    controldep:
+      - dx2 18
+      - i 18
+  x 22:
+    reset: False
+    datadep:
+      - x 20
+    controldep:
+      - dx2 18
+      - i 18
+  size 22:
+    reset: False
+    datadep:
+      - size 4
+    controldep:
+      - dx2 18
+      - i 18
+  park 23:
+    datadep:
+      - y 19
+      - x 20
+    controldep:
+      - y 21
+      - size 21
+      - x 22
+      - size 22
+  park 9:
+    datadep:
+      - size 4
+    controldep: Null
+  queueX 10:
+    datadep: Null
+    controldep: Null
+  queueY 11:
+    datadep: Null
+    controldep: Null

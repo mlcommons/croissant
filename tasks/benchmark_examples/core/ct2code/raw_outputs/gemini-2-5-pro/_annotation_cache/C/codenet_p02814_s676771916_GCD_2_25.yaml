@@ -1,0 +1,88 @@
+target_var: divisor 21
+other_vars: Null
+early_return: 
+  - 13
+  - 17
+variables:
+  a 2:
+    datadep: Null
+    controldep: Null
+  b 2:
+    datadep: Null
+    controldep: Null
+  a 4:
+    reset: False
+    datadep:
+      - a 2
+    controldep: Null
+  b 4:
+    reset: False
+    datadep:
+      - b 2
+    controldep: Null
+  dividend 5:
+    datadep:
+      - a 2
+    controldep:
+      - a 4
+      - b 4
+  divisor 6:
+    datadep:
+      - b 2
+    controldep:
+      - a 4
+      - b 4
+  dividend 8:
+    datadep:
+      - b 2
+    controldep:
+      - a 4
+      - b 4
+  divisor 9:
+    datadep:
+      - a 2
+    controldep:
+      - a 4
+      - b 4
+  Null 12:
+    reset: False
+    datadep: Null
+    controldep: 
+      - Null 12
+      - remainder 17
+  divisor 13:
+    reset: False
+    datadep: 
+      - divisor 6
+      - divisor 9
+      - divisor 21
+    controldep:
+      - Null 12
+  remainder 16:
+    datadep:
+      - divisor 6
+      - divisor 9
+      - divisor 21
+      - dividend 5
+      - dividend 8
+      - dividend 20
+    controldep:
+      - divisor 13
+  remainder 17:
+    reset: False
+    datadep:
+      - remainder 16
+    controldep:
+      - divisor 13
+  dividend 20:
+    datadep:
+      - divisor 6
+      - divisor 9
+      - divisor 21
+    controldep:
+      - remainder 17
+  divisor 21:
+    datadep:
+      - remainder 16
+    controldep:
+      - remainder 17

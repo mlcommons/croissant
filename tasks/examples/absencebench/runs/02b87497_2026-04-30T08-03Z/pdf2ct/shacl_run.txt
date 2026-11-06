@@ -1,0 +1,43 @@
+Captured: 2026-04-30T08:07:25Z against tasks/croissant-tasks-shapes.ttl @ 02b87497
+pyshacl: 0.31.0
+
+===== pdf2ct/absencebench_problem.jsonld =====
+    _is_conform, _reports = c.evaluate(executor, target_graph, focus_value_nodes, _e_p_copy)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luis/repos/croissant/.venv-tasks/lib/python3.12/site-packages/pyshacl/constraints/core/shape_based_constraints.py", line 101, in evaluate
+    _nc, _r = self._evaluate_property_shape(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luis/repos/croissant/.venv-tasks/lib/python3.12/site-packages/pyshacl/constraints/core/shape_based_constraints.py", line 123, in _evaluate_property_shape
+    raise ReportableRuntimeError(
+pyshacl.errors.ReportableRuntimeError: 'n66de0d1e734a45b2a6ff943efdbcf09db33' exists but is not a well-formed SHACL PropertyShape. Ensure it has the correct type (sh:PropertyShape) and all required properties.
+
+===== pdf2ct/absencebench_solution_claude-3-7-sonnet.jsonld =====
+    raise e
+  File "/home/luis/repos/croissant/.venv-tasks/lib/python3.12/site-packages/pyshacl/shape.py", line 758, in validate
+    c = constraint_component(self)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luis/repos/croissant/.venv-tasks/lib/python3.12/site-packages/pyshacl/constraints/core/shape_based_constraints.py", line 273, in __init__
+    raise ConstraintLoadError(
+pyshacl.errors.ConstraintLoadError: QualifiedValueShapeConstraintComponent must have at least one sh:qualifiedValueShape predicate.
+For reference, see https://www.w3.org/TR/shacl/#QualifiedValueShapeConstraintComponent
+
+===== pdf2ct/absencebench_solution_claude-3-7-sonnet-thinking.jsonld =====
+    raise e
+  File "/home/luis/repos/croissant/.venv-tasks/lib/python3.12/site-packages/pyshacl/shape.py", line 758, in validate
+    c = constraint_component(self)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luis/repos/croissant/.venv-tasks/lib/python3.12/site-packages/pyshacl/constraints/core/shape_based_constraints.py", line 273, in __init__
+    raise ConstraintLoadError(
+pyshacl.errors.ConstraintLoadError: QualifiedValueShapeConstraintComponent must have at least one sh:qualifiedValueShape predicate.
+For reference, see https://www.w3.org/TR/shacl/#QualifiedValueShapeConstraintComponent
+
+===== ct2code/absencebench_claude-4-sonnet_solution.jsonld =====
+    raise e
+  File "/home/luis/repos/croissant/.venv-tasks/lib/python3.12/site-packages/pyshacl/shape.py", line 758, in validate
+    c = constraint_component(self)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/luis/repos/croissant/.venv-tasks/lib/python3.12/site-packages/pyshacl/constraints/core/shape_based_constraints.py", line 273, in __init__
+    raise ConstraintLoadError(
+pyshacl.errors.ConstraintLoadError: QualifiedValueShapeConstraintComponent must have at least one sh:qualifiedValueShape predicate.
+For reference, see https://www.w3.org/TR/shacl/#QualifiedValueShapeConstraintComponent
+

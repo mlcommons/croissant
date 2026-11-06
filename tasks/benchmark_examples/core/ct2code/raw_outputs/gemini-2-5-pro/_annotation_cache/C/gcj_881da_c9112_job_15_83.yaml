@@ -1,0 +1,189 @@
+target_var: s2 65
+other_vars: 
+  - En 40
+  - En 42
+  - s1 57
+  - e1 57
+  - e2 57
+  - e1 59
+  - s1 61
+  - e2 63
+variables:
+  ggg 16:
+    datadep: Null
+    controldep: Null
+  goodp 18:
+    datadep: Null
+    controldep: Null
+  movesp 19:
+    datadep: Null
+    controldep: Null
+  cur 20:
+    datadep: Null
+    controldep: Null
+  n 21:
+    datadep: Null
+    controldep: Null
+  in_str 21:
+    datadep: Null
+    controldep: Null
+  n 22:
+    datadep:
+      - n 21
+    controldep: Null
+  moves 23:
+    datadep: Null
+    controldep: Null
+  i 24:
+    datadep:
+      - i 24
+    controldep:
+      - i 24
+      - n 24
+  n 24:
+    reset: False
+    datadep:
+      - n 22
+    controldep:
+      - i 24
+      - n 24
+  in_str 25:
+    reset: False
+    datadep:
+      - in_str 21
+    controldep:
+      - i 24
+      - n 24
+  i 25:
+    reset: False
+    datadep:
+      - i 24
+    controldep:
+      - i 24
+      - n 24
+  cur 25:
+    reset: False
+    datadep:
+      - cur 20
+      - cur 26
+    controldep:
+      - i 24
+      - n 24
+  cur 26:
+    datadep:
+      - cur 20
+      - cur 26
+      - ggg 16
+    controldep:
+      - in_str 25
+      - i 25
+      - cur 25
+  moves 27:
+    datadep:
+      - movesp 19
+      - movesp 28
+    controldep:
+      - in_str 25
+      - i 25
+      - cur 25
+  movesp 28:
+    datadep:
+      - movesp 19
+      - movesp 28
+    controldep:
+      - in_str 25
+      - i 25
+      - cur 25
+  moves 31:
+    datadep:
+      - movesp 19
+      - movesp 28
+      - moves 23
+      - moves 27
+      - moves 31
+    controldep:
+      - in_str 25
+      - i 25
+      - cur 25
+  moves 32:
+    reset: False
+    datadep:
+      - moves 23
+      - moves 27
+      - moves 31
+    controldep:
+      - in_str 25
+      - i 25
+      - cur 25
+  i 32:
+    reset: False
+    datadep:
+      - i 24
+    controldep:
+      - in_str 25
+      - i 25
+      - cur 25
+  goodp 33:
+    datadep:
+      - movesp 19
+      - movesp 28
+    controldep:
+      - moves 32
+      - i 32
+  parity 36:
+    datadep:
+      - movesp 19
+      - movesp 28
+    controldep: Null
+  moves 37:
+    reset: False
+    datadep:
+      - moves 23
+      - moves 27
+      - moves 31
+    controldep: Null
+  parity 38:
+    datadep:
+      - parity 36
+      - parity 38
+    controldep:
+      - moves 37
+  parity 39:
+    reset: False
+    datadep:
+      - parity 36
+      - parity 38
+    controldep: Null
+  s2 57:
+    datadep: Null
+    controldep:
+      - parity 39
+  i 64:
+    datadep:
+      - goodp 33
+      - goodp 18
+      - i 64
+    controldep:
+      - parity 39
+      - i 64
+      - movesp 64
+  movesp 64:
+    reset: False
+    datadep:
+      - movesp 19
+      - movesp 28
+    controldep:
+      - parity 39
+      - i 64
+      - movesp 64
+  s2 65:
+    datadep:
+      - moves 23
+      - moves 27
+      - moves 31
+      - s2 57
+      - s2 65
+      - i 64
+    controldep:
+      - i 64
+      - movesp 64

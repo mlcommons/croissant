@@ -1,8 +1,8 @@
 """Simple Croissant Tasks validator."""
 
 import sys
-from pyshacl import validate
-from rdflib import Graph
+import pyshacl
+import rdflib
 
 
 def validate_data(
@@ -10,22 +10,23 @@ def validate_data(
     shapes_path="croissant-tasks-shapes.ttl",
     ont_path="croissant-tasks.ttl",
 ):
-  data_graph = Graph()
+  data_graph = rdflib.Graph()
   data_graph.parse(data_path, format="json-ld")
 
-  shapes_graph = Graph()
+  shapes_graph = rdflib.Graph()
   shapes_graph.parse(shapes_path, format="turtle")
 
-  ont_graph = Graph()
+  ont_graph = rdflib.Graph()
   ont_graph.parse(ont_path, format="turtle")
 
-  conforms, results_graph, results_text = validate(
+  conforms, results_graph, results_text = pyshacl.validate(
       data_graph,
       shacl_graph=shapes_graph,
       ont_graph=ont_graph,
       inference="rdfs",
       serialize_report_graph=True,
   )
+  print(results_text)
   return conforms, results_text
 
 

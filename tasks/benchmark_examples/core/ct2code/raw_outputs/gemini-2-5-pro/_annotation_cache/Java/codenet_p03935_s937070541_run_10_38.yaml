@@ -1,0 +1,156 @@
+target_var: sum 35
+other_vars:
+  - last 28
+  - last 34
+early_return: 
+  - 15
+variables:
+  sum 35:
+    datadep:
+      - next 31
+      - next 33
+      - next 30
+    controldep:
+      - i 29
+      - n 29
+  sum 26:
+    datadep:
+      - sum 26
+      - sum 23
+      - sum 22
+      - sum 19
+      - dp 25
+      - M 14
+      - i 24
+    controldep:
+      - i 24
+      - m 24
+  sum 23:
+    datadep: Null
+    controldep:
+      - m 15
+  sum 22:
+    datadep: Null
+    controldep:
+      - m 15
+  sum 19:
+    datadep: 
+      - m 13
+    controldep:
+      - m 15
+  i 29:
+    datadep:
+      - i 29
+    controldep:
+      - i 29
+      - n 29
+      - m 15
+  i 24:
+    datadep:
+      - i 24
+    controldep:
+      - i 24
+      - m 24
+      - m 15
+  j 32:
+    datadep:
+      - j 32
+    controldep:
+      - j 32
+      - m 32
+      - i 29
+      - n 29
+  m 32:
+    reset: False
+    datadep:
+      - m 13
+    controldep:
+      - j 32
+      - m 32
+      - i 29
+      - n 29
+  m 24:
+    reset: False
+    datadep:
+      - m 13
+    controldep:
+      - m 15
+      - i 24
+      - m 24
+  m 15:
+    reset: False
+    datadep:  
+      - m 13
+    controldep: Null
+  m 13:
+    datadep: Null
+    controldep: Null
+  n 29:
+    reset: False
+    datadep:  
+      - n 12
+    controldep:
+      - m 15
+      - i 29
+      - n 29
+  n 12:
+    datadep:  Null
+    controldep: Null
+  next 31:
+    datadep:
+      - sum 35
+      - sum 26
+      - sum 22
+    controldep:
+      - i 29
+      - n 29
+  next 30:
+    datadep: 
+      - m 13
+    controldep: 
+      - i 29
+      - n 29
+  next 33:
+    datadep:
+      - next 33
+      - next 31
+      - next 30
+      - sum 35
+      - sum 26
+      - sum 23
+      - sum 22
+      - sum 19
+      - M 14
+      - j 32
+    controldep:
+      - j 32
+      - m 32
+  M 14:
+    datadep: Null
+    controldep: Null
+  dp 25: 
+    datadep:
+      - dp 25
+      - dp 21
+      - dp 20
+      - dp 18
+      - M 14
+      - i 24
+    controldep:
+      - i 24
+      - m 24
+  dp 21:
+    datadep: Null
+    controldep:
+      - m 15
+  dp 20:
+    datadep: Null
+    controldep:
+      - m 15
+  dp 18:
+    datadep: 
+      - m 13
+    controldep:
+      - m 15
+
+  

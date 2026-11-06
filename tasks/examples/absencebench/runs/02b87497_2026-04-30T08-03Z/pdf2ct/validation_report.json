@@ -1,0 +1,118 @@
+{
+  "version": "1.0.0",
+  "run_date": "2026-04-30",
+  "skill": "pdf2ct",
+  "run_id": "02b87497_2026-04-30T08-03Z",
+  "previous_run_id": "02b87497_2026-04-29T14-58Z",
+  "parameters": {
+    "pdf_location": "https://openreview.net/pdf?id=pmLMrqhIpb",
+    "paper_url": "https://arxiv.org/abs/2506.11440",
+    "dataset_url": "https://huggingface.co/datasets/harveyfin/AbsenceBench"
+  },
+  "stages": [
+    {
+      "name": "setup",
+      "passed": true,
+      "message": "pyshacl 0.31.0, rdflib, datasets, anthropic installed in tasks/.venv-tasks (Python 3.12). Local copies of croissant-tasks-shapes.ttl and croissant-tasks.ttl used for validation."
+    },
+    {
+      "name": "paper_analysis",
+      "passed": true,
+      "message": "Paper read in full. Task definition, three domains (poetry, numerical, github_prs), micro-F1 + element-level exact match metric, and Table 3 baselines extracted. Two of 16 reported baselines materialized as TaskSolutions (claude-3-7-sonnet ±thinking)."
+    },
+    {
+      "name": "problem_generated",
+      "passed": true,
+      "message": "absencebench_problem.jsonld written with three subTasks, shared OutputSpec referencing a RecordSet with a single repeated string Field, and EvaluationSpec declaring F1-Score and Exact Match."
+    },
+    {
+      "name": "solutions_generated",
+      "passed": true,
+      "message": "Two paper-reported TaskSolution files written (claude-3-7-sonnet, claude-3-7-sonnet-thinking). One ct2code-produced TaskSolution also lives in this directory (absencebench_claude-4-sonnet_solution.jsonld) - that one is documented in raw_outputs/<model>/manifest_*.json and is not part of this pdf2ct validation report."
+    },
+    {
+      "name": "json_validity",
+      "passed": true,
+      "message": "All four JSON-LD files parse as JSON and as RDF graphs (rdflib json-ld parser)."
+    },
+    {
+      "name": "shacl_conformance",
+      "passed": false,
+      "skipped": false,
+      "message": "SHACL validator was actually run end-to-end this time (see shacl_run.txt for the captured pyshacl output). All four of our JSON-LDs FAIL with one of two known shape bugs in tasks/croissant-tasks-shapes.ttl. Bug A (TaskProblemShape spec constraint): outer sh:property whose body is sh:or of alternatives has no sh:path; pyshacl rejects with 'exists but is not a well-formed SHACL PropertyShape'. Hits absencebench_problem.jsonld + Leo's own tasks/testdata/valid_problem.jsonld. Bug B (EvaluationTaskShape evaluatedSolution cardinality): croissant:evaluatedSolution uses sh:qualifiedMinCount 1 with no corresponding sh:qualifiedValueShape; pyshacl rejects with 'QualifiedValueShapeConstraintComponent must have at least one sh:qualifiedValueShape predicate'. Hits all three of our TaskSolution files + Leo's own tasks/testdata/valid_evaluation_task.jsonld. Both bugs match items on the team's known-issue list (RISEBench agent analysis, Slack 2026-04-29: Changes 2 and 4). Leo's testdata/{valid_solution.jsonld,direct_task.jsonld,valid_solution_subtasks_all_concrete.jsonld} all PASS, so the bugs are scoped to the shapes our files happen to exercise rather than universal. Per team guidance we deliberately did NOT modify the spec files (.ttl); we use _structural_check.py (rdflib-only) for our checks. See shacl_run.txt for verbatim pyshacl output, and upstream_issues for suggested fixes."
+    },
+    {
+      "name": "report_generation",
+      "passed": true,
+      "message": "summary.md and validation_report.json written."
+    }
+  ],
+  "per_file": [
+    {
+      "file": "absencebench_problem.jsonld",
+      "json_valid": true,
+      "rdf_parsable": true,
+      "shacl_conforms": false,
+      "shacl_status": "FAIL (Bug A: TaskProblemShape PropertyShape malformed)",
+      "shacl_run_log_section": "shacl_run.txt :: ===== pdf2ct/absencebench_problem.jsonld =====",
+      "structural_check": "PASS",
+      "iterations": 1
+    },
+    {
+      "file": "absencebench_solution_claude-3-7-sonnet.jsonld",
+      "json_valid": true,
+      "rdf_parsable": true,
+      "shacl_conforms": false,
+      "shacl_status": "FAIL (Bug B: EvaluationTaskShape qualifiedValueShape missing)",
+      "shacl_run_log_section": "shacl_run.txt :: ===== pdf2ct/absencebench_solution_claude-3-7-sonnet.jsonld =====",
+      "structural_check": "PASS",
+      "iterations": 1
+    },
+    {
+      "file": "absencebench_solution_claude-3-7-sonnet-thinking.jsonld",
+      "json_valid": true,
+      "rdf_parsable": true,
+      "shacl_conforms": false,
+      "shacl_status": "FAIL (Bug B: EvaluationTaskShape qualifiedValueShape missing)",
+      "shacl_run_log_section": "shacl_run.txt :: ===== pdf2ct/absencebench_solution_claude-3-7-sonnet-thinking.jsonld =====",
+      "structural_check": "PASS",
+      "iterations": 1
+    }
+  ],
+  "results": {"pass": 0, "fail": 3, "skipped_shacl": 0, "structural_pass": 3},
+  "overall_passed": true,
+  "iterations": 1,
+  "output_files": [
+    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-30T08-03Z/pdf2ct/absencebench_problem.jsonld",
+    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-30T08-03Z/pdf2ct/absencebench_solution_claude-3-7-sonnet.jsonld",
+    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-30T08-03Z/pdf2ct/absencebench_solution_claude-3-7-sonnet-thinking.jsonld",
+    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-30T08-03Z/pdf2ct/summary.md",
+    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-30T08-03Z/pdf2ct/validation_report.json",
+    "tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-30T08-03Z/pdf2ct/shacl_run.txt"
+  ],
+  "upstream_issues": [
+    {
+      "id": "shacl-bug-A-taskproblemshape-malformed-property",
+      "where": "tasks/croissant-tasks-shapes.ttl :: TaskProblemShape (the 'must have at least one Spec' constraint)",
+      "summary": "Outer sh:property whose body is sh:or of alternative {sh:path + sh:class} pairs has no sh:path on the outer property shape; pyshacl 0.22-0.31 rejects with 'exists but is not a well-formed SHACL PropertyShape'.",
+      "matches_known_issue": "RISEBench agent analysis Change 2 ('Fix TaskProblemShape spec constraint') from Slack thread on 2026-04-29.",
+      "suggested_fix": "Lift sh:or out of the inner sh:property to NodeShape level, with each alternative being a full sh:property (own sh:path, own sh:class, own sh:minCount 1).",
+      "affects_files_in_this_run": ["pdf2ct/absencebench_problem.jsonld"],
+      "workaround": "_structural_check.py at runs/<run_id>/infra/ - rdflib-only checks of expected types, refs, and spec-leak rules. Drop when shapes file is fixed."
+    },
+    {
+      "id": "shacl-bug-B-evaluatedsolution-qualified-cardinality",
+      "where": "tasks/croissant-tasks-shapes.ttl :: EvaluationTaskShape (the croissant:evaluatedSolution constraint)",
+      "summary": "Property shape uses sh:qualifiedMinCount 1 with no corresponding sh:qualifiedValueShape; pyshacl 0.22-0.31 rejects with 'QualifiedValueShapeConstraintComponent must have at least one sh:qualifiedValueShape predicate'.",
+      "matches_known_issue": "RISEBench agent analysis Change 4 ('Fix evaluatedSolution cardinality').",
+      "suggested_fix": "Replace sh:qualifiedMinCount 1 with sh:minCount 1 + sh:maxCount 1 (the cardinality the constraint actually wants is 'exactly 1').",
+      "affects_files_in_this_run": [
+        "pdf2ct/absencebench_solution_claude-3-7-sonnet.jsonld",
+        "pdf2ct/absencebench_solution_claude-3-7-sonnet-thinking.jsonld",
+        "ct2code/absencebench_claude-4-sonnet_solution.jsonld"
+      ],
+      "workaround": "Same as above (_structural_check.py)."
+    }
+  ],
+  "spec_modifications_made_in_this_run": "NONE. Per team guidance in the 2026-04-29 Slack thread (Omar: 'we should not allow them to do that'; Leo: 'ignore the croissant-tasks-shapes.ttl. The shapes are only important for the validator.'), this run deliberately does NOT modify tasks/croissant-tasks.ttl or tasks/croissant-tasks-shapes.ttl. The two SHACL bugs above are documented and worked around, not patched."
+}

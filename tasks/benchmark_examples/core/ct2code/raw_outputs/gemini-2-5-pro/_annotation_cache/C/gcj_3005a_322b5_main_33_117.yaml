@@ -1,0 +1,477 @@
+target_var: bottomrightCount 102
+other_vars: 
+  - u_w 42
+  - u_w 115
+  - H 52
+  - V 52
+early_return: 
+  - 77
+  - 105
+variables: 
+  str 39:
+    datadep: Null
+    controldep: Null
+  T 40:
+    datadep:
+      - str 39
+    controldep: Null
+  T 43:
+    datadep:
+      - T 40
+      - T 43
+    controldep:
+      - T 43
+  i 49:
+    datadep:
+      - i 49
+    controldep:
+      - T 43
+      - i 49
+  ChocChipCount 50:
+    datadep:
+      - i 49
+    controldep:
+      - i 49
+  str 51:
+    datadep: Null
+    controldep:
+      - T 43
+  R 52:
+    datadep:
+      - str 51
+    controldep:
+      - T 43
+  C 52:
+    datadep:
+      - str 51
+    controldep:
+      - T 43
+  i 54:
+    datadep:
+      - i 54
+    controldep:
+      - T 43
+      - i 54
+      - R 54
+  R 54:
+    reset: False
+    datadep:
+      - R 52
+    controldep:
+      - T 43
+      - i 54
+      - R 54
+  Waffle 56:
+    datadep:
+      - i 54
+    controldep:
+      - i 54
+      - R 54
+  j 57:
+    datadep:
+      - j 57
+    controldep:
+      - i 54
+      - R 54
+      - j 57
+      - C 57
+  C 57:
+    reset: False
+    datadep:
+      - C 52
+    controldep:
+      - i 54
+      - R 54
+      - j 57
+      - C 57
+  Waffle 59:
+    reset: False
+    datadep:
+      - Waffle 56
+    controldep:
+      - j 57
+      - C 57
+  i 59:
+    reset: False
+    datadep:
+      - i 54
+    controldep:
+      - j 57
+      - C 57
+  j 59:
+    reset: False
+    datadep:
+      - j 57
+    controldep:
+      - j 57
+      - C 57
+  ChocChipCount 61:
+    datadep:
+      - i 54
+      - ChocChipCount 50
+      - ChocChipCount 61
+    controldep:
+      - Waffle 59
+      - i 59
+      - j 59
+  retStr 65:
+    datadep: Null
+    controldep:
+      - T 43
+  retStr 66:
+    reset: False
+    datadep:
+      - retStr 65
+      - retStr 107
+    controldep:
+      - T 43
+      - i 66
+      - R 66
+      - retStr 66
+  i 66:
+    datadep:
+      - i 66
+    controldep:
+      - T 43
+      - i 66
+      - R 66
+      - retStr 66
+  R 66:
+    reset: False
+    datadep:
+      - R 52
+    controldep:
+      - T 43
+      - i 66
+      - R 66
+      - retStr 66
+  topCount 71:
+    datadep: Null
+    controldep:
+      - i 66
+      - R 66
+      - retStr 66
+  bottomCount 72:
+    datadep: Null
+    controldep:
+      - i 66
+      - R 66
+      - retStr 66
+  j 73:
+    datadep:
+      - j 73
+    controldep:
+      - i 66
+      - R 66
+      - retStr 66
+      - j 73
+      - i 73
+  i 73:
+    reset: False
+    datadep:
+      - i 66
+    controldep:
+      - i 66
+      - R 66
+      - retStr 66
+      - j 73
+      - i 73
+  topCount 74:
+    datadep:
+      - ChocChipCount 50
+      - ChocChipCount 61
+      - j 73
+      - topCount 71
+      - topCount 74
+    controldep:
+      - j 73
+      - i 73
+  j 75:
+    datadep:
+      - j 75
+      - i 66
+    controldep:
+      - i 66
+      - R 66
+      - retStr 66
+      - j 75
+      - R 75
+  R 75:
+    reset: False
+    datadep:
+      - R 52
+    controldep:
+      - i 66
+      - R 66
+      - retStr 66
+      - j 75
+      - R 75
+  bottomCount 76:
+    datadep:
+      - ChocChipCount 50
+      - ChocChipCount 61
+      - bottomCount 76
+      - bottomCount 72
+      - j 75
+    controldep:
+      - j 75
+      - R 75
+  bottomCount 77:
+    reset: False
+    datadep:
+      - bottomCount 76
+      - bottomCount 72
+    controldep:
+      - i 66
+      - R 66
+      - retStr 66
+  topCount 77:
+    reset: False
+    datadep:
+      - topCount 71
+      - topCount 74
+    controldep:
+      - i 66
+      - R 66
+      - retStr 66
+  k 81:
+    datadep:
+      - k 81
+    controldep:
+      - topCount 77
+      - bottomCount 77
+      - k 81
+      - C 81
+      - bottomleftCount 105
+      - bottomrightCount 105
+  C 81:
+    reset: False
+    datadep:
+      - C 52
+    controldep:
+      - topCount 77
+      - bottomCount 77
+      - k 81
+      - C 81
+      - bottomleftCount 105
+      - bottomrightCount 105
+  topleftCount 83:
+    datadep: Null
+    controldep:
+      - k 81
+      - C 81
+  toprightCount 84:
+    datadep: Null
+    controldep:
+      - k 81
+      - C 81
+  l 85:
+    datadep:
+      - l 85
+    controldep:
+      - k 81
+      - C 81
+      - l 85
+      - i 85
+  i 85:
+    reset: False
+    datadep:
+      - i 66
+    controldep:
+      - k 81
+      - C 81
+      - l 85
+      - i 85
+  m 87:
+    datadep:
+      - m 87
+    controldep:
+      - l 85
+      - i 85
+      - m 87
+      - k 87
+  k 87:
+    reset: False
+    datadep:
+      - k 81
+    controldep:
+      - l 85
+      - i 85
+      - m 87
+      - k 87
+  Waffle 88:
+    reset: False
+    datadep:
+      - Waffle 56
+    controldep:
+      - m 87
+      - k 87
+  l 88:
+    reset: False
+    datadep:
+      - l 85
+    controldep:
+      - m 87
+      - k 87
+  m 88:
+    reset: False
+    datadep:
+      - m 87
+    controldep:
+      - m 87
+      - k 87
+  topleftCount 89:
+    datadep:
+      - topleftCount 83
+      - topleftCount 89
+    controldep:
+      - Waffle 88
+      - l 88
+      - m 88
+  toprightCount 90:
+    datadep:
+      - ChocChipCount 50
+      - ChocChipCount 61
+      - toprightCount 84
+      - toprightCount 90
+      - l 85
+    controldep:
+      - l 85
+      - i 85
+  toprightCount 92:
+    datadep:
+      - topleftCount 83
+      - topleftCount 89
+      - toprightCount 84
+      - toprightCount 90
+    controldep:
+      - k 81
+      - C 81
+  toprightCount 93:
+    reset: False
+    datadep:
+      - toprightCount 92
+    controldep:
+      - k 81
+      - C 81
+  topleftCount 93:
+    reset: False
+    datadep:
+      - topleftCount 83
+      - topleftCount 89
+    controldep:
+      - k 81
+      - C 81
+  bottomleftCount 95:
+    datadep: Null
+    controldep:
+      - topleftCount 93
+      - toprightCount 93
+  bottomrightCount 96:
+    datadep: Null
+    controldep:
+      - topleftCount 93
+      - toprightCount 93
+  l 97:
+    datadep:
+      - l 97
+      - i 66
+    controldep:
+      - topleftCount 93
+      - toprightCount 93
+      - l 97
+      - R 97
+  R 97:
+    reset: False
+    datadep:
+     - R 52
+    controldep:
+      - topleftCount 93
+      - toprightCount 93
+      - l 97
+      - R 97
+  m 99:
+    datadep:
+      - m 99
+    controldep:
+      - l 97
+      - R 97
+      - m 99
+      - k 99
+  k 99:
+    reset: False
+    datadep:
+      - k 81
+    controldep:
+      - l 97
+      - R 97
+      - m 99
+      - k 99
+  Waffle 100:
+    reset: False
+    datadep:
+      - Waffle 56
+    controldep:
+      - m 99
+      - k 99
+  l 100:
+    reset: False
+    datadep:
+      - l 97
+    controldep:
+      - m 99
+      - k 99
+  m 100:
+    reset: False
+    datadep:
+      - m 99
+    controldep:
+      - m 99
+      - k 99
+  bottomleftCount 101:
+    datadep:
+      - bottomleftCount 95
+      - bottomleftCount 101
+    controldep:
+      - Waffle 100
+      - l 100
+      - m 100
+  bottomrightCount 102:
+    datadep:
+      - ChocChipCount 50
+      - ChocChipCount 61
+      - l 97
+      - bottomrightCount 96
+      - bottomrightCount 102
+    controldep:
+      - l 97
+      - R 97
+  bottomrightCount 104:
+    datadep:
+      - bottomleftCount 95
+      - bottomleftCount 101
+      - bottomrightCount 96
+      - bottomrightCount 102
+    controldep:
+      - topleftCount 93
+      - toprightCount 93
+  bottomrightCount 105:
+    reset: False
+    datadep:
+      - bottomrightCount 104
+    controldep:
+      - topleftCount 93
+      - toprightCount 93
+  bottomleftCount 105:
+    reset: False
+    datadep:
+      - bottomleftCount 95
+      - bottomleftCount 101
+    controldep:
+      - topleftCount 93
+      - toprightCount 93
+  retStr 107:
+    datadep: Null
+    controldep:
+      - bottomleftCount 105
+      - bottomrightCount 105

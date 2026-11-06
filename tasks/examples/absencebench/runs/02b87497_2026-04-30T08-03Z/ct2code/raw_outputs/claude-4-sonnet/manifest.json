@@ -1,0 +1,111 @@
+{
+  "version": "1.0.0",
+  "skill": "ct2code",
+  "run_id": "02b87497_2026-04-30T08-03Z",
+  "run_id_breakdown": {
+    "parent_commit": "02b87497 (Leo: 'add - ct2code skill + updated pdf2ct skill')",
+    "started_utc": "2026-04-30T08:03Z"
+  },
+  "run_kind": "dryrun",
+  "run_kind_note": "First 5 instances of the validation split per subtask (15 LLM calls total). Pipeline reproducibility check, mirror-scope of the 02b87497_2026-04-29T14-58Z run.",
+  "purpose": "Reproducibility / cross-run comparison against the 2026-04-29T14-58Z snapshot, executed against the same upstream commit (02b87497) with the latest `tasks/validator.py` actually run end-to-end on each artifact (rather than skipped).",
+  "compares_to": "../../../02b87497_2026-04-29T14-58Z/ct2code/raw_outputs/claude-4-sonnet/manifest.json",
+  "paths_relative_to_this_file": {
+    "task_problem": "../../../pdf2ct/absencebench_problem.jsonld",
+    "task_solution": "../../absencebench_claude-4-sonnet_solution.jsonld",
+    "implementation": "../../absencebench_implementation.py",
+    "prompts_dir": "../../prompts/",
+    "structural_check_tool": "../../../infra/_structural_check.py",
+    "validation_report": "../../../pdf2ct/validation_report.json",
+    "shacl_run_log": "../../../pdf2ct/shacl_run.txt"
+  },
+  "model": "claude-4-sonnet",
+  "model_note": "Cursor-subagent invocation; model slug is the one accepted by the Task tool. Closest direct mapping is Anthropic claude-sonnet-4 (i.e., the Sonnet 4 family).",
+  "runner_type": "cursor-subagent",
+  "runner_note": "15 fresh Cursor subagents (subagent_type=generalPurpose, model=claude-4-sonnet, one per instance) launched in a single parallel batch. Same 15 prompt files as the 2026-04-29T14-58Z run (byte-identical, copied across), responses captured fresh.",
+  "hyperparameters": {
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "instances_per_subset": 5
+  },
+  "dataset": {
+    "huggingface_id": "harveyfin/AbsenceBench",
+    "split": "validation",
+    "configs": ["poetry", "numerical", "github_prs"],
+    "instances_used": {
+      "poetry": [0, 1, 2, 3, 4],
+      "numerical": [0, 1, 2, 3, 4],
+      "github_prs": [0, 1, 2, 3, 4]
+    }
+  },
+  "paper": {
+    "title": "AbsenceBench: Language Models Can't Tell What's Missing",
+    "arxiv": "https://arxiv.org/abs/2506.11440",
+    "openreview": "https://openreview.net/pdf?id=pmLMrqhIpb"
+  },
+  "validation": {
+    "shacl_validator": "RAN",
+    "shacl_validator_outcome": "FAIL on all 4 of our JSON-LDs against the current upstream shapes file. Failures are due to two known shape bugs (Bug A: TaskProblemShape PropertyShape malformed; Bug B: EvaluationTaskShape qualifiedValueShape missing). See ../../../pdf2ct/shacl_run.txt for the captured pyshacl output and ../../../pdf2ct/validation_report.json for structured per-bug attribution. Both bugs match items on the team's known-issue list (RISEBench agent analysis, Slack 2026-04-29: Changes 2 and 4).",
+    "shacl_validator_testdata_state": "Leo's testdata is partially passing on 02b87497: valid_solution.jsonld + direct_task.jsonld + valid_solution_subtasks_all_concrete.jsonld PASS; valid_problem.jsonld + valid_evaluation_task.jsonld FAIL (same Bugs A and B respectively). So the bugs are general, not specific to our files.",
+    "structural_check": "PASS",
+    "structural_check_tool": "../../../infra/_structural_check.py"
+  },
+  "metrics_summary": {
+    "poetry":     {"f1": 75.92, "precision": 70.28, "recall": 82.54, "exact_match_rate": 20.00, "n": 5},
+    "numerical":  {"f1": 100.00, "precision": 100.00, "recall": 100.00, "exact_match_rate": 100.00, "n": 5},
+    "github_prs": {"f1": 10.61, "precision": 5.60, "recall": 100.00, "exact_match_rate": 0.00, "n": 5},
+    "overall":    {"f1": 61.79, "precision": 48.55, "recall": 84.99, "exact_match_rate": 40.00, "n": 15}
+  },
+  "comparison_to_previous_run": {
+    "previous_run_id": "02b87497_2026-04-29T14-58Z",
+    "scope_match": "Identical scope: same parent commit (02b87497), same prompts (byte-identical), same model (claude-4-sonnet via Cursor subagent), same hyperparameters (T=0, max_tokens=4096), same n=5/subset.",
+    "aggregate_metric_deltas": {
+      "note": "Δ = new − old. Recall went up across the board, precision dropped slightly (model was chattier this run on poetry). Numerical fully deterministic.",
+      "poetry":     {"f1": -9.43, "precision": -22.13, "recall":  3.25, "exact_match_rate": 0.00},
+      "numerical":  {"f1":  0.00, "precision":   0.00, "recall":  0.00, "exact_match_rate": 0.00},
+      "github_prs": {"f1":  0.84, "precision":   0.44, "recall":  7.14, "exact_match_rate": 0.00},
+      "overall":    {"f1": -4.19, "precision":  -6.68, "recall":  3.06, "exact_match_rate": 0.00}
+    },
+    "per_instance_response_identity": {
+      "note": "Whether the LLM's literal raw_response is byte-identical between the two runs. Cursor subagents at 'T=0' are NOT strictly deterministic for non-trivial outputs.",
+      "deterministic_instances": 7,
+      "non_deterministic_instances": 8,
+      "per_domain_identical": {"poetry": "1/5", "numerical": "5/5", "github_prs": "1/5"},
+      "per_instance": [
+        {"domain": "poetry",     "id": 0, "raw_response_identical": false, "old_pred_n": 55,  "new_pred_n": 101, "old_f1": 70.9, "new_f1": 62.4},
+        {"domain": "poetry",     "id": 1, "raw_response_identical": true,  "old_pred_n": 18,  "new_pred_n": 18,  "old_f1": 100.0, "new_f1": 100.0},
+        {"domain": "poetry",     "id": 2, "raw_response_identical": false, "old_pred_n": 82,  "new_pred_n": 132, "old_f1": 88.2, "new_f1": 66.4},
+        {"domain": "poetry",     "id": 3, "raw_response_identical": false, "old_pred_n": 60,  "new_pred_n": 63,  "old_f1": 87.9, "new_f1": 90.4},
+        {"domain": "poetry",     "id": 4, "raw_response_identical": false, "old_pred_n": 75,  "new_pred_n": 83,  "old_f1": 88.3, "new_f1": 85.4},
+        {"domain": "numerical",  "id": 0, "raw_response_identical": true,  "old_pred_n": 5,   "new_pred_n": 5,   "old_f1": 100.0, "new_f1": 100.0},
+        {"domain": "numerical",  "id": 1, "raw_response_identical": true,  "old_pred_n": 10,  "new_pred_n": 10,  "old_f1": 100.0, "new_f1": 100.0},
+        {"domain": "numerical",  "id": 2, "raw_response_identical": true,  "old_pred_n": 11,  "new_pred_n": 11,  "old_f1": 100.0, "new_f1": 100.0},
+        {"domain": "numerical",  "id": 3, "raw_response_identical": true,  "old_pred_n": 5,   "new_pred_n": 5,   "old_f1": 100.0, "new_f1": 100.0},
+        {"domain": "numerical",  "id": 4, "raw_response_identical": true,  "old_pred_n": 10,  "new_pred_n": 10,  "old_f1": 100.0, "new_f1": 100.0},
+        {"domain": "github_prs", "id": 0, "raw_response_identical": false, "old_pred_n": 18,  "new_pred_n": 17,  "old_f1": 28.6, "new_f1": 30.0},
+        {"domain": "github_prs", "id": 1, "raw_response_identical": false, "old_pred_n": 50,  "new_pred_n": 51,  "old_f1": 11.3, "new_f1": 11.1},
+        {"domain": "github_prs", "id": 2, "raw_response_identical": false, "old_pred_n": 66,  "new_pred_n": 62,  "old_f1": 14.1, "new_f1": 14.9},
+        {"domain": "github_prs", "id": 3, "raw_response_identical": false, "old_pred_n": 116, "new_pred_n": 118, "old_f1": 1.7,  "new_f1": 3.3},
+        {"domain": "github_prs", "id": 4, "raw_response_identical": true,  "old_pred_n": 2,   "new_pred_n": 2,   "old_f1": 66.7, "new_f1": 66.7}
+      ]
+    }
+  },
+  "comparison_to_paper_table_3": {
+    "note": "Paper Table 3 reports micro-F1 across the FULL validation split; ours is on n=5 per subset. Comparison shown for orientation only; the n=5 sample is too small to support claims about model improvement vs. claude-3-7-sonnet.",
+    "claude-3-7-sonnet (paper, no thinking)": {"poetry": 73.5, "numerical": 91.4, "github_prs": 35.7, "overall": 66.9},
+    "claude-3-7-sonnet (paper, thinking)":    {"poetry": 72.7, "numerical": 96.0, "github_prs": 40.0, "overall": 69.6},
+    "this run (claude-4-sonnet, n=5/subset)": {"poetry": 75.92, "numerical": 100.00, "github_prs": 10.61, "overall": 61.79},
+    "previous run (claude-4-sonnet, n=5/subset)": {"poetry": 85.35, "numerical": 100.00, "github_prs": 9.77, "overall": 65.98}
+  },
+  "command_line": "Cursor-subagent path: 15 Task() invocations of subagent_type=generalPurpose with model=claude-4-sonnet (see runner_note); subsequently a small inline ingest python snippet that mirrors absencebench_implementation.py:run_subset / aggregate / update_solution_file. Equivalent direct-API command for a fresh run on a different machine: `python absencebench_implementation.py --dry-run --model claude-sonnet-4-5` (requires ANTHROPIC_API_KEY).",
+  "agent_transcript": {
+    "path": "/home/luis/.cursor/projects/<session-uuid>/agent-transcripts/<conversation-uuid>.jsonl",
+    "committed": false,
+    "note": "Lives on the contributor's machine; session-scoped Cursor metadata; not portable. Referenced for audit but not part of this commit. The implementation script + this manifest + the per-instance outputs_*.jsonl + committed prompts/ dir are sufficient for full reproducibility (modulo Cursor-subagent run-to-run nondeterminism documented in comparison_to_previous_run.per_instance_response_identity)."
+  },
+  "output_files": [
+    "outputs_poetry.jsonl",
+    "outputs_numerical.jsonl",
+    "outputs_github_prs.jsonl"
+  ]
+}

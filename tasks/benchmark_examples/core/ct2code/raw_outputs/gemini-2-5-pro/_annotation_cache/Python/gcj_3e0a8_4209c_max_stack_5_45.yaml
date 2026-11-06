@@ -1,0 +1,354 @@
+target_var: old_ant 32
+other_vars:
+  - max_num_ants 6
+  - max_num_ants 14
+  - max_num_ants 24
+  - max_num_ants 37
+  - max_num_ants 40
+  - max_num_ants 43
+variables:
+  min_weight 7:
+    datadep: Null
+    controldep: Null
+  min_weight_for_1_ant 8:
+    datadep: Null
+    controldep: Null
+  i 10:
+    reset: False
+    datadep:
+      - i 9
+    controldep:
+      - num_ants 9
+  min_weight_for_1_ant 11:
+    datadep:
+      - min_weight_for_1_ant 8
+      - min_weight_for_1_ant 11
+      - min_weight_for_1_ant 13
+      - weights 5
+      - i 9
+    controldep:
+      - i 10
+  min_weight_for_1_ant 13:
+    datadep:
+      - min_weight_for_1_ant 8
+      - min_weight_for_1_ant 11
+      - min_weight_for_1_ant 13
+      - i 9
+      - weights 5
+    controldep:
+      - i 10
+  num_ants 5:
+    datadep: Null
+    controldep: Null
+  weights 5:
+    datadep: Null
+    controldep: Null
+  num_ants 9:
+    reset: False
+    datadep:
+      - num_ants 5
+    controldep:
+      - num_ants 9
+  i 9:
+    datadep:
+      - num_ants 5
+    controldep:
+      - num_ants 9
+  min_weight 15:
+    datadep:
+      - min_weight_for_1_ant 8
+      - min_weight_for_1_ant 11
+      - min_weight_for_1_ant 13
+      - min_weight 7
+    controldep: Null
+  num_in_stack 16:
+    datadep:
+      - num_ants 5
+    controldep:
+      - num_ants 16
+  num_ants 16:
+    reset: False
+    datadep:
+      - num_ants 5
+    controldep:
+      - num_ants 16
+  min_weight_for_num_ants 17:
+    datadep: Null
+    controldep:
+      - num_ants 16
+  num_ants 18:
+    reset: False
+    datadep:
+      - num_ants 5
+    controldep:
+      - num_ants 16
+      - num_ants 18
+  i 18:
+    datadep:
+      - num_ants 5
+    controldep:
+      - num_ants 16
+      - num_ants 18
+  num_in_stack 19:
+    reset: False
+    datadep:
+      - num_in_stack 16
+    controldep:
+      - num_ants 18
+  i 19:
+    reset: False
+    datadep:
+      - i 18
+    controldep:
+      - num_ants 18
+  min_weight_for_num_ants 20:
+    datadep:
+      - min_weight_for_num_ants 17
+      - min_weight_for_num_ants 20
+      - min_weight_for_num_ants 23
+      - min_weight_for_num_ants 26
+      - min_weight_for_num_ants 34
+      - min_weight_for_num_ants 36
+      - min_weight_for_num_ants 39
+      - min_weight_for_num_ants 42
+    controldep:
+      - i 19
+      - num_in_stack 19
+  num_in_stack 21:
+    reset: False
+    datadep:
+      - num_in_stack 16
+    controldep:
+      - i 19
+      - num_in_stack 19
+  i 21:
+    reset: False
+    datadep:
+      - i 18
+    controldep:
+      - i 19
+      - num_in_stack 19
+  min_weight 22:
+    reset: False
+    datadep:
+      - min_weight 15
+      - min_weight 44
+    controldep:
+      - i 21
+      - num_in_stack 21
+  num_in_stack 22:
+    reset: False
+    datadep:
+      - num_in_stack 16
+    controldep:
+      - i 21
+      - num_in_stack 21
+  i 22:
+    reset: False
+    datadep:
+      - i 18
+    controldep:
+      - i 21
+      - num_in_stack 21
+  weights 22:
+    reset: False
+    datadep:
+      - weights 5
+    controldep:
+      - i 21
+      - num_in_stack 21
+  min_weight_for_num_ants 23:
+    datadep:
+      - weights 5
+      - min_weight 15
+      - min_weight 44
+      - num_in_stack 16
+      - min_weight_for_num_ants 17
+      - min_weight_for_num_ants 20
+      - min_weight_for_num_ants 23
+      - min_weight_for_num_ants 26
+      - min_weight_for_num_ants 34
+      - min_weight_for_num_ants 36
+      - min_weight_for_num_ants 39
+      - min_weight_for_num_ants 42
+      - i 18
+    controldep:
+      - min_weight 22
+      - num_in_stack 22
+      - i 22
+      - weights 22
+  min_weight_for_num_ants 26:
+    datadep:
+      - min_weight_for_num_ants 17
+      - min_weight_for_num_ants 20
+      - min_weight_for_num_ants 23
+      - min_weight_for_num_ants 26
+      - min_weight_for_num_ants 34
+      - min_weight_for_num_ants 36
+      - min_weight_for_num_ants 39
+      - min_weight_for_num_ants 42
+    controldep:
+      - min_weight 22
+      - num_in_stack 22
+      - i 22
+      - weights 22
+  min_weight 28:
+    reset: False
+    datadep:
+      - min_weight 15
+      - min_weight 44
+    controldep:
+      - i 21
+      - num_in_stack 21
+  num_in_stack 28:
+    reset: False
+    datadep:
+      - num_in_stack 16
+    controldep:
+      - i 21
+      - num_in_stack 21
+  i 28:
+    reset: False
+    datadep:
+      - i 18
+    controldep:
+      - i 21
+      - num_in_stack 21
+  weights 28:
+    reset: False
+    datadep:
+      - weights 5
+    controldep:
+      - i 21
+      - num_in_stack 21
+  current_ant 29:
+    datadep:
+      - weights 5
+      - min_weight 15
+      - min_weight 44
+      - num_in_stack 16
+      - i 18
+    controldep:
+      - min_weight 28
+      - num_in_stack 28
+      - i 28
+      - weights 28
+  current_ant 31:
+    datadep: Null
+    controldep:
+      - min_weight 28
+      - num_in_stack 28
+      - i 28
+      - weights 28
+  old_ant 32:
+    datadep:
+      - min_weight_for_num_ants 17
+      - min_weight_for_num_ants 20
+      - min_weight_for_num_ants 23
+      - min_weight_for_num_ants 26
+      - min_weight_for_num_ants 34
+      - min_weight_for_num_ants 36
+      - min_weight_for_num_ants 39
+      - min_weight_for_num_ants 42
+      - i 18
+    controldep:
+      - i 21
+      - num_in_stack 21
+  current_ant 33:
+    reset: False
+    datadep:
+      - current_ant 31
+      - current_ant 29
+    controldep:
+      - i 21
+      - num_in_stack 21
+  old_ant 33:
+    reset: False
+    datadep:
+      - old_ant 32
+    controldep:
+      - i 21
+      - num_in_stack 21
+  min_weight_for_num_ants 34:
+    datadep:
+      - min_weight_for_num_ants 17
+      - min_weight_for_num_ants 20
+      - min_weight_for_num_ants 23
+      - min_weight_for_num_ants 26
+      - min_weight_for_num_ants 34
+      - min_weight_for_num_ants 36
+      - min_weight_for_num_ants 39
+      - min_weight_for_num_ants 42
+    controldep:
+      - current_ant 33
+      - old_ant 33
+  current_ant 35:
+    reset: False
+    datadep:
+      - current_ant 31
+      - current_ant 29
+    controldep:
+      - current_ant 33
+      - old_ant 33
+  min_weight_for_num_ants 36:
+    datadep:
+      - min_weight_for_num_ants 17
+      - min_weight_for_num_ants 20
+      - min_weight_for_num_ants 23
+      - min_weight_for_num_ants 26
+      - min_weight_for_num_ants 34
+      - min_weight_for_num_ants 36
+      - min_weight_for_num_ants 39
+      - min_weight_for_num_ants 42
+      - old_ant 32
+    controldep:
+      - current_ant 35
+  old_ant 38:
+    reset: False
+    datadep:
+      - old_ant 32
+    controldep:
+      - current_ant 35
+  min_weight_for_num_ants 39:
+    datadep:
+      - min_weight_for_num_ants 17
+      - min_weight_for_num_ants 20
+      - min_weight_for_num_ants 23
+      - min_weight_for_num_ants 26
+      - min_weight_for_num_ants 34
+      - min_weight_for_num_ants 36
+      - min_weight_for_num_ants 39
+      - min_weight_for_num_ants 42
+      - current_ant 31
+      - current_ant 29
+    controldep:
+      - old_ant 38
+  min_weight_for_num_ants 42:
+    datadep:
+      - min_weight_for_num_ants 17
+      - min_weight_for_num_ants 20
+      - min_weight_for_num_ants 23
+      - min_weight_for_num_ants 26
+      - min_weight_for_num_ants 34
+      - min_weight_for_num_ants 36
+      - min_weight_for_num_ants 39
+      - min_weight_for_num_ants 42
+      - current_ant 31
+      - current_ant 29
+      - old_ant 32
+    controldep:
+      - old_ant 38
+  min_weight 44:
+    datadep:
+      - min_weight 15
+      - min_weight 44
+      - min_weight_for_num_ants 17
+      - min_weight_for_num_ants 20
+      - min_weight_for_num_ants 23
+      - min_weight_for_num_ants 26
+      - min_weight_for_num_ants 34
+      - min_weight_for_num_ants 36
+      - min_weight_for_num_ants 39
+      - min_weight_for_num_ants 42
+    controldep:
+      - num_ants 16

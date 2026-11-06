@@ -1,0 +1,372 @@
+target_var: reset_counter 66
+other_vars:
+  - max_crit1 12
+  - max_crit2 13
+  - n_case 7
+early_return: 
+  - 48
+  - 63
+variables: 
+  reset_counter 60:
+    datadep: Null
+    controldep:
+      - i 19
+      - users 19
+  i 61:
+    datadep:
+      - pos 21
+      - pos 32
+      - pos 38
+      - i 61
+    controldep:
+      - i 19
+      - users 19
+      - i 61
+      - stalls_occupancy 63
+      - i 63
+  reset_counter 66:
+    datadep:
+      - reset_counter 60
+      - reset_counter 66
+      - reset_counter 71
+    controldep:
+      - stalls_occupancy 63
+      - i 63
+  reset_counter 71:
+    datadep:
+      - reset_counter 60
+      - reset_counter 66
+      - reset_counter 71
+    controldep:
+      - stalls_occupancy 63
+      - i 63
+  stalls_occupancy 63:
+    reset: False
+    datadep:
+      - stalls_occupancy 9
+      - stalls_occupancy 44
+    controldep:
+      - i 61
+  i 63:
+    reset: False
+    datadep:
+      - i 61
+    controldep:
+      - i 61
+  rs 65:
+    datadep:
+      - reset_counter 60
+      - reset_counter 66
+      - reset_counter 71
+      - i 61
+    controldep:
+      - stalls_occupancy 63
+      - i 63
+  rs 70:
+    datadep:
+      - reset_counter 60
+      - reset_counter 66
+      - reset_counter 71
+      - i 61
+    controldep:
+      - stalls_occupancy 63
+      - i 63
+  pos 21:
+    datadep: Null
+    controldep:
+      - i 19
+      - users 19
+  max_crit1 22:
+    datadep: Null
+    controldep:
+      - i 19
+      - users 19
+  max_crit2 23:
+    datadep: Null
+    controldep:
+      - i 19
+      - users 19
+  stalls 24:
+    reset: False
+    datadep:
+      - stalls 7
+    controldep:
+      - i 19
+      - users 19
+      - j 24
+      - stalls 24
+  j 24:
+    datadep:
+      - j 24
+    controldep:
+      - i 19
+      - users 19
+      - j 24
+      - stalls 24
+  stalls_occupancy 26:
+    reset: False
+    datadep:
+      - stalls_occupancy 9
+      - stalls_occupancy 44
+    controldep:
+      - j 24
+      - stalls 24
+  j 26:
+    reset: False
+    datadep: 
+      - j 24
+    controldep:
+      - j 24
+      - stalls 24
+  crit1 28:
+    datadep:
+      - ls 16
+      - j 24
+      - rs 17
+      - ls 50
+      - ls 55
+      - rs 65
+      - rs 70
+    controldep:
+      - stalls_occupancy 26
+      - j 26
+  crit2 29:
+    datadep:
+      - ls 16
+      - j 24
+      - rs 17
+      - ls 50
+      - ls 55
+      - rs 65
+      - rs 70
+    controldep:
+      - stalls_occupancy 26
+      - j 26
+  crit1 30:
+    reset: False
+    datadep:
+      - crit1 28
+    controldep:
+      - stalls_occupancy 26
+      - j 26
+  crit2 30:
+    reset: False
+    datadep:
+      - crit2 29
+    controldep:
+      - stalls_occupancy 26
+      - j 26
+  max_crit1 30:
+    reset: False
+    datadep:
+      - max_crit1 22
+      - max_crit1 33
+      - max_crit1 39
+    controldep:
+      - stalls_occupancy 26
+      - j 26
+  max_crit2 30:
+    reset: False
+    datadep:
+      - max_crit2 23
+      - max_crit2 34
+      - max_crit2 40
+    controldep:
+      - stalls_occupancy 26
+      - j 26
+  pos 32:
+    datadep:
+      - j 24
+    controldep:
+      - crit1 30
+      - max_crit1 30
+      - crit2 30
+      - max_crit2 30
+  max_crit1 33:
+    datadep:
+      - crit1 28
+    controldep:
+      - crit1 30
+      - max_crit1 30
+      - crit2 30
+      - max_crit2 30
+  max_crit2 34:
+    datadep:
+      - crit2 29
+    controldep:
+      - crit1 30
+      - max_crit1 30
+      - crit2 30
+      - max_crit2 30
+  crit1 36:
+    reset: False
+    datadep:
+      - crit1 28
+    controldep:
+      - crit1 30
+      - max_crit1 30
+      - crit2 30
+      - max_crit2 30
+  max_crit1 36:
+    reset: False
+    datadep:
+      - max_crit1 22
+      - max_crit1 33
+      - max_crit1 39
+    controldep:
+      - crit1 30
+      - max_crit1 30
+      - crit2 30
+      - max_crit2 30
+  pos 38:
+    datadep:
+      - j 24
+    controldep:
+      - crit1 36
+      - max_crit1 36
+  max_crit1 39:
+    datadep:
+      - crit1 28
+    controldep:
+      - crit1 36
+      - max_crit1 36
+  max_crit2 40:
+    datadep:
+      - crit2 29
+    controldep:
+      - crit1 36
+      - max_crit1 36
+  stalls_occupancy 9:
+    datadep: Null
+    controldep: Null
+  stalls_occupancy 44:
+    datadep:
+      - pos 21
+      - pos 32
+      - pos 38
+    controldep:
+      - i 19
+      - users 19
+  users 7:
+    datadep: Null
+    controldep: Null
+  stalls 7:
+    datadep: Null
+    controldep: Null
+  users 19:
+    reset: False
+    datadep:
+      - users 7
+    controldep:
+      - i 19
+      - users 19
+  i 19:
+    datadep:
+      - i 19
+    controldep:
+      - i 19
+      - users 19
+  i 14:
+    datadep:
+      - i 14
+    controldep:
+      - i 14
+      - stalls 14
+  stalls 14:
+    reset: False
+    datadep:
+      - stalls 7
+    controldep:
+      - i 14
+      - stalls 14
+  ls 16:
+    datadep:
+      - i 14
+    controldep:
+      - i 14
+      - stalls 14
+  rs 17:
+    datadep:
+      - stalls 7
+      - i 14
+    controldep:
+      - i 14
+      - stalls 14
+  reset_counter 45:
+    datadep: Null
+    controldep:
+      - i 19
+      - users 19
+  stalls 46:
+    reset: False
+    datadep:
+      - stalls 7
+    controldep:
+      - i 19
+      - users 19
+      - i 46
+      - stalls 46
+      - stalls_occupancy 48
+      - i 48
+  i 46:
+    datadep:
+      - pos 21
+      - pos 32
+      - pos 38
+      - i 46
+    controldep:
+      - i 19
+      - users 19
+      - i 46
+      - stalls 46
+      - stalls_occupancy 48
+      - i 48
+  stalls_occupancy 48:
+    reset: False
+    datadep:
+      - stalls_occupancy 9
+      - stalls_occupancy 44
+    controldep:
+      - i 46
+      - stalls 46
+  i 48:
+    reset: False
+    datadep:
+      - i 46
+    controldep:
+      - i 46
+      - stalls 46
+  ls 50:
+    datadep:
+      - reset_counter 45
+      - reset_counter 51
+      - reset_counter 56
+      - i 46
+    controldep:
+      - stalls_occupancy 48
+      - i 48
+  ls 55:
+    datadep:
+      - reset_counter 45
+      - reset_counter 51
+      - reset_counter 56
+      - i 46
+    controldep:
+      - stalls_occupancy 48
+      - i 48
+  reset_counter 51:
+    datadep:
+      - reset_counter 45
+      - reset_counter 51
+      - reset_counter 56
+    controldep:
+      - stalls_occupancy 48
+      - i 48
+  reset_counter 56:
+    datadep:
+      - reset_counter 45
+      - reset_counter 51
+      - reset_counter 56
+    controldep:
+      - stalls_occupancy 48
+      - i 48

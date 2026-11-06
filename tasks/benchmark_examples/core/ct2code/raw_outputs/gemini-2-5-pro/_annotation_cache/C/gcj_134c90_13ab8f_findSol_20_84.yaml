@@ -1,0 +1,339 @@
+target_var: count 78
+other_vars: 
+  - S 52
+  - S 58
+  - S 66
+  - S 69
+  - T 20
+early_return: 
+  - 28
+  - 42
+  - 47
+  - 51
+  - 74
+variables:
+  C 20:
+    datadep: Null
+    controldep: Null
+  A 20:
+    datadep: Null
+    controldep: Null
+  X 23:
+    datadep: Null
+    controldep: Null
+  noSol 23:
+    datadep: Null
+    controldep: Null
+  haveWon 23:
+    datadep: Null
+    controldep: Null
+  n 23:
+    datadep: Null
+    controldep: Null
+  count 25:
+    datadep: 
+      - A 20
+    controldep: Null
+  Null 26:
+    reset: False
+    datadep: Null
+    controldep: 
+      - Null 26
+      - haveWon 51
+  i 27:
+    datadep:
+      - i 27
+    controldep:
+      - Null 26
+      - i 27
+      - A 27
+      - X 42
+  A 27:
+    reset: False
+    datadep:
+      - A 20
+    controldep:
+      - Null 26
+      - i 27
+      - A 27
+      - X 42
+  count 28:
+    reset: False
+    datadep:
+      - count 25
+      - count 33
+      - count 75
+      - count 78
+    controldep:
+      - i 27
+      - A 27
+  i 28:
+    reset: False
+    datadep:
+      - i 27
+    controldep:
+      - i 27
+      - A 27
+  haveWon 31:
+    datadep: Null
+    controldep:
+      - count 28
+      - i 28
+  C 32:
+    reset: False
+    datadep:
+      - C 20
+    controldep:
+      - count 28
+      - i 28
+  i 32:
+    reset: False
+    datadep:
+      - i 27
+    controldep:
+      - count 28
+      - i 28
+  count 32:
+    reset: False
+    datadep:
+      - count 25
+      - count 33
+      - count 75
+      - count 78
+    controldep:
+      - count 28
+      - i 28
+  count 33:
+    datadep:
+      - i 27
+    controldep:
+      - C 32
+      - i 32
+      - count 32
+  C 35:
+    reset: False
+    datadep:
+      - C 20
+    controldep:
+      - count 28
+      - i 28
+  i 35:
+    reset: False
+    datadep:
+      - i 27
+    controldep:
+      - count 28
+      - i 28
+  count 35:
+    reset: False
+    datadep:
+      - count 25
+      - count 33
+      - count 75
+      - count 78
+    controldep:
+      - count 28
+      - i 28
+  X 36:
+    datadep: Null
+    controldep:
+      - C 35
+      - i 35
+      - count 35
+  C 37:
+    reset: False
+    datadep:
+      - C 20
+    controldep:
+      - C 35
+      - i 35
+      - count 35
+  i 37:
+    reset: False
+    datadep:
+      - i 27
+    controldep:
+      - C 35
+      - i 35
+      - count 35
+  count 37:
+    reset: False
+    datadep:
+      - count 25
+      - count 33
+      - count 75
+      - count 78
+    controldep:
+      - C 35
+      - i 35
+      - count 35
+  X 38:
+    datadep: Null
+    controldep:
+      - C 37
+      - i 37
+      - count 37
+  X 40:
+    datadep: Null
+    controldep:
+      - C 37
+      - i 37
+      - count 37
+  X 42:
+    reset: False
+    datadep:
+      - X 23
+      - X 36
+      - X 38
+      - X 40
+      - X 80
+    controldep:
+      - count 28
+      - i 28
+  noSol 43:
+    datadep: Null
+    controldep:
+      - X 42
+  noSol 47:
+    reset: False
+    datadep:
+      - noSol 23
+      - noSol 43
+    controldep: 
+      - Null 26
+  n 47:
+    reset: False
+    datadep:
+      - n 23
+      - n 81
+    controldep:
+      - Null 26
+  haveWon 51:
+    reset: False
+    datadep:
+      - haveWon 23
+      - haveWon 31
+      - haveWon 82
+    controldep:
+      - noSol 47
+      - n 47
+  j 73:
+    datadep:
+      - j 73
+    controldep:
+      - haveWon 51 
+      - j 73
+      - A 73
+  A 73:
+    reset: False
+    datadep:
+      - A 20
+    controldep:
+      - haveWon 51 
+      - j 73
+      - A 73
+  count 74:
+    reset: False
+    datadep:
+      - count 25
+      - count 33
+      - count 75
+      - count 78
+    controldep:
+      - j 73
+      - A 73
+  j 74:
+    reset: False
+    datadep:
+      - j 73
+    controldep:
+      - j 73
+      - A 73
+  C 74:
+    reset: False
+    datadep:
+      - C 20
+    controldep:
+      - j 73
+      - A 73
+  count 75:
+    datadep:
+      - j 73
+    controldep:
+      - count 74
+      - j 74
+      - C 74
+      - L 74
+  count 78:
+    datadep:
+      - count 25
+      - count 33
+      - count 75
+      - count 78
+      - j 73
+    controldep:
+      - count 74
+      - j 74
+      - C 74
+      - L 74
+  X 80:
+    datadep: Null
+    controldep:
+      - haveWon 51 
+  n 81:
+    datadep:
+      - n 23
+      - n 81
+    controldep:
+      - haveWon 51 
+  haveWon 82:
+    datadep: Null
+    controldep:
+      - haveWon 51 
+  L 74:
+    reset: False
+    datadep:
+      - L 59
+      - L 67
+      - L 62
+      - L 70
+    controldep:
+      - j 73
+      - A 73
+  L 70:
+    datadep: Null
+    controldep:
+      - X 65
+  L 67:
+    datadep: Null
+    controldep:
+      - X 65
+  L 62:
+    datadep: Null
+    controldep:
+      - X 57
+  L 59:
+    datadep: Null
+    controldep:
+      - X 57
+  X 57:
+    reset: False
+    datadep: 
+      - X 23
+      - X 40
+    controldep:
+      - X 56
+  X 65:
+    reset: False
+    datadep: 
+      - X 23
+      - X 38
+    controldep:
+      - X 56
+  X 56:
+    reset: False
+    datadep: 
+      - X 23
+      - X 36
+    controldep:
+      - haveWon 51
