@@ -125,8 +125,9 @@ Here is an extremely simple example of the Croissant format, with comments showi
 
 ## Resources
 
+- [Format Specification (Croissant 1.1)](https://docs.mlcommons.org/croissant/docs/croissant-spec-1.1.html)
 - [Github Repo](https://github.com/mlcommons/croissant)
-  - Specification
+  - [mlcroissant code](https://github.com/mlcommons/croissant/tree/main/python/mlcroissant)
   - Examples
   - Verifier
 - [Shared Drive](https://drive.google.com/corp/drive/folders/1StGRO4CGWUsX9kHdM5aOQNOF1L5e2y97)
