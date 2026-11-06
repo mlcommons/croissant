@@ -1,5 +1,7 @@
 """base_operation_test module."""
 
+import dataclasses
+
 import pandas as pd
 
 from mlcroissant._src.operation_graph.base_operation import Operation
@@ -7,12 +9,11 @@ from mlcroissant._src.operation_graph.base_operation import Operations
 from mlcroissant._src.tests.nodes import create_test_record_set
 
 
+@dataclasses.dataclass(frozen=True, repr=False)
 class _CountingOperation(Operation):
     """Yields one row per call and records how many times it ran."""
 
-    def __post_init__(self):
-        super().__post_init__()
-        object.__setattr__(self, "calls", 0)
+    calls: int = dataclasses.field(default=0, init=False, hash=False, compare=False)
 
     def call(self, *args):
         object.__setattr__(self, "calls", self.calls + 1)
