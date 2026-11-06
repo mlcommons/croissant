@@ -41,7 +41,22 @@ def _extract_file(source: epath.Path, target: epath.Path) -> None:
             zip.extractall(target)
     elif tarfile.is_tarfile(source):
         with tarfile.open(source) as tar:
-            tar.extractall(target)
+            if hasattr(tarfile, "data_filter"):
+                tar.extractall(target, filter="data")
+            else:
+                target_dir = target.resolve()
+                for member in tar.getmembers():
+                    member_path = (target_dir / member.name).resolve()
+                    if not member_path.is_relative_to(target_dir):
+                        raise ValueError(
+                            f"Attempted path traversal in tar file: {member.name}"
+                        )
+                    if member.issym() or member.islnk():
+                        raise ValueError(
+                            "Links are not supported in tar files without data filter:"
+                            f" {member.name}"
+                        )
+                tar.extractall(target)
     elif is_gzip(source):
         target.mkdir(parents=True, exist_ok=True)
         with gzip.open(source, "rb") as f_in:
