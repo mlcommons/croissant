@@ -1,0 +1,694 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "geocr": "http://mlcommons.org/croissant/geocr/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "sc": "https://schema.org/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "HLS_Sentinel2_Satellite_Imagery_Dataset",
+  "alternateName": [
+    "NASA_HLS_Sentinel2",
+    "HLS-Sentinel2-Imagery"
+  ],
+  "description": "Complete HLS Sentinel-2 satellite imagery dataset with all metadata preserved from NASA Earthdata",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "version": "2.0",
+  "creator": {
+    "@type": "Organization",
+    "name": "NASA Earthdata",
+    "url": "https://earthdata.nasa.gov/"
+  },
+  "url": "https://data.lpdaac.earthdatacloud.nasa.gov/",
+  "keywords": [
+    "satellite imagery",
+    "remote sensing",
+    "HLS",
+    "Sentinel-2",
+    "multispectral",
+    "surface reflectance",
+    "geospatial",
+    "Earth observation",
+    "NASA",
+    "LPDAAC"
+  ],
+  "citeAs": "HLS Sentinel-2 Satellite Imagery Dataset, NASA Earthdata, 2023",
+  "datePublished": "2023-05-31T04:12:47.704Z",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "geocr:BoundingBox": [
+    -88.09948036,
+    34.24811019,
+    -86.89272491,
+    35.24303017
+  ],
+  "geocr:temporalExtent": {
+    "startDate": "2016-05-13T16:35:44.550Z",
+    "endDate": "2016-05-13T16:35:44.550Z"
+  },
+  "geocr:spatialResolution": "30.0m",
+  "geocr:coordinateReferenceSystem": "EPSG:32616",
+  "geocr:sensorCharacteristics": [
+    {
+      "platform": "Sentinel-2A",
+      "sensorType": "optical_multispectral",
+      "acquisitionMode": "spaceborne",
+      "spectralBands": 13,
+      "spatialResolution": "30m",
+      "temporalResolution": "5 days",
+      "bandConfiguration": {
+        "band1": {
+          "name": "Coastal Aerosol",
+          "hlsBand": "B01",
+          "wavelength": "443nm"
+        },
+        "band2": {
+          "name": "Blue",
+          "hlsBand": "B02",
+          "wavelength": "490nm"
+        },
+        "band3": {
+          "name": "Green",
+          "hlsBand": "B03",
+          "wavelength": "560nm"
+        },
+        "band4": {
+          "name": "Red",
+          "hlsBand": "B04",
+          "wavelength": "665nm"
+        },
+        "band5": {
+          "name": "Red Edge 1",
+          "hlsBand": "B05",
+          "wavelength": "705nm"
+        },
+        "band6": {
+          "name": "Red Edge 2",
+          "hlsBand": "B06",
+          "wavelength": "740nm"
+        },
+        "band7": {
+          "name": "Red Edge 3",
+          "hlsBand": "B07",
+          "wavelength": "783nm"
+        },
+        "band8": {
+          "name": "NIR",
+          "hlsBand": "B08",
+          "wavelength": "842nm"
+        },
+        "band9": {
+          "name": "NIR Narrow",
+          "hlsBand": "B8A",
+          "wavelength": "865nm"
+        },
+        "band10": {
+          "name": "Water Vapour",
+          "hlsBand": "B09",
+          "wavelength": "945nm"
+        },
+        "band11": {
+          "name": "SWIR Cirrus",
+          "hlsBand": "B10",
+          "wavelength": "1375nm"
+        },
+        "band12": {
+          "name": "SWIR 1",
+          "hlsBand": "B11",
+          "wavelength": "1610nm"
+        },
+        "band13": {
+          "name": "SWIR 2",
+          "hlsBand": "B12",
+          "wavelength": "2190nm"
+        }
+      }
+    }
+  ],
+  "geocr:bandCalibration": {
+    "@type": "geocr:BandCalibration",
+    "geocr:bands": {
+      "B01": {
+        "geocr:slope": 0.9959,
+        "geocr:offset": -0.0002,
+        "geocr:wavelength": "443nm",
+        "geocr:description": "Coastal aerosol"
+      },
+      "B02": {
+        "geocr:slope": 0.9778,
+        "geocr:offset": -0.004,
+        "geocr:wavelength": "490nm",
+        "geocr:description": "Blue"
+      },
+      "B03": {
+        "geocr:slope": 1.0053,
+        "geocr:offset": -0.0009,
+        "geocr:wavelength": "560nm",
+        "geocr:description": "Green"
+      },
+      "B04": {
+        "geocr:slope": 0.9765,
+        "geocr:offset": 0.0009,
+        "geocr:wavelength": "665nm",
+        "geocr:description": "Red"
+      },
+      "B11": {
+        "geocr:slope": 0.9987,
+        "geocr:offset": -0.0011,
+        "geocr:wavelength": "1610nm",
+        "geocr:description": "SWIR 1"
+      },
+      "B12": {
+        "geocr:slope": 1.003,
+        "geocr:offset": -0.0012,
+        "geocr:wavelength": "2190nm",
+        "geocr:description": "SWIR 2"
+      }
+    }
+  },
+  "geocr:dataScaling": {
+    "@type": "geocr:DataScaling",
+    "geocr:addOffset": 0.0,
+    "geocr:refScaleFactor": 0.0001,
+    "geocr:angScaleFactor": 0.01,
+    "geocr:fillValue": -9999.0,
+    "geocr:qaFillValue": 255.0
+  },
+  "geocr:administrativeMetadata": {
+    "@type": "geocr:AdministrativeMetadata",
+    "geocr:conceptType": "granule",
+    "geocr:revisionId": 1,
+    "geocr:nativeId": "HLS.S30.T16SDD.2016134T163332.v2.0",
+    "geocr:collectionConceptId": "C2021957295-LPCLOUD",
+    "geocr:providerId": "LPCLOUD",
+    "geocr:metadataFormat": "application/echo10+xml"
+  },
+  "geocr:productInformation": {
+    "@type": "geocr:ProductInformation",
+    "geocr:productUri": "S2A_MSIL1C_20160513T163332_N0202_R083_T16SDD_20160513T163544.SAFE",
+    "geocr:mgrsTileId": "16SDD",
+    "geocr:spatialCoverage": 99.0
+  },
+  "geocr:qualityAssessment": {
+    "@type": "geocr:QualityAssessment",
+    "geocr:geometricAccuracy": {
+      "geocr:xShift": 0.0,
+      "geocr:yShift": 0.0,
+      "geocr:rmse": 0.0,
+      "geocr:ncp": 0,
+      "geocr:referenceImage": "NONE"
+    },
+    "geocr:cloudCoverage": {
+      "geocr:value": 0.0,
+      "geocr:unit": "percentage"
+    }
+  },
+  "geocr:rasterData": {
+    "@type": "geocr:RasterData",
+    "geocr:format": "GeoTIFF",
+    "geocr:dataType": "surface reflectance",
+    "geocr:compression": "LZW",
+    "geocr:byteOrder": "little-endian"
+  },
+  "geocr:spectralBands": {
+    "@type": "geocr:SpectralBands",
+    "geocr:bands": [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B8A",
+      "B09",
+      "B10",
+      "B11",
+      "B12"
+    ],
+    "geocr:totalBands": 13,
+    "geocr:bandInfo": {
+      "B01": {
+        "name": "Coastal Aerosol",
+        "wavelength": "443nm",
+        "resolution": "60m"
+      },
+      "B02": {
+        "name": "Blue",
+        "wavelength": "490nm",
+        "resolution": "10m"
+      },
+      "B03": {
+        "name": "Green",
+        "wavelength": "560nm",
+        "resolution": "10m"
+      },
+      "B04": {
+        "name": "Red",
+        "wavelength": "665nm",
+        "resolution": "10m"
+      },
+      "B05": {
+        "name": "Red Edge 1",
+        "wavelength": "705nm",
+        "resolution": "20m"
+      },
+      "B06": {
+        "name": "Red Edge 2",
+        "wavelength": "740nm",
+        "resolution": "20m"
+      },
+      "B07": {
+        "name": "Red Edge 3",
+        "wavelength": "783nm",
+        "resolution": "20m"
+      },
+      "B08": {
+        "name": "NIR",
+        "wavelength": "842nm",
+        "resolution": "10m"
+      },
+      "B8A": {
+        "name": "NIR Narrow",
+        "wavelength": "865nm",
+        "resolution": "20m"
+      },
+      "B09": {
+        "name": "Water Vapour",
+        "wavelength": "945nm",
+        "resolution": "60m"
+      },
+      "B10": {
+        "name": "SWIR Cirrus",
+        "wavelength": "1375nm",
+        "resolution": "60m"
+      },
+      "B11": {
+        "name": "SWIR 1",
+        "wavelength": "1610nm",
+        "resolution": "20m"
+      },
+      "B12": {
+        "name": "SWIR 2",
+        "wavelength": "2190nm",
+        "resolution": "20m"
+      }
+    }
+  },
+  "geocr:customProperties": {
+    "@type": "geocr:CustomProperties",
+    "geocr:nasaSpecificAttributes": {
+      "HLS_PROCESSING_TIME": "2023-05-31T04:10:33Z",
+      "SENSING_TIME": "2016-05-13T16:35:44.555Z",
+      "ULX": 399960.0,
+      "ULY": 3900000.0,
+      "SPATIAL_RESAMPLING_ALG": "Area Weighted Average",
+      "ADD_OFFSET": 0,
+      "REF_SCALE_FACTOR": 0.0001,
+      "ANG_SCALE_FACTOR": 0.01,
+      "FILLVALUE": -9999,
+      "QA_FILLVALUE": 255,
+      "NCOLS": 3660,
+      "NROWS": 3660,
+      "MEAN_SUN_AZIMUTH_ANGLE": 135.40208179,
+      "MEAN_SUN_ZENITH_ANGLE": 21.24009183,
+      "MEAN_VIEW_AZIMUTH_ANGLE": 177.82769847,
+      "MEAN_VIEW_ZENITH_ANGLE": 2.70738523,
+      "NBAR_SOLAR_ZENITH": 22.81262346,
+      "AROP_AVE_XSHIFT(METERS)": 0.0,
+      "AROP_AVE_YSHIFT(METERS)": 0.0,
+      "AROP_NCP": 0,
+      "AROP_RMSE(METERS)": 0.0,
+      "AROP_S2_REFIMG": "NONE",
+      "PROCESSING_BASELINE": 2.02
+    },
+    "geocr:totalAttributes": 23,
+    "geocr:attributeCategories": {
+      "processing": [
+        "HLS_PROCESSING_TIME",
+        "SENSING_TIME",
+        "PROCESSING_BASELINE"
+      ],
+      "geometry": [
+        "MEAN_SUN_AZIMUTH_ANGLE",
+        "MEAN_SUN_ZENITH_ANGLE",
+        "MEAN_VIEW_AZIMUTH_ANGLE"
+      ],
+      "quality": [
+        "AROP_AVE_XSHIFT(METERS)",
+        "AROP_AVE_YSHIFT(METERS)",
+        "AROP_RMSE(METERS)"
+      ],
+      "raster": [
+        "NCOLS",
+        "NROWS",
+        "ULX",
+        "ULY"
+      ],
+      "scaling": [
+        "ADD_OFFSET",
+        "REF_SCALE_FACTOR",
+        "ANG_SCALE_FACTOR"
+      ]
+    }
+  },
+  "geocr:relatedUrls": {
+    "@type": "geocr:RelatedUrls",
+    "geocr:totalUrls": 22,
+    "geocr:urlCategories": {
+      "dataAccess": [],
+      "metadata": [
+        {
+          "url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-public/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0_stac.json",
+          "type": "VIEW RELATED INFORMATION",
+          "subtype": "",
+          "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0_stac.json",
+          "encodingFormat": "application/json",
+          "accessMethod": "STAC_METADATA"
+        },
+        {
+          "url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.cmr.xml",
+          "type": "VIEW RELATED INFORMATION",
+          "subtype": "",
+          "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.cmr.xml",
+          "encodingFormat": "application/xml",
+          "accessMethod": "CMR_METADATA"
+        }
+      ],
+      "visualization": [
+        {
+          "url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-public/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.jpg",
+          "type": "GET RELATED VISUALIZATION",
+          "subtype": "",
+          "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.jpg",
+          "encodingFormat": "image/jpeg",
+          "accessMethod": "PREVIEW_IMAGE"
+        }
+      ],
+      "documentation": [],
+      "other": []
+    },
+    "geocr:accessMethods": {
+      "https": 22,
+      "s3": 0,
+      "other": 0
+    }
+  },
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B08_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B08.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B08.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B08.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B07_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B07.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B07.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B07.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B05_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B05.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B05.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B05.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B02_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B02.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B02.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B02.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B10_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B10.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B10.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B10.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_SZA_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.SZA.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.SZA.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.SZA.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B01_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B01.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B01.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B01.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B03_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B03.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B03.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B03.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_VAA_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.VAA.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.VAA.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.VAA.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B04_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B04.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B04.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B04.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B8A_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B8A.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B8A.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B8A.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B06_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B06.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B06.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B06.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B11_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B11.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B11.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B11.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_VZA_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.VZA.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.VZA.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.VZA.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B09_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B09.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B09.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B09.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_Fmask_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.Fmask.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.Fmask.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.Fmask.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_B12_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.B12.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.B12.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.B12.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "file_HLS_S30_T16SDD_2016134T163332_v2_0_SAA_tif",
+      "name": "HLS.S30.T16SDD.2016134T163332.v2.0.SAA.tif",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.SAA.tif",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.SAA.tif",
+      "encodingFormat": "image/tiff",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "other_18",
+      "name": "VIEW RELATED INFORMATION",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0_stac.json",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-public/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0_stac.json",
+      "encodingFormat": "application/json",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "other_19",
+      "name": "VIEW RELATED INFORMATION",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.cmr.xml",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.cmr.xml",
+      "encodingFormat": "application/xml",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "other_20",
+      "name": "GET RELATED VISUALIZATION",
+      "description": "Download HLS.S30.T16SDD.2016134T163332.v2.0.jpg",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-public/HLSS30.020/HLS.S30.T16SDD.2016134T163332.v2.0/HLS.S30.T16SDD.2016134T163332.v2.0.jpg",
+      "encodingFormat": "image/jpeg",
+      "md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "tiff_files",
+      "name": "TIFF Files",
+      "description": "Collection of 18 TIFF files containing satellite imagery bands",
+      "encodingFormat": "image/tiff",
+      "includes": "**/*.tif"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "hls_sentinel2_granule",
+      "name": "hls_sentinel2_granule",
+      "description": "HLS Sentinel-2 granule: HLS.S30.T16SDD.2016134T163332.v2.0",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hls_sentinel2_granule/granule_id",
+          "name": "hls_sentinel2_granule/granule_id",
+          "description": "Unique granule identifier",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hls_sentinel2_granule/cloud_coverage",
+          "name": "hls_sentinel2_granule/cloud_coverage",
+          "description": "Cloud coverage percentage",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hls_sentinel2_granule/temporal_extent",
+          "name": "hls_sentinel2_granule/temporal_extent",
+          "description": "Temporal extent of the granule",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hls_sentinel2_granule/spatial_coverage",
+          "name": "hls_sentinel2_granule/spatial_coverage",
+          "description": "Spatial coverage polygon",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hls_sentinel2_granule/spectral_bands",
+          "name": "hls_sentinel2_granule/spectral_bands",
+          "description": "Available spectral bands",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "hls_sentinel2_granule/granule_id": "HLS.S30.T16SDD.2016134T163332.v2.0",
+          "hls_sentinel2_granule/cloud_coverage": 0.0,
+          "hls_sentinel2_granule/temporal_extent": "2016-05-13T16:35:44.550Z",
+          "hls_sentinel2_granule/spatial_coverage": "POLYGON((-88.0861147 34.24811019, -86.8939975 34.25287576, -86.89272491 35.24303017, -88.09948036 35.23808354, -88.0861147 34.24811019))",
+          "hls_sentinel2_granule/spectral_bands": "B01,B02,B03,B04,B05,B06,B07,B08,B8A,B09,B10,B11,B12"
+        }
+      ]
+    }
+  ]
+}

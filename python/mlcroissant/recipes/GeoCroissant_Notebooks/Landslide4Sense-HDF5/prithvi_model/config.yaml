@@ -1,0 +1,36 @@
+model_args:
+  decoder_depth: 8
+  decoder_embed_dim: 512
+  decoder_num_heads: 16
+  depth: 12
+  embed_dim: 768
+  img_size: 224
+  in_chans: 6
+  num_frames: 3
+  num_heads: 12
+  patch_size: 16
+  tubelet_size: 1
+train_params:
+  bands:
+    - B02
+    - B03
+    - B04
+    - B05
+    - B06
+    - B07
+  data_mean:
+    - 775.2290211032589
+    - 1080.992780391705
+    - 1228.5855250417867
+    - 2497.2022620507532
+    - 2204.2139147975554
+    - 1610.8324823273745
+  data_std:
+    - 1281.526139861424
+    - 1270.0297974547493
+    - 1399.4802505642526
+    - 1368.3446143747644
+    - 1291.6764008585435
+    - 1154.505683480695
+  mask_ratio: 0.75
+  random_cropping: true
