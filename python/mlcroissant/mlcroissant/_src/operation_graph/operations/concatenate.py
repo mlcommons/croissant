@@ -17,10 +17,12 @@ class Concatenate(Operation):
 
     node: FileSet
 
-    def call(self, *args: list[Path]) -> pd.DataFrame:
+    def call(self, *args: list[Path] | Path) -> pd.DataFrame:
         """See class' docstring."""
         assert len(args) > 0, "No dataframe to merge."
-        files = [file for files in args for file in files]
+        files = [
+            file for arg in args for file in ([arg] if isinstance(arg, Path) else arg)
+        ]
         return pd.DataFrame({
             FileProperty.filepath: [os.fspath(file.filepath) for file in files],
             FileProperty.filename: [file.filename for file in files],
