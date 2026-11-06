@@ -1,0 +1,18 @@
+{
+  "prepared_utc": "2026-05-06T10:24:43Z",
+  "condition": "ct_only",
+  "prompt_source": "ct_only_generic",
+  "dataset": {
+    "id": "harveyfin/AbsenceBench",
+    "split": "validation",
+    "max_per_subset": 0
+  },
+  "domain_counts": {
+    "poetry": 1191,
+    "numerical": 1200,
+    "github_prs": 887
+  },
+  "paths": {
+    "prompts_dir": "ct_only/prompts"
+  }
+}

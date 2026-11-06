@@ -6,7 +6,7 @@ This is a **reproducibility-comparison run** against the previous snapshot at [`
 
 ## TL;DR
 
-- **Parent commit**: `02b87497` (Leo: "add - ct2code skill + updated pdf2ct skill") — same as previous run; upstream/mmlu_example has not advanced.
+- **Parent commit**: `02b87497` (ct2code skill + updated pdf2ct skill) — same as previous run; upstream/mmlu_example has not advanced.
 - **Started**: 2026-04-30 08:03 UTC.
 - **Run kind**: dry-run, first 5 instances of the validation split per subtask = 15 LLM calls total. Pipeline reproducibility check.
 - **Baseline**: `claude-4-sonnet` invoked via 15 fresh Cursor subagents, `temperature=0`, `max_tokens=4096`, paper Appendix A default prompt templates. **Same 15 prompt files (byte-identical) as the previous run.**
@@ -72,7 +72,7 @@ A complete per-instance breakdown (gold size, old/new predicted size, raw_respon
 
 `tasks/validator.py` was actually **run end-to-end** this time on all four JSON-LDs in this run; verbatim output captured in `pdf2ct/shacl_run.txt`. Result: all four FAIL.
 
-| Bug | Where | pyshacl error | Affects (this run) | Matches RISEBench analysis | Also fails on Leo's testdata |
+| Bug | Where | pyshacl error | Affects (this run) | Matches RISEBench analysis | Also fails on upstream testdata |
 |---|---|---|---|---|---|
 | **A** | `TaskProblemShape` "must have at least one Spec" — outer `sh:property` whose body is `sh:or` of alternatives has no outer `sh:path` | `'exists but is not a well-formed SHACL PropertyShape'` | `pdf2ct/absencebench_problem.jsonld` | "Change 2: Fix TaskProblemShape spec constraint" | yes — `testdata/valid_problem.jsonld` FAIL |
 | **B** | `EvaluationTaskShape` `croissant:evaluatedSolution` — `sh:qualifiedMinCount 1` without corresponding `sh:qualifiedValueShape` | `'QualifiedValueShapeConstraintComponent must have at least one sh:qualifiedValueShape predicate'` | All three TaskSolutions | "Change 4: Fix evaluatedSolution cardinality" | yes — `testdata/valid_evaluation_task.jsonld` FAIL |
@@ -98,8 +98,8 @@ export ANTHROPIC_API_KEY=...
 
 # Snapshot a new run dir based on this one's structure:
 NEW_RUN="$(git rev-parse --short HEAD)_$(date -u +%Y-%m-%dT%H-%MZ)"
-NEW_DIR="tasks/benchmark_examples/absencebench/runs/$NEW_RUN"
-cp -r tasks/benchmark_examples/absencebench/runs/02b87497_2026-04-30T08-03Z "$NEW_DIR"
+NEW_DIR="tasks/examples/absencebench/runs/$NEW_RUN"
+cp -r tasks/examples/absencebench/runs/02b87497_2026-04-30T08-03Z "$NEW_DIR"
 rm -rf "$NEW_DIR/ct2code/raw_outputs/claude-4-sonnet" "$NEW_DIR/ct2code/prompts"
 sed -i 's/PENDING/PENDING/g' "$NEW_DIR/ct2code/absencebench_claude-4-sonnet_solution.jsonld"
 

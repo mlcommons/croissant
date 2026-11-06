@@ -1,6 +1,6 @@
 """AbsenceBench baseline implementation: Anthropic Claude Sonnet.
 
-Generated following Leo's `tasks/SKILL_ct2code.md` runbook on the
+Generated following `tasks/SKILL_ct2code.md` runbook on the
 `absencebench_problem.jsonld` TaskProblem in this directory.
 
 Pipeline for each of the 3 subtasks (poetry, numerical, github_prs):

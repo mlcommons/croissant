@@ -1,0 +1,20 @@
+{"id": 0, "raw_response": "Several insertions and deletions from the original diff are missing in the merge diff."}
+{"id": 1, "raw_response": "+                $model->autoloadRelationsUsing($callback, $this);\n+\n+        DB::disableQueryLog();\n+        \n+        $comment1 = $post->comments()->create(['parent_id' => null]);\n+        $comment2 = $post->comments()->create(['parent_id' => $comment1->id]);\n+        $post->likes()->create();"}
+{"id": 2, "raw_response": "+\n+        'states' => $this->states->prepend(\n+\n+            ])->prependState($relationship->getQuery()->pendingAttributes)->create([], $parent);\n+            ])->prependState($relationship->getQuery()->pendingAttributes)->create([], $parent);\n+\n+        $this->assertEquals('foo bar baz', FactoryTestPost::first()->title);\n+        $this->assertEquals('other title', FactoryTestPost::first()->title);"}
+{"id": 3, "raw_response": "+    protected $html;\n+\n+        }\n+\n+| Laravel       | Table         | Example       |\n+\n+    #[WithMigration]\n+    #[DataProvider('markdownEncodedTemplateDataProvider')]\n+    public function testItCanAssertMarkdownEncodedStringUsingTemplateWithTable($given, $expected)"}
+{"id": 4, "raw_response": "+\n+    public function testWhenRelationIsNull()"}
+{"id": 5, "raw_response": "+    protected $html;\n+\n+        }\n+\n+| Laravel       | Table         | Example       |\n+\n+    #[WithMigration]\n+    #[DataProvider('markdownEncodedTemplateDataProvider')]\n+    public function testItCanAssertMarkdownEncodedStringUsingTemplateWithTable($given, $expected)"}
+{"id": 6, "raw_response": "Several insertions and deletions from the original diff are missing in the merge diff."}
+{"id": 7, "raw_response": "Several insertions and deletions from the original diff are missing in the merge diff."}
+{"id": 8, "raw_response": "+\n+    public function testWhenRelationIsNull()"}
+{"id": 9, "raw_response": "Several insertions and deletions from the original diff are missing in the merge diff."}
+{"id": 10, "raw_response": "Several insertions and deletions from the original diff are missing in the merge diff."}
+{"id": 11, "raw_response": "No missing changes detected. Both diffs contain the same insertions and deletions."}
+{"id": 12, "raw_response": "Several insertions and deletions from the original diff are missing in the merge diff."}
+{"id": 13, "raw_response": "+\n+    public function testWhenRelationIsNull()"}
+{"id": 14, "raw_response": "No missing changes detected. Both diffs contain the same insertions and deletions."}
+{"id": 15, "raw_response": "No missing changes detected. Both diffs contain the same insertions and deletions."}
+{"id": 16, "raw_response": "No missing changes detected. Both diffs contain the same insertions and deletions."}
+{"id": 17, "raw_response": "No missing changes detected. Both diffs contain the same insertions and deletions."}
+{"id": 18, "raw_response": "Several insertions and deletions from the original diff are missing in the merge diff."}
+{"id": 19, "raw_response": "Several insertions and deletions from the original diff are missing in the merge diff."}
