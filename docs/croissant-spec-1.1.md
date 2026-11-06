@@ -2365,10 +2365,17 @@ The example below shows how to use MONDO in combination with DUO and ODRL to spe
           "odrl:rightOperand": { "@id": "duo:0000007" }
         },
         {
+<<<<<<< HEAD
           "@type": "odrl:Constraint",
           "odrl:leftOperand": { "@id": "duo:0000010" },
           "odrl:operator": { "@id": "odrl:isA" },
           "odrl:rightOperand": { "@id": "mondo:0004975" }
+=======
+           "@type": "odrl:Constraint",
+           "odrl:leftOperand": { "@id": "duo:0000010"},
+           "odrl:operator": { "@id": "odrl:eq" },
+           "odrl:rightOperand": { "@id": "mondo:0004975" }
+>>>>>>> upstream/main
         }
       ]
     },

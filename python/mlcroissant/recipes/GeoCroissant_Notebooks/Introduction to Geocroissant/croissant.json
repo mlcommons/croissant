@@ -1,0 +1,388 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "geocr": "http://mlcommons.org/croissant/geocr/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "sc": "https://schema.org/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "HLS_Burn_Scars",
+  "alternateName": [
+    "ibm-nasa-geospatial/hls_burn_scars",
+    "HLS-Burn-Scars-2021"
+  ],
+  "description": "This dataset contains Harmonized Landsat and Sentinel-2 imagery of burn scars and the associated masks for the years 2018-2021 over the contiguous United States. There are 804 512x512 scenes. Its primary purpose is for training geospatial machine learning models. Each TIFF file contains a 512x512 pixel scene with six bands (Blue, Green, Red, NIR, SW1, SW2) converted to reflectance, and masks have one band with values: 1=Burn scar, 0=Not burned, -1=Missing data.",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "version": "1.0.0",
+  "creator": {
+    "@type": "Organization",
+    "name": "IBM-NASA Prithvi Models Family",
+    "url": "https://huggingface.co/ibm-nasa-geospatial"
+  },
+  "url": "https://huggingface.co/datasets/ibm-nasa-geospatial/hls_burn_scars",
+  "keywords": [
+    "burn scar detection",
+    "remote sensing",
+    "semantic segmentation",
+    "Landsat",
+    "Sentinel-2",
+    "HLS",
+    "wildfire detection",
+    "environmental monitoring",
+    "TIFF",
+    "1K - 10K",
+    "imagefolder",
+    "Image",
+    "Datasets",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "citeAs": "https://doi.org/10.57967/hf/0956",
+  "datePublished": "2021-12-31",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "geocr:BoundingBox": [
+    -125.0,
+    24.0,
+    -66.0,
+    49.0
+  ],
+  "geocr:temporalExtent": {
+    "startDate": "2018-01-01T00:00:00Z",
+    "endDate": "2021-12-31T23:59:59Z"
+  },
+  "geocr:spatialResolution": "30m",
+  "geocr:coordinateReferenceSystem": "EPSG:4326",
+  "geocr:mlTask": {
+    "@type": "geocr:SemanticSegmentation",
+    "taskType": "multi_class_classification",
+    "evaluationMetric": "F1_score",
+    "classes": [
+      "NotBurned",
+      "BurnScar",
+      "NoData"
+    ],
+    "applicationDomain": "environmental_monitoring"
+  },
+  "geocr:sensorCharacteristics": [
+    {
+      "platform": "HLS (Harmonized Landsat Sentinel-2)",
+      "sensorType": "optical_multispectral",
+      "acquisitionMode": "spaceborne",
+      "spectralBands": 6,
+      "spatialResolution": "30m",
+      "temporalResolution": "2-5 days",
+      "bandConfiguration": {
+        "band1": {
+          "name": "Blue",
+          "hlsBand": "B02",
+          "wavelength": "490nm"
+        },
+        "band2": {
+          "name": "Green",
+          "hlsBand": "B03",
+          "wavelength": "560nm"
+        },
+        "band3": {
+          "name": "Red",
+          "hlsBand": "B04",
+          "wavelength": "665nm"
+        },
+        "band4": {
+          "name": "NIR",
+          "hlsBand": "B8A",
+          "wavelength": "865nm"
+        },
+        "band5": {
+          "name": "SW1",
+          "hlsBand": "B11",
+          "wavelength": "1610nm"
+        },
+        "band6": {
+          "name": "SW2",
+          "hlsBand": "B12",
+          "wavelength": "2190nm"
+        }
+      }
+    }
+  ],
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "Local directory containing the HLS Burn Scars dataset TIFF files. Full file paths are constructed as: {repo_path}/{split}/{filename} for both images and annotations.",
+      "contentUrl": "/teamspace/studios/this_studio/ZOO-AI-DATASET-MAAS/Introduction to Geocroissant/hls_burn_scars",
+      "encodingFormat": "local_directory",
+      "path": "/teamspace/studios/this_studio/ZOO-AI-DATASET-MAAS/Introduction to Geocroissant/hls_burn_scars",
+      "md5": "placeholder_hash_for_directory"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "tiff-files-for-config-hls_burn_scars",
+      "name": "tiff-files-for-config-hls_burn_scars",
+      "description": "Local TIFF files organized in training/validation splits.",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "image/tiff",
+      "includes": "**/*.tif"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "hls_burn_scars_splits",
+      "name": "hls_burn_scars_splits",
+      "description": "Splits for the hls_burn_scars config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hls_burn_scars_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "hls_burn_scars_splits/split_name": "training"
+        },
+        {
+          "hls_burn_scars_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "hls_burn_scars",
+      "name": "hls_burn_scars",
+      "description": "HLS Burn Scars dataset with satellite imagery and burn scar mask annotations.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hls_burn_scars/split",
+          "name": "hls_burn_scars/split",
+          "description": "Split to which the example belongs (training or validation).",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "tiff-files-for-config-hls_burn_scars"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "(training|validation)/"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hls_burn_scars/image",
+          "name": "hls_burn_scars/image",
+          "description": "Satellite imagery from Harmonized Landsat and Sentinel-2 sensors with 6 bands converted to reflectance.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "tiff-files-for-config-hls_burn_scars"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*_merged\\.tif$"
+            }
+          },
+          "geocr:dataShape": [
+            512,
+            512,
+            6
+          ],
+          "geocr:bandConfiguration": {
+            "totalBands": 6,
+            "band1": {
+              "name": "Blue",
+              "hlsBand": "B02",
+              "wavelength": "490nm"
+            },
+            "band2": {
+              "name": "Green",
+              "hlsBand": "B03",
+              "wavelength": "560nm"
+            },
+            "band3": {
+              "name": "Red",
+              "hlsBand": "B04",
+              "wavelength": "665nm"
+            },
+            "band4": {
+              "name": "NIR",
+              "hlsBand": "B8A",
+              "wavelength": "865nm"
+            },
+            "band5": {
+              "name": "SW1",
+              "hlsBand": "B11",
+              "wavelength": "1610nm"
+            },
+            "band6": {
+              "name": "SW2",
+              "hlsBand": "B12",
+              "wavelength": "2190nm"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hls_burn_scars/annotation",
+          "name": "hls_burn_scars/annotation",
+          "description": "Burn scar mask annotation with values: 1=Burn scar, 0=Not burned, -1=Missing data.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "tiff-files-for-config-hls_burn_scars"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": ".*\\.mask\\.tif$"
+            }
+          },
+          "geocr:dataShape": [
+            512,
+            512,
+            1
+          ],
+          "geocr:classValues": {
+            "0": "NotBurned",
+            "1": "BurnScar",
+            "-1": "NoData"
+          }
+        }
+      ]
+    }
+  ],
+  "geocr:dataStatistics": {
+    "totalSamples": 0,
+    "trainingSamples": 0,
+    "validationSamples": 0,
+    "imageSize": [
+      512,
+      512
+    ],
+    "totalBands": 6,
+    "dataVolume": "~500MB",
+    "fileCounts": {
+      "training": 0,
+      "validation": 0
+    },
+    "classDistribution": {
+      "NotBurned": "88%",
+      "BurnScar": "11%",
+      "NoData": "1%"
+    }
+  },
+  "geocr:fileListing": {
+    "basePaths": {
+      "images": "hls_burn_scars",
+      "annotations": "hls_burn_scars"
+    },
+    "images": {
+      "train": [],
+      "validation": []
+    },
+    "annotations": {
+      "train": [],
+      "validation": []
+    }
+  },
+  "dataCollection": {
+    "name": "HLS Burn Scars Data Collection",
+    "description": "Collection of Harmonized Landsat and Sentinel-2 satellite imagery focused on burn scar detection across the contiguous United States from 2018-2021. Images were manually filtered for cloud cover and missing data, and burn scar presence was manually verified.",
+    "temporalCoverage": "2018-2021",
+    "spatialCoverage": "Contiguous United States",
+    "collectionMethod": "After co-locating shapefile and HLS scene, 512x512 chips were formed by taking a window with the burn scar in the center. Burn scars near edges are offset from center.",
+    "collectionSites": [
+      {
+        "name": "HLS (Harmonized Landsat Sentinel-2)",
+        "url": "https://hls.gsfc.nasa.gov/",
+        "version": "V1.4"
+      },
+      {
+        "name": "Monitoring Trends in Burn Severity (MTBS)",
+        "url": "https://mtbs.gov/",
+        "description": "Source shapefiles for burn scar locations"
+      },
+      {
+        "name": "Hugging Face Datasets",
+        "url": "https://huggingface.co/datasets/ibm-nasa-geospatial/hls_burn_scars"
+      }
+    ]
+  },
+  "dataBiases": {
+    "name": "HLS Burn Scars Dataset Biases",
+    "description": "Potential biases in the dataset include temporal bias (limited to 2018-2021), geographic bias (focused on contiguous US), seasonal bias depending on wildfire occurrence patterns, and class imbalance (88% not burned vs 11% burn scar).",
+    "biasTypes": [
+      "Temporal bias: Limited to 2018-2021 timeframe",
+      "Geographic bias: Contiguous United States only",
+      "Seasonal bias: Dependent on wildfire occurrence patterns",
+      "Class imbalance: 88% NotBurned, 11% BurnScar, 1% NoData",
+      "Sensor bias: Limited to HLS (Harmonized Landsat Sentinel-2) sensors",
+      "Selection bias: Only scenes with burn scars in center were selected"
+    ],
+    "mitigation": [
+      "Manual filtering for cloud cover and missing data",
+      "Manual verification of burn scar presence",
+      "Random split into training (2/3) and validation (1/3) sets"
+    ]
+  },
+  "personalSensitiveInformation": {
+    "hasPII": false,
+    "description": "This dataset contains satellite imagery and does not include any personal or sensitive information."
+  }
+}
