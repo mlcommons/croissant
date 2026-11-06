@@ -79,6 +79,7 @@ class TestCroissantTasksValidator(unittest.TestCase):
         "Execution property of a TaskProblem must be an ExecutionSpec.",
         text,
     )
+
   def test_valid_problem_with_evaluation_spec(self):
     conforms, _ = validate_data(
         "testdata/valid_problem_with_evaluation_spec.jsonld"
@@ -99,15 +100,44 @@ class TestCroissantTasksValidator(unittest.TestCase):
     conforms, _ = validate_data("testdata/valid_evaluation_task.jsonld")
     self.assertTrue(conforms, "Valid evaluation task should pass validation.")
 
-  def test_mmlu_problem(self):
-    conforms, _ = validate_data("benchmark_examples/mmlu/mmlu_problem.jsonld")
-    self.assertTrue(conforms, "MMLU problem should pass validation.")
+  # ── EveryEvalEver (E3) Integration Examples ─────────────────────────────
 
-  def test_mmlu_solutions(self):
-    conforms, _ = validate_data("benchmark_examples/mmlu/mmlu_solution_large_fewshot.jsonld")
-    self.assertTrue(conforms, "MMLU solutions should pass validation.")
+  def test_e3_mmlu_pro_problem(self):
+    conforms, text = validate_data(
+        "examples/every_eval_ever/mmlu_pro_problem.jsonld"
+    )
+    self.assertTrue(conforms, f"E3 MMLU-Pro TaskProblem should pass: {text}")
+
+  def test_e3_mmlu_pro_solution_kimi_k2(self):
+    conforms, text = validate_data(
+        "examples/every_eval_ever/mmlu_pro_solution_kimi_k2.jsonld"
+    )
+    self.assertTrue(conforms, f"E3 MMLU-Pro TaskSolution should pass: {text}")
+
+  def test_e3_mmlu_pro_combined_task(self):
+    conforms, text = validate_data(
+        "examples/every_eval_ever/mmlu_pro_combined_task.jsonld"
+    )
+    self.assertTrue(conforms, f"E3 MMLU-Pro Combined Task should pass: {text}")
+
+  def test_e3_intercode_ctf_agentic_task(self):
+    conforms, text = validate_data(
+        "examples/every_eval_ever/intercode_ctf_agentic_task.jsonld"
+    )
+    self.assertTrue(conforms, f"E3 InterCode CTF Agentic Task should pass: {text}")
+
+  def test_e3_vectara_hallucination_task(self):
+    conforms, text = validate_data(
+        "examples/every_eval_ever/vectara_hallucination_task.jsonld"
+    )
+    self.assertTrue(conforms, f"E3 Vectara Hallucination Task should pass: {text}")
+
+  def test_e3_simpleqa_llm_judge_task(self):
+    conforms, text = validate_data(
+        "examples/every_eval_ever/simpleqa_llm_judge_task.jsonld"
+    )
+    self.assertTrue(conforms, f"E3 SimpleQA LLM Judge Task should pass: {text}")
 
 
 if __name__ == "__main__":
   unittest.main()
-

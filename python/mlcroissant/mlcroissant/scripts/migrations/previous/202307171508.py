@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from mlcroissant._src.core.issues import Issues
+from mlcroissant._src.core.context import Context
 from mlcroissant._src.structure_graph.nodes.source import Source
 
 
@@ -24,7 +24,7 @@ def _migrate_source(
         if not isinstance(existing_transforms, list):
             existing_transforms = [existing_transforms]
         source["apply_transform"] = existing_transforms
-    source = Source.from_jsonld(Issues(), source)
+    source = Source.from_jsonld(Context(), source)
     reference = source.reference
     new_source = {}
     apply_transform = []

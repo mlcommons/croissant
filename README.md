@@ -167,7 +167,7 @@ Here is an extremely simple example of the Croissant format, with comments showi
 
 Croissant is being developed by the community as a Task Force of the [MLCommons Association](http://mlcommons.org) Datasets Working Group.
 The Task Force is open to anyone (as is the parent [Datasets working group](https://mlcommons.org/en/groups/datasets/)).
-The Task Force is co-chaired by [Omar Benjelloun](mailto:benjello@google.com) and [Elena Simperl](mailto:elena.simperl@kcl.ac.uk).
+The Task Force is co-chaired by [Omar Benjelloun](mailto:benjello@google.com), [Elena Simperl](mailto:elena.simperl@kcl.ac.uk), and [Joaquin Vanschoren](mailto:j.vanschoren@tue.nl).
 
 ## Contributors
 

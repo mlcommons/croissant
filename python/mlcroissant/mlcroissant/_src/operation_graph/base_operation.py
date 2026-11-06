@@ -5,7 +5,7 @@ from __future__ import annotations
 import abc
 import dataclasses
 import types
-from typing import Any, Generic, Iterable, Sequence, TypeVar
+from typing import Any, cast, Generic, Iterable, Sequence, TypeVar
 
 import networkx as nx
 import pandas as pd
@@ -114,14 +114,22 @@ class Operation(abc.ABC, Generic[OutputT]):
                 self.operations.add_edge(previous_operation, self)
 
     def __call__(self, set_output_in_memory: bool = False) -> OutputT:
-        """Executes the current operation from the output of its parents and store the result."""
-        if self.has_output():
+        """Executes the current operation from the output of its parents and store the result.
+
+        The cache is scoped to callers that asked for it. `set_output_in_memory=False`
+        returns a generator, which is consumed by whoever iterates it, so caching it
+        would serve an exhausted generator to the next caller. The operation graph
+        outlives a single `records()` call, so that next caller is a real one: reading
+        the same RecordSet twice, or reading another one that joins on this operation.
+        """
+        if set_output_in_memory and self.has_output():
             return self._output
         inputs = self.inputs
         output = self.call() if inputs is None else self.call(*inputs)
         if isinstance(output, types.GeneratorType) and set_output_in_memory:
-            output = pd.DataFrame(output)  # type:ignore
-        self.set_output(output)
+            output = cast(OutputT, pd.DataFrame(output))
+        if set_output_in_memory:
+            self.set_output(output)
         return output
 
     @abc.abstractmethod

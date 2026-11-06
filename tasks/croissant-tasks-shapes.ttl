@@ -70,27 +70,28 @@ croissant:TaskShape
 croissant:TaskProblemShape
   a sh:NodeShape ;
   sh:targetClass croissant:TaskProblem ;
+  sh:message "A TaskProblem must have at least one property (input, output, or implementation) that is a spec class (InputSpec, OutputSpec, or ImplementationSpec)." ;
   # A TaskProblem must have at least one property that is a spec class
   sh:or (
     [
       sh:property [
         sh:path croissant:input ;
-        sh:class croissant:InputSpec ;
-        sh:minCount 1 ;
+        sh:qualifiedValueShape [ sh:class croissant:InputSpec ] ;
+        sh:qualifiedMinCount 1 ;
       ]
     ]
     [
       sh:property [
         sh:path croissant:output ;
-        sh:class croissant:OutputSpec ;
-        sh:minCount 1 ;
+        sh:qualifiedValueShape [ sh:class croissant:OutputSpec ] ;
+        sh:qualifiedMinCount 1 ;
       ]
     ]
     [
       sh:property [
         sh:path croissant:implementation ;
-        sh:class croissant:ImplementationSpec ;
-        sh:minCount 1 ;
+        sh:qualifiedValueShape [ sh:class croissant:ImplementationSpec ] ;
+        sh:qualifiedMinCount 1 ;
       ]
     ]
   ) ;
@@ -260,9 +261,10 @@ croissant:EvaluationResultShape
     sh:or (
       [ sh:datatype xsd:string ]
       [ sh:nodeKind sh:IRI ]
+      [ sh:class croissant:MetricSpec ]
     ) ;
     sh:minCount 1 ;
-    sh:message "croissant:metric must be a string or a URL, and is required."
+    sh:message "croissant:metric must be a string, URL, or MetricSpec, and is required."
   ] ;
   sh:property [
     sh:path croissant:value ;
@@ -270,11 +272,32 @@ croissant:EvaluationResultShape
       [ sh:class schema:QuantitativeValue ]
       [ sh:datatype xsd:string ]
       [ sh:datatype xsd:decimal ]
+      [ sh:datatype xsd:double ]
+      [ sh:datatype xsd:float ]
       [ sh:datatype xsd:integer ]
       [ sh:datatype xsd:double ]
     ) ;
     sh:minCount 1 ;
     sh:message "croissant:value must be a QuantitativeValue, string, or number, and is required."
+  ] ;
+  sh:property [
+    sh:path croissant:lowerIsBetter ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+    sh:message "croissant:lowerIsBetter must be a boolean."
+  ] .
+
+# -----------------------------------------------------------------------------
+# MetricSpec Shape
+# -----------------------------------------------------------------------------
+croissant:MetricSpecShape
+  a sh:NodeShape ;
+  sh:targetClass croissant:MetricSpec ;
+  sh:property [
+    sh:path croissant:lowerIsBetter ;
+    sh:datatype xsd:boolean ;
+    sh:maxCount 1 ;
+    sh:message "croissant:lowerIsBetter must be a boolean."
   ] .
 
 # -----------------------------------------------------------------------------
@@ -290,7 +313,10 @@ croissant:EvaluationTaskShape
   ] ;
   sh:property [
     sh:path croissant:evaluatedSolution ;
-    sh:class croissant:TaskSolution ;
+    sh:or (
+      [ sh:class croissant:TaskSolution ]
+      [ sh:nodeKind sh:IRI ]
+    ) ;
     sh:minCount 1 ;
     sh:maxCount 1 ;
     sh:message "croissant:evaluatedSolution must point to exactly one TaskSolution."

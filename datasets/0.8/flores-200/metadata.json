@@ -49,7 +49,7 @@
       "name": "tinyurl-repository",
       "description": "Flores 200 is hosted on a webserver.",
       "contentSize": "25585843 B",
-      "contentUrl": "https://tinyurl.com/flores200dataset",
+      "contentUrl": "https://dl.fbaipublicfiles.com/nllb/flores200_dataset.tar.gz",
       "encodingFormat": "application/x-tar",
       "sha256": "b8b0b76783024b85797e5cc75064eb83fc5288b41e9654dabc7be6ae944011f6"
     },

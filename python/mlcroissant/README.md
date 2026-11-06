@@ -49,7 +49,7 @@ python3 -m pip install ".[dev]"
 ## Verify/load a Croissant dataset
 
 ```bash
-mlcroissant validate --jsonld ../../datasets/titanic/metadata.json
+mlcroissant validate --jsonld ../../datasets/1.0/titanic/metadata.json
 ```
 
 The command:
@@ -61,7 +61,7 @@ Similarly, you can generate a dataset by launching:
 
 ```bash
 mlcroissant load \
-    --jsonld ../../datasets/titanic/metadata.json \
+    --jsonld ../../datasets/1.0/titanic/metadata.json \
     --record_set passengers \
     --num_records 10
 ```
@@ -193,7 +193,7 @@ Alternatively, you can contribute to `mlcroissant` using the "classic" GitHub wo
 You can debug the validation of the file using the `--debug` flag:
 
 ```bash
-mlcroissant validate --jsonld ../../datasets/titanic/metadata.json --debug
+mlcroissant validate --jsonld ../../datasets/1.0/titanic/metadata.json --debug
 ```
 
 This will:
