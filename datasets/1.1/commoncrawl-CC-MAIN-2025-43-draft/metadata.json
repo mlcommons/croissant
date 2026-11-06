@@ -258,6 +258,126 @@
           }
         }
       ]
+    },
+    {
+      "@id": "wat-records",
+      "@type": "cr:RecordSet",
+      "field": [
+        {
+          "@id": "wat-records/url",
+          "@type": "cr:Field",
+          "name": "url",
+          "dataType": "sc:URL",
+          "source": {
+            "fileSet": {
+              "@id": "wat-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@id": "wet-records",
+      "@type": "cr:RecordSet",
+      "field": [
+        {
+          "@id": "wet-records/url",
+          "@type": "cr:Field",
+          "name": "url",
+          "dataType": "sc:URL",
+          "source": {
+            "fileSet": {
+              "@id": "wet-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@id": "robotstxt-records",
+      "@type": "cr:RecordSet",
+      "field": [
+        {
+          "@id": "robotstxt-records/url",
+          "@type": "cr:Field",
+          "name": "url",
+          "dataType": "sc:URL",
+          "source": {
+            "fileSet": {
+              "@id": "robotstxt-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@id": "non200responses-records",
+      "@type": "cr:RecordSet",
+      "field": [
+        {
+          "@id": "non200responses-records/url",
+          "@type": "cr:Field",
+          "name": "url",
+          "dataType": "sc:URL",
+          "source": {
+            "fileSet": {
+              "@id": "non200responses-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@id": "cc-index-records",
+      "@type": "cr:RecordSet",
+      "field": [
+        {
+          "@id": "cc-index-records/url",
+          "@type": "cr:Field",
+          "name": "url",
+          "dataType": "sc:URL",
+          "source": {
+            "fileSet": {
+              "@id": "cc-index-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@id": "cc-index-table-records",
+      "@type": "cr:RecordSet",
+      "field": [
+        {
+          "@id": "cc-index-table-records/url",
+          "@type": "cr:Field",
+          "name": "url",
+          "dataType": "sc:URL",
+          "source": {
+            "fileSet": {
+              "@id": "cc-index-table-files"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            }
+          }
+        }
+      ]
     }
   ]
 }
