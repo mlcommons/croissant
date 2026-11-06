@@ -234,6 +234,7 @@ def test_reading_a_joined_record_set_twice_yields_the_same_records(version):
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name"],
     [
+        ["recipes/read_binary_file_by_line.json", "translations_from_zip"],
         ["simple-parquet/metadata.json", "persons"],
         ["simple-join/metadata.json", "publications_by_user"],
     ],
