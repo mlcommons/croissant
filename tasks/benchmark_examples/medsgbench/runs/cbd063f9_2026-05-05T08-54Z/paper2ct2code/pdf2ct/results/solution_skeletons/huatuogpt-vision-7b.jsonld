@@ -1,0 +1,429 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b",
+  "schema:name": "MedSG-Bench Solution - HuatuoGPT-Vision-7B",
+  "schema:description": "Zero-shot evaluation of HuatuoGPT-Vision-7B (medical-domain MLLM, 7B) on the MedSG-Bench benchmark, as reported in Table 3 of the MedSG-Bench paper.",
+  "schema:isBasedOn": {
+    "@id": "http://example.org/medsg-bench"
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#implementation",
+    "schema:name": "HuatuoGPT-Vision-7B",
+    "schema:applicationCategory": "Multimodal Large Language Model",
+    "schema:author": {
+      "@type": "schema:Organization",
+      "schema:name": "FreedomIntelligence"
+    }
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "evaluation_setting",
+        "schema:value": "zero-shot"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "model_size",
+        "schema:value": "7B"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "image_resolution",
+        "schema:value": "336x336"
+      }
+    ]
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:medsg-bench-huatuogpt-vision-7b-output",
+    "schema:name": "HuatuoGPT-Vision-7B bbox predictions on MedSG-Bench (overall)"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#rdg_sol",
+      "schema:name": "MedSG-Bench Registered Difference Grounding - HuatuoGPT-Vision-7B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#registered_difference_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-huatuogpt-vision-7b-rdg-output",
+        "schema:name": "HuatuoGPT-Vision-7B bbox predictions on MedSG-Bench Registered Difference Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_huatuogpt-vision-7b#rdg",
+        "schema:name": "Evaluation of HuatuoGPT-Vision-7B on MedSG-Bench Registered Difference Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#registered_difference_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#rdg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 1.35,
+            "schema:description": "Average IoU on Registered Difference Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 0.0,
+            "schema:description": "Acc@0.5 on Registered Difference Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#nrdg_sol",
+      "schema:name": "MedSG-Bench Non-registered Difference Grounding - HuatuoGPT-Vision-7B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#non_registered_difference_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-huatuogpt-vision-7b-nrdg-output",
+        "schema:name": "HuatuoGPT-Vision-7B bbox predictions on MedSG-Bench Non-registered Difference Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_huatuogpt-vision-7b#nrdg",
+        "schema:name": "Evaluation of HuatuoGPT-Vision-7B on MedSG-Bench Non-registered Difference Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#non_registered_difference_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#nrdg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 1.84,
+            "schema:description": "Average IoU on Non-registered Difference Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 0.2,
+            "schema:description": "Acc@0.5 on Non-registered Difference Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#mv_sol",
+      "schema:name": "MedSG-Bench Multi-View Grounding - HuatuoGPT-Vision-7B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#multi_view_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-huatuogpt-vision-7b-mv-output",
+        "schema:name": "HuatuoGPT-Vision-7B bbox predictions on MedSG-Bench Multi-View Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_huatuogpt-vision-7b#mv",
+        "schema:name": "Evaluation of HuatuoGPT-Vision-7B on MedSG-Bench Multi-View Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#multi_view_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#mv_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 10.42,
+            "schema:description": "Average IoU on Multi-View Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 2.78,
+            "schema:description": "Acc@0.5 on Multi-View Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#ot_sol",
+      "schema:name": "MedSG-Bench Object Tracking - HuatuoGPT-Vision-7B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#object_tracking"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-huatuogpt-vision-7b-ot-output",
+        "schema:name": "HuatuoGPT-Vision-7B bbox predictions on MedSG-Bench Object Tracking"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_huatuogpt-vision-7b#ot",
+        "schema:name": "Evaluation of HuatuoGPT-Vision-7B on MedSG-Bench Object Tracking",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#object_tracking"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#ot_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 14.57,
+            "schema:description": "Average IoU on Object Tracking (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 9.2,
+            "schema:description": "Acc@0.5 on Object Tracking (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#vcg_sol",
+      "schema:name": "MedSG-Bench Visual Concept Grounding - HuatuoGPT-Vision-7B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#visual_concept_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-huatuogpt-vision-7b-vcg-output",
+        "schema:name": "HuatuoGPT-Vision-7B bbox predictions on MedSG-Bench Visual Concept Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_huatuogpt-vision-7b#vcg",
+        "schema:name": "Evaluation of HuatuoGPT-Vision-7B on MedSG-Bench Visual Concept Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#visual_concept_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#vcg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 7.8,
+            "schema:description": "Average IoU on Visual Concept Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 0.9,
+            "schema:description": "Acc@0.5 on Visual Concept Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#vpg_sol",
+      "schema:name": "MedSG-Bench Visual Patch Grounding - HuatuoGPT-Vision-7B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#visual_patch_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-huatuogpt-vision-7b-vpg-output",
+        "schema:name": "HuatuoGPT-Vision-7B bbox predictions on MedSG-Bench Visual Patch Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_huatuogpt-vision-7b#vpg",
+        "schema:name": "Evaluation of HuatuoGPT-Vision-7B on MedSG-Bench Visual Patch Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#visual_patch_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#vpg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 15.52,
+            "schema:description": "Average IoU on Visual Patch Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 2.3,
+            "schema:description": "Acc@0.5 on Visual Patch Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#cmg_sol",
+      "schema:name": "MedSG-Bench Cross-modal Grounding - HuatuoGPT-Vision-7B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#cross_modal_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-huatuogpt-vision-7b-cmg-output",
+        "schema:name": "HuatuoGPT-Vision-7B bbox predictions on MedSG-Bench Cross-modal Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_huatuogpt-vision-7b#cmg",
+        "schema:name": "Evaluation of HuatuoGPT-Vision-7B on MedSG-Bench Cross-modal Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#cross_modal_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#cmg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 9.46,
+            "schema:description": "Average IoU on Cross-modal Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 2.15,
+            "schema:description": "Acc@0.5 on Cross-modal Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#rg_sol",
+      "schema:name": "MedSG-Bench Referring Grounding - HuatuoGPT-Vision-7B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#referring_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-huatuogpt-vision-7b-rg-output",
+        "schema:name": "HuatuoGPT-Vision-7B bbox predictions on MedSG-Bench Referring Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_huatuogpt-vision-7b#rg",
+        "schema:name": "Evaluation of HuatuoGPT-Vision-7B on MedSG-Bench Referring Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#referring_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b#rg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 9.6,
+            "schema:description": "Average IoU on Referring Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 1.82,
+            "schema:description": "Acc@0.5 on Referring Grounding (percentage)"
+          }
+        ]
+      }
+    }
+  ],
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "http://example.org/medsg-bench_evaluation_huatuogpt-vision-7b",
+    "schema:name": "Overall evaluation of HuatuoGPT-Vision-7B on MedSG-Bench",
+    "schema:isBasedOn": {
+      "@id": "http://example.org/medsg-bench"
+    },
+    "croissant:evaluatedSolution": {
+      "@id": "http://example.org/medsg-bench_solution_huatuogpt-vision-7b"
+    },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "IoU",
+        "croissant:value": 8.97,
+        "schema:description": "Overall average IoU across all 8 subtasks (percentage)"
+      },
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Acc@0.5",
+        "croissant:value": 2.36,
+        "schema:description": "Overall average Acc@0.5 across all 8 subtasks (percentage)"
+      }
+    ]
+  }
+}

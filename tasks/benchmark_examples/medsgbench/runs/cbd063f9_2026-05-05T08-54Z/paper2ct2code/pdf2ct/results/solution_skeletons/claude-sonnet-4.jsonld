@@ -1,0 +1,424 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4",
+  "schema:name": "MedSG-Bench Solution - Claude Sonnet 4",
+  "schema:description": "Zero-shot evaluation of Claude Sonnet 4 (proprietary MLLM, API) on the MedSG-Bench benchmark, as reported in Table 3 of the MedSG-Bench paper.",
+  "schema:isBasedOn": {
+    "@id": "http://example.org/medsg-bench"
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#implementation",
+    "schema:name": "Claude Sonnet 4",
+    "schema:applicationCategory": "Multimodal Large Language Model",
+    "schema:author": {
+      "@type": "schema:Organization",
+      "schema:name": "Anthropic"
+    }
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "evaluation_setting",
+        "schema:value": "zero-shot"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "image_resolution",
+        "schema:value": "336x336"
+      }
+    ]
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:medsg-bench-claude-sonnet-4-output",
+    "schema:name": "Claude Sonnet 4 bbox predictions on MedSG-Bench (overall)"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#rdg_sol",
+      "schema:name": "MedSG-Bench Registered Difference Grounding - Claude Sonnet 4",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#registered_difference_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-claude-sonnet-4-rdg-output",
+        "schema:name": "Claude Sonnet 4 bbox predictions on MedSG-Bench Registered Difference Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_claude-sonnet-4#rdg",
+        "schema:name": "Evaluation of Claude Sonnet 4 on MedSG-Bench Registered Difference Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#registered_difference_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#rdg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 0.67,
+            "schema:description": "Average IoU on Registered Difference Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 0.0,
+            "schema:description": "Acc@0.5 on Registered Difference Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#nrdg_sol",
+      "schema:name": "MedSG-Bench Non-registered Difference Grounding - Claude Sonnet 4",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#non_registered_difference_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-claude-sonnet-4-nrdg-output",
+        "schema:name": "Claude Sonnet 4 bbox predictions on MedSG-Bench Non-registered Difference Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_claude-sonnet-4#nrdg",
+        "schema:name": "Evaluation of Claude Sonnet 4 on MedSG-Bench Non-registered Difference Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#non_registered_difference_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#nrdg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 0.81,
+            "schema:description": "Average IoU on Non-registered Difference Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 0.1,
+            "schema:description": "Acc@0.5 on Non-registered Difference Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#mv_sol",
+      "schema:name": "MedSG-Bench Multi-View Grounding - Claude Sonnet 4",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#multi_view_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-claude-sonnet-4-mv-output",
+        "schema:name": "Claude Sonnet 4 bbox predictions on MedSG-Bench Multi-View Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_claude-sonnet-4#mv",
+        "schema:name": "Evaluation of Claude Sonnet 4 on MedSG-Bench Multi-View Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#multi_view_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#mv_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 12.56,
+            "schema:description": "Average IoU on Multi-View Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 3.57,
+            "schema:description": "Acc@0.5 on Multi-View Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#ot_sol",
+      "schema:name": "MedSG-Bench Object Tracking - Claude Sonnet 4",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#object_tracking"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-claude-sonnet-4-ot-output",
+        "schema:name": "Claude Sonnet 4 bbox predictions on MedSG-Bench Object Tracking"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_claude-sonnet-4#ot",
+        "schema:name": "Evaluation of Claude Sonnet 4 on MedSG-Bench Object Tracking",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#object_tracking"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#ot_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 23.11,
+            "schema:description": "Average IoU on Object Tracking (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 16.5,
+            "schema:description": "Acc@0.5 on Object Tracking (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#vcg_sol",
+      "schema:name": "MedSG-Bench Visual Concept Grounding - Claude Sonnet 4",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#visual_concept_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-claude-sonnet-4-vcg-output",
+        "schema:name": "Claude Sonnet 4 bbox predictions on MedSG-Bench Visual Concept Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_claude-sonnet-4#vcg",
+        "schema:name": "Evaluation of Claude Sonnet 4 on MedSG-Bench Visual Concept Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#visual_concept_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#vcg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 6.93,
+            "schema:description": "Average IoU on Visual Concept Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 1.4,
+            "schema:description": "Acc@0.5 on Visual Concept Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#vpg_sol",
+      "schema:name": "MedSG-Bench Visual Patch Grounding - Claude Sonnet 4",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#visual_patch_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-claude-sonnet-4-vpg-output",
+        "schema:name": "Claude Sonnet 4 bbox predictions on MedSG-Bench Visual Patch Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_claude-sonnet-4#vpg",
+        "schema:name": "Evaluation of Claude Sonnet 4 on MedSG-Bench Visual Patch Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#visual_patch_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#vpg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 27.44,
+            "schema:description": "Average IoU on Visual Patch Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 13.8,
+            "schema:description": "Acc@0.5 on Visual Patch Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#cmg_sol",
+      "schema:name": "MedSG-Bench Cross-modal Grounding - Claude Sonnet 4",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#cross_modal_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-claude-sonnet-4-cmg-output",
+        "schema:name": "Claude Sonnet 4 bbox predictions on MedSG-Bench Cross-modal Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_claude-sonnet-4#cmg",
+        "schema:name": "Evaluation of Claude Sonnet 4 on MedSG-Bench Cross-modal Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#cross_modal_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#cmg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 9.04,
+            "schema:description": "Average IoU on Cross-modal Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 1.8,
+            "schema:description": "Acc@0.5 on Cross-modal Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#rg_sol",
+      "schema:name": "MedSG-Bench Referring Grounding - Claude Sonnet 4",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#referring_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-claude-sonnet-4-rg-output",
+        "schema:name": "Claude Sonnet 4 bbox predictions on MedSG-Bench Referring Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_claude-sonnet-4#rg",
+        "schema:name": "Evaluation of Claude Sonnet 4 on MedSG-Bench Referring Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#referring_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4#rg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 13.71,
+            "schema:description": "Average IoU on Referring Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 10.8,
+            "schema:description": "Acc@0.5 on Referring Grounding (percentage)"
+          }
+        ]
+      }
+    }
+  ],
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "http://example.org/medsg-bench_evaluation_claude-sonnet-4",
+    "schema:name": "Overall evaluation of Claude Sonnet 4 on MedSG-Bench",
+    "schema:isBasedOn": {
+      "@id": "http://example.org/medsg-bench"
+    },
+    "croissant:evaluatedSolution": {
+      "@id": "http://example.org/medsg-bench_solution_claude-sonnet-4"
+    },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "IoU",
+        "croissant:value": 12.51,
+        "schema:description": "Overall average IoU across all 8 subtasks (percentage)"
+      },
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Acc@0.5",
+        "croissant:value": 5.76,
+        "schema:description": "Overall average Acc@0.5 across all 8 subtasks (percentage)"
+      }
+    ]
+  }
+}

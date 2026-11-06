@@ -1,0 +1,429 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b",
+  "schema:name": "MedSG-Bench Solution - Qwen2.5-VL-72B",
+  "schema:description": "Zero-shot evaluation of Qwen2.5-VL-72B (general-purpose MLLM, 72B) on the MedSG-Bench benchmark, as reported in Table 3 of the MedSG-Bench paper.",
+  "schema:isBasedOn": {
+    "@id": "http://example.org/medsg-bench"
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#implementation",
+    "schema:name": "Qwen2.5-VL-72B",
+    "schema:applicationCategory": "Multimodal Large Language Model",
+    "schema:author": {
+      "@type": "schema:Organization",
+      "schema:name": "Alibaba"
+    }
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "evaluation_setting",
+        "schema:value": "zero-shot"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "model_size",
+        "schema:value": "72B"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "image_resolution",
+        "schema:value": "336x336"
+      }
+    ]
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:medsg-bench-qwen2_5-vl-72b-output",
+    "schema:name": "Qwen2.5-VL-72B bbox predictions on MedSG-Bench (overall)"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#rdg_sol",
+      "schema:name": "MedSG-Bench Registered Difference Grounding - Qwen2.5-VL-72B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#registered_difference_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-qwen2_5-vl-72b-rdg-output",
+        "schema:name": "Qwen2.5-VL-72B bbox predictions on MedSG-Bench Registered Difference Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_qwen2_5-vl-72b#rdg",
+        "schema:name": "Evaluation of Qwen2.5-VL-72B on MedSG-Bench Registered Difference Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#registered_difference_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#rdg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 4.37,
+            "schema:description": "Average IoU on Registered Difference Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 2.6,
+            "schema:description": "Acc@0.5 on Registered Difference Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#nrdg_sol",
+      "schema:name": "MedSG-Bench Non-registered Difference Grounding - Qwen2.5-VL-72B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#non_registered_difference_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-qwen2_5-vl-72b-nrdg-output",
+        "schema:name": "Qwen2.5-VL-72B bbox predictions on MedSG-Bench Non-registered Difference Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_qwen2_5-vl-72b#nrdg",
+        "schema:name": "Evaluation of Qwen2.5-VL-72B on MedSG-Bench Non-registered Difference Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#non_registered_difference_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#nrdg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 3.46,
+            "schema:description": "Average IoU on Non-registered Difference Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 0.8,
+            "schema:description": "Acc@0.5 on Non-registered Difference Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#mv_sol",
+      "schema:name": "MedSG-Bench Multi-View Grounding - Qwen2.5-VL-72B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#multi_view_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-qwen2_5-vl-72b-mv-output",
+        "schema:name": "Qwen2.5-VL-72B bbox predictions on MedSG-Bench Multi-View Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_qwen2_5-vl-72b#mv",
+        "schema:name": "Evaluation of Qwen2.5-VL-72B on MedSG-Bench Multi-View Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#multi_view_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#mv_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 7.22,
+            "schema:description": "Average IoU on Multi-View Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 2.78,
+            "schema:description": "Acc@0.5 on Multi-View Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#ot_sol",
+      "schema:name": "MedSG-Bench Object Tracking - Qwen2.5-VL-72B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#object_tracking"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-qwen2_5-vl-72b-ot-output",
+        "schema:name": "Qwen2.5-VL-72B bbox predictions on MedSG-Bench Object Tracking"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_qwen2_5-vl-72b#ot",
+        "schema:name": "Evaluation of Qwen2.5-VL-72B on MedSG-Bench Object Tracking",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#object_tracking"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#ot_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 13.11,
+            "schema:description": "Average IoU on Object Tracking (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 7.7,
+            "schema:description": "Acc@0.5 on Object Tracking (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#vcg_sol",
+      "schema:name": "MedSG-Bench Visual Concept Grounding - Qwen2.5-VL-72B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#visual_concept_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-qwen2_5-vl-72b-vcg-output",
+        "schema:name": "Qwen2.5-VL-72B bbox predictions on MedSG-Bench Visual Concept Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_qwen2_5-vl-72b#vcg",
+        "schema:name": "Evaluation of Qwen2.5-VL-72B on MedSG-Bench Visual Concept Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#visual_concept_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#vcg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 10.33,
+            "schema:description": "Average IoU on Visual Concept Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 3.5,
+            "schema:description": "Acc@0.5 on Visual Concept Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#vpg_sol",
+      "schema:name": "MedSG-Bench Visual Patch Grounding - Qwen2.5-VL-72B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#visual_patch_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-qwen2_5-vl-72b-vpg-output",
+        "schema:name": "Qwen2.5-VL-72B bbox predictions on MedSG-Bench Visual Patch Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_qwen2_5-vl-72b#vpg",
+        "schema:name": "Evaluation of Qwen2.5-VL-72B on MedSG-Bench Visual Patch Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#visual_patch_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#vpg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 26.45,
+            "schema:description": "Average IoU on Visual Patch Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 6.3,
+            "schema:description": "Acc@0.5 on Visual Patch Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#cmg_sol",
+      "schema:name": "MedSG-Bench Cross-modal Grounding - Qwen2.5-VL-72B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#cross_modal_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-qwen2_5-vl-72b-cmg-output",
+        "schema:name": "Qwen2.5-VL-72B bbox predictions on MedSG-Bench Cross-modal Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_qwen2_5-vl-72b#cmg",
+        "schema:name": "Evaluation of Qwen2.5-VL-72B on MedSG-Bench Cross-modal Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#cross_modal_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#cmg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 16.32,
+            "schema:description": "Average IoU on Cross-modal Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 7.0,
+            "schema:description": "Acc@0.5 on Cross-modal Grounding (percentage)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#rg_sol",
+      "schema:name": "MedSG-Bench Referring Grounding - Qwen2.5-VL-72B",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/medsg-bench#referring_grounding"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:medsg-bench-qwen2_5-vl-72b-rg-output",
+        "schema:name": "Qwen2.5-VL-72B bbox predictions on MedSG-Bench Referring Grounding"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/medsg-bench_evaluation_qwen2_5-vl-72b#rg",
+        "schema:name": "Evaluation of Qwen2.5-VL-72B on MedSG-Bench Referring Grounding",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/medsg-bench#referring_grounding"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b#rg_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "IoU",
+            "croissant:value": 20.19,
+            "schema:description": "Average IoU on Referring Grounding (percentage)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Acc@0.5",
+            "croissant:value": 14.1,
+            "schema:description": "Acc@0.5 on Referring Grounding (percentage)"
+          }
+        ]
+      }
+    }
+  ],
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "http://example.org/medsg-bench_evaluation_qwen2_5-vl-72b",
+    "schema:name": "Overall evaluation of Qwen2.5-VL-72B on MedSG-Bench",
+    "schema:isBasedOn": {
+      "@id": "http://example.org/medsg-bench"
+    },
+    "croissant:evaluatedSolution": {
+      "@id": "http://example.org/medsg-bench_solution_qwen2_5-vl-72b"
+    },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "IoU",
+        "croissant:value": 13.35,
+        "schema:description": "Overall average IoU across all 8 subtasks (percentage)"
+      },
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Acc@0.5",
+        "croissant:value": 6.12,
+        "schema:description": "Overall average Acc@0.5 across all 8 subtasks (percentage)"
+      }
+    ]
+  }
+}

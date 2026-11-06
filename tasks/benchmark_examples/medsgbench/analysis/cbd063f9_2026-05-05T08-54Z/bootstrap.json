@@ -1,0 +1,133 @@
+{
+  "run": "cbd063f9_2026-05-05T08-54Z",
+  "n_bootstrap": 1000,
+  "seed": 42,
+  "metric_keys": [
+    "iou",
+    "hit_at_0_5"
+  ],
+  "metrics_skipped_api_dependent": [],
+  "metrics_skipped_api_dependent_note": "MedSG-Bench Task 6 uses only geometric metrics (xyxy IoU and the IoU>=0.5 threshold). No LLM-as-a-judge metrics are present in this benchmark; the skip-API-dependent-metrics rule is vacuously satisfied.",
+  "cells": [
+    {
+      "pipeline": "paper2code",
+      "model": "3b",
+      "n": 1000,
+      "iou_pct": {
+        "mean": 27.2150278,
+        "lo": 26.515601247500005,
+        "hi": 27.888385805
+      },
+      "acc_at_0_5_pct": {
+        "mean": 3.2,
+        "lo": 2.1975000000000002,
+        "hi": 4.2
+      }
+    },
+    {
+      "pipeline": "paper2code",
+      "model": "7b",
+      "n": 1000,
+      "iou_pct": {
+        "mean": 30.8066352,
+        "lo": 29.880821414999996,
+        "hi": 31.7032722325
+      },
+      "acc_at_0_5_pct": {
+        "mean": 9.8,
+        "lo": 7.8,
+        "hi": 11.799999999999999
+      }
+    },
+    {
+      "pipeline": "paper2code",
+      "model": "32b",
+      "n": 1000,
+      "iou_pct": {
+        "mean": 27.204058599999996,
+        "lo": 26.285283990000003,
+        "hi": 28.141070005000007
+      },
+      "acc_at_0_5_pct": {
+        "mean": 7.8,
+        "lo": 6.3,
+        "hi": 9.502499999999998
+      }
+    },
+    {
+      "pipeline": "paper2code",
+      "model": "72b",
+      "n": 1000,
+      "iou_pct": {
+        "mean": 28.076005000000002,
+        "lo": 27.224666652499995,
+        "hi": 28.9137745975
+      },
+      "acc_at_0_5_pct": {
+        "mean": 7.000000000000001,
+        "lo": 5.5,
+        "hi": 8.7
+      }
+    },
+    {
+      "pipeline": "ct2code",
+      "model": "3b",
+      "n": 1000,
+      "iou_pct": {
+        "mean": 26.830575999999994,
+        "lo": 26.144560199999994,
+        "hi": 27.563899152500003
+      },
+      "acc_at_0_5_pct": {
+        "mean": 3.1,
+        "lo": 2.0,
+        "hi": 4.2
+      }
+    },
+    {
+      "pipeline": "ct2code",
+      "model": "7b",
+      "n": 1000,
+      "iou_pct": {
+        "mean": 30.172392999999996,
+        "lo": 29.268515662500004,
+        "hi": 31.1138808775
+      },
+      "acc_at_0_5_pct": {
+        "mean": 9.700000000000001,
+        "lo": 7.8,
+        "hi": 11.5025
+      }
+    },
+    {
+      "pipeline": "ct2code",
+      "model": "32b",
+      "n": 1000,
+      "iou_pct": {
+        "mean": 27.204058599999996,
+        "lo": 26.243623512500008,
+        "hi": 28.158595865000002
+      },
+      "acc_at_0_5_pct": {
+        "mean": 7.8,
+        "lo": 6.2,
+        "hi": 9.502499999999998
+      }
+    },
+    {
+      "pipeline": "ct2code",
+      "model": "72b",
+      "n": 1000,
+      "iou_pct": {
+        "mean": 14.385521899999997,
+        "lo": 13.3115146725,
+        "hi": 15.3997120025
+      },
+      "acc_at_0_5_pct": {
+        "mean": 2.0,
+        "lo": 1.2,
+        "hi": 2.9000000000000004
+      }
+    }
+  ]
+}
