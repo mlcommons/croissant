@@ -23,10 +23,8 @@ class Concatenate(Operation):
         files = [
             file for arg in args for file in ([arg] if isinstance(arg, Path) else arg)
         ]
-        return pd.DataFrame(
-            {
-                FileProperty.filepath: [os.fspath(file.filepath) for file in files],
-                FileProperty.filename: [file.filename for file in files],
-                FileProperty.fullpath: [os.fspath(file.fullpath) for file in files],
-            }
-        )
+        return pd.DataFrame({
+            FileProperty.filepath: [os.fspath(file.filepath) for file in files],
+            FileProperty.filename: [file.filename for file in files],
+            FileProperty.fullpath: [os.fspath(file.fullpath) for file in files],
+        })
