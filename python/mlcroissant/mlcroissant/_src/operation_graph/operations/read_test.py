@@ -13,6 +13,7 @@ import pandas as pd
 import pandas.testing as pd_testing
 import pytest
 
+from mlcroissant._src.core.constants import DataType
 from mlcroissant._src.core.constants import EncodingFormat
 from mlcroissant._src.core.path import Path
 from mlcroissant._src.operation_graph.operations.read import _get_sampling_rate
@@ -234,3 +235,54 @@ def test_read_gzipped_csv(tmpdir, filename):
     df = operation.call(Path(filepath=filepath, fullpath=pathlib.PurePath()))
     assert df["a"].tolist() == [1]
     assert df["b"].tolist() == [2]
+
+
+def _read_csv(tmpdir, content: str, fields):
+    tmpdir = epath.Path(tmpdir)
+    filepath = tmpdir / "file.csv"
+    filepath.write_text(content)
+    operation = Read(
+        operations=operations(),
+        node=create_test_file_object(encoding_formats=[EncodingFormat.CSV]),
+        folder=tmpdir,
+        fields=fields,
+    )
+    return operation.call(Path(filepath=filepath, fullpath=pathlib.PurePath()))
+
+
+def _column_field(column: str, data_types):
+    return create_test_field(
+        id=column,
+        name=column,
+        data_types=data_types,
+        source=Source(extract=Extract(column=column)),
+    )
+
+
+def test_read_csv_keeps_text_columns_as_strings(tmpdir):
+    # Identifiers declared sc:Text (FIPS, ZIP codes) keep their leading zeros, while
+    # columns declared as numbers are still parsed as numbers.
+    fields = (
+        _column_field("fips", [DataType.TEXT]),
+        _column_field("population", [DataType.INTEGER]),
+    )
+    df = _read_csv(tmpdir, "fips,population\n06073,3343364\n", fields)
+    assert df["fips"].tolist() == ["06073"]
+    assert df["population"].tolist() == [3343364]
+
+
+def test_read_csv_text_column_with_an_empty_cell(tmpdir):
+    # Without the declared type, pandas reads this column as float: "41740.0".
+    fields = (_column_field("cbsa", [DataType.TEXT]),)
+    df = _read_csv(tmpdir, "cbsa,name\n41740,San Diego\n,Unknown\n", fields)
+    assert df["cbsa"].iloc[0] == "41740"
+    assert pd.isna(df["cbsa"].iloc[1])
+
+
+def test_read_csv_with_a_field_without_data_types(tmpdir):
+    # Reading must not record validation errors on fields (as `field.data_type`
+    # would for a field without data types).
+    field = _column_field("a", [])
+    df = _read_csv(tmpdir, "a,b\n1,2\n", (field,))
+    assert df["a"].tolist() == [1]
+    assert not field.ctx.issues.errors
