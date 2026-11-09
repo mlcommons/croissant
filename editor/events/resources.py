@@ -76,8 +76,8 @@ def handle_resource_change(event: ResourceEvent, resource: Resource, key: str):
 
 def _create_instance1_from_instance2(instance1: Resource, instance2: type):
     """Creates instance2 by retaining as many common attributes as possible."""
-    attributes1 = set((field.name for field in dataclasses.fields(instance1)))
-    attributes2 = set((field.name for field in dataclasses.fields(instance2)))
+    attributes1 = set(field.name for field in dataclasses.fields(instance1))
+    attributes2 = set(field.name for field in dataclasses.fields(instance2))
     common_attributes = attributes2.intersection(attributes1)
     return instance2(
         **{attribute: getattr(instance1, attribute) for attribute in common_attributes}
