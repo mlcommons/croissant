@@ -1,0 +1,663 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "geocr": "http://mlcommons.org/croissant/geo/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "equivalentProperty": "cr:equivalentProperty",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "prov": "http://www.w3.org/ns/prov#",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "duo": "http://purl.obolibrary.org/obo/",
+    "containedIn": "cr:containedIn"
+  },
+  "@type": "sc:Dataset",
+  "name": "hls-burn-scars",
+  "description": "Geospatial dataset containing Harmonized Landsat and Sentinel-2 imagery of burn scars and the associated masks for the years 2018-2021 over the contiguous United States.",
+  "conformsTo": [
+    "http://mlcommons.org/croissant/1.1",
+    "http://mlcommons.org/croissant/RAI/",
+    "http://mlcommons.org/croissant/geo/"
+  ],
+  "citeAs": "@software{HLS_Foundation_2023,\n    author = {Phillips, Christopher and Roy, Sujit and Ankur, Kumar and Ramachandran, Rahul},\n    doi    = {10.57967/hf/0956},\n    month  = aug,\n    title  = {{HLS Foundation Burnscars Dataset}},\n    url    = {https://huggingface.co/ibm-nasa-geospatial/hls_burn_scars},\n    year   = {2023}\n}",
+  "creator": [
+    {
+      "@type": "sc:Person",
+      "name": "Christopher Phillips"
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Sujit Roy"
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Kumar Ankur"
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Rahul Ramachandran"
+    }
+  ],
+  "datePublished": "2023-08-01",
+  "geocr:bandConfiguration": {
+    "@type": "geocr:BandConfiguration",
+    "geocr:bandNamesList": [
+      "Blue",
+      "Green",
+      "Red",
+      "NIR",
+      "SWIR1",
+      "SWIR2"
+    ],
+    "geocr:totalBands": 6
+  },
+  "geocr:coordinateReferenceSystem": "EPSG:32610",
+  "geocr:samplingStrategy": "512x512 windows centered around MTBS burn scar coordinates from HLS tiles.",
+  "geocr:spatialBias": "Concentrated over the contiguous United States (CONUS).",
+  "geocr:spatialResolution": {
+    "@type": "sc:QuantitativeValue",
+    "unitText": "m",
+    "value": 30
+  },
+  "geocr:spectralBandMetadata": [
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "Blue",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 65
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 490
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "Green",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 60
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 560
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "Red",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 30
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 665
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "NIR",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 30
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 865
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "SWIR1",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 90
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 1610
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "SWIR2",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 180
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 2200
+      }
+    }
+  ],
+  "geocr:temporalResolution": {
+    "@type": "sc:QuantitativeValue",
+    "unitText": "weeks",
+    "value": 8
+  },
+  "keywords": [
+    "hls_burn_scars",
+    "HLS",
+    "burn scars",
+    "fire",
+    "remote sensing",
+    "satellite imagery",
+    "Landsat",
+    "Sentinel-2",
+    "geospatial"
+  ],
+  "license": "CC BY-SA 4.0",
+  "rai:annotatorDemographics": "MTBS project team geospatial analysts and forestry specialists",
+  "rai:dataBiases": "Biased toward CONUS fire events from 2018-2021; scenes are centered on burn scars rather than arbitrary locations.",
+  "rai:dataCollection": "Formed by co-locating MTBS shapefiles with HLS imagery, manually filtering for cloud cover.",
+  "rai:dataLimitations": "Manually filtered for cloud-free scenes (idealized dataset); burn scars near tile edges are offset from the center.",
+  "rai:dataSocialImpact": "Enables research into forest fire mapping, recovery tracking, and ecological risk modeling.",
+  "rai:dataUseCases": "Training and validating geospatial machine learning models for semantic segmentation of satellite burn scars.",
+  "rai:personalSensitiveInformation": "Contains no personal sensitive information; consists solely of public satellite imagery and mask grids.",
+  "spatialCoverage": {
+    "@type": "Place",
+    "geo": {
+      "@type": "GeoShape",
+      "box": "24.396308 -124.848974 49.384358 -66.885444"
+    }
+  },
+  "url": "https://huggingface.co/datasets/harshinde/hls/resolve/main/hls_burn_scars.zip",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "hls-burn-scars-archive",
+      "name": "hls-burn-scars-archive",
+      "description": "Zip archive containing hls_burn_scars dataset",
+      "contentUrl": "https://huggingface.co/datasets/harshinde/hls/resolve/main/hls_burn_scars.zip",
+      "encodingFormat": "application/zip",
+      "sha256": "dc1ae02e16dd4b7ec99130135a7887305d9e9a664c0ec521e409da207684e8e3"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "train-images",
+      "name": "train-images",
+      "description": "Training RGB Images",
+      "containedIn": {
+        "@id": "hls-burn-scars-archive"
+      },
+      "encodingFormat": "image/tiff",
+      "includes": "train/images/*.tif"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "train-masks",
+      "name": "train-masks",
+      "description": "Training Mask Images",
+      "containedIn": {
+        "@id": "hls-burn-scars-archive"
+      },
+      "encodingFormat": "image/tiff",
+      "includes": "train/masks/*.tif"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "valid-images",
+      "name": "valid-images",
+      "description": "Validation RGB Images",
+      "containedIn": {
+        "@id": "hls-burn-scars-archive"
+      },
+      "encodingFormat": "image/tiff",
+      "includes": "valid/images/*.tif"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "valid-masks",
+      "name": "valid-masks",
+      "description": "Validation Mask Images",
+      "containedIn": {
+        "@id": "hls-burn-scars-archive"
+      },
+      "encodingFormat": "image/tiff",
+      "includes": "valid/masks/*.tif"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "train_images",
+      "name": "train images",
+      "geocr:spatialResolution": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "m",
+        "value": 30
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "train/filename",
+          "name": "filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "train-images"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train/image",
+          "name": "image",
+          "cr:arrayShape": "512,512,6",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": [
+              "Blue",
+              "Green",
+              "Red",
+              "NIR",
+              "SWIR1",
+              "SWIR2"
+            ],
+            "geocr:totalBands": 6
+          },
+          "source": {
+            "fileSet": {
+              "@id": "train-images"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "train_masks",
+      "name": "train masks",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "train/mask_filename",
+          "name": "mask_filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "train-masks"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train/mask",
+          "name": "mask",
+          "cr:arrayShape": "512,512,1",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": "mask",
+            "geocr:totalBands": 1
+          },
+          "source": {
+            "fileSet": {
+              "@id": "train-masks"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "train_examples",
+      "name": "train examples",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "train_examples/image_key",
+          "name": "image_key",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "train/mask_filename"
+            },
+            "transform": {
+              "regex": "^(.+?)(?:\\.mask\\.tif)?$"
+            }
+          },
+          "source": {
+            "field": {
+              "@id": "train/filename"
+            },
+            "transform": {
+              "regex": "^(.+?)(?:_merged\\.tif)?$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train_examples/image",
+          "name": "image",
+          "cr:arrayShape": "512,512,6",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": [
+              "Blue",
+              "Green",
+              "Red",
+              "NIR",
+              "SWIR1",
+              "SWIR2"
+            ],
+            "geocr:totalBands": 6
+          },
+          "source": {
+            "field": {
+              "@id": "train/image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train_examples/mask",
+          "name": "mask",
+          "cr:arrayShape": "512,512,1",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": "mask",
+            "geocr:totalBands": 1
+          },
+          "source": {
+            "field": {
+              "@id": "train/mask"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "valid_images",
+      "name": "valid images",
+      "geocr:spatialResolution": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "m",
+        "value": 30
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "valid/filename",
+          "name": "filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "valid-images"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "valid/image",
+          "name": "image",
+          "cr:arrayShape": "512,512,6",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": [
+              "Blue",
+              "Green",
+              "Red",
+              "NIR",
+              "SWIR1",
+              "SWIR2"
+            ],
+            "geocr:totalBands": 6
+          },
+          "source": {
+            "fileSet": {
+              "@id": "valid-images"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "valid_masks",
+      "name": "valid masks",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "valid/mask_filename",
+          "name": "mask_filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "valid-masks"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "valid/mask",
+          "name": "mask",
+          "cr:arrayShape": "512,512,1",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": "mask",
+            "geocr:totalBands": 1
+          },
+          "source": {
+            "fileSet": {
+              "@id": "valid-masks"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ],
+      "rai:hasSyntheticData": true,
+      "prov:wasGeneratedBy": {
+        "@type": "prov:Activity",
+        "name": "Validation Mask Synthesis Activity",
+        "prov:wasAssociatedWith": {
+          "@type": "prov:SoftwareAgent",
+          "name": "Prithvi Mask Synthesis Engine",
+          "description": "Generates synthetic masks for validation splits."
+        }
+      }
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "valid_examples",
+      "name": "valid examples",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "valid_examples/image_key",
+          "name": "image_key",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "valid/mask_filename"
+            },
+            "transform": {
+              "regex": "^(.+?)(?:\\.mask\\.tif)?$"
+            }
+          },
+          "source": {
+            "field": {
+              "@id": "valid/filename"
+            },
+            "transform": {
+              "regex": "^(.+?)(?:_merged\\.tif)?$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "valid_examples/image",
+          "name": "image",
+          "cr:arrayShape": "512,512,6",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": [
+              "Blue",
+              "Green",
+              "Red",
+              "NIR",
+              "SWIR1",
+              "SWIR2"
+            ],
+            "geocr:totalBands": 6
+          },
+          "source": {
+            "field": {
+              "@id": "valid/image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "valid_examples/mask",
+          "name": "mask",
+          "cr:arrayShape": "512,512,1",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": "mask",
+            "geocr:totalBands": 1
+          },
+          "source": {
+            "field": {
+              "@id": "valid/mask"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "prov:wasDerivedFrom": "https://hls.gsfc.nasa.gov/",
+  "prov:wasGeneratedBy": {
+    "@type": "prov:Activity",
+    "name": "HLS Imagery Preprocessing Activity",
+    "description": "Re-projecting, subsetting, and normalizing HLS bands.",
+    "prov:used": "https://hls.gsfc.nasa.gov/",
+    "prov:wasAssociatedWith": {
+      "@type": "prov:SoftwareAgent",
+      "name": "IBM-NASA Prithvi Preprocessing Pipeline v2.0",
+      "description": "Automated band normalization pipeline."
+    }
+  },
+  "prov:wasAttributedTo": {
+    "@type": "prov:Agent",
+    "name": "Monitoring Trends in Burn Severity (MTBS) group",
+    "url": "https://mtbs.gov/"
+  },
+  "usageInfo": {
+    "@type": "odrl:Offer",
+    "name": "Usage Policy",
+    "odrl:permission": {
+      "@type": "odrl:Permission",
+      "odrl:action": {
+        "@id": "odrl:use"
+      },
+      "odrl:constraint": {
+        "@type": "odrl:Constraint",
+        "odrl:leftOperand": {
+          "@id": "odrl:purpose"
+        },
+        "odrl:operator": {
+          "@id": "odrl:eq"
+        },
+        "odrl:rightOperand": {
+          "@id": "duo:DUO_0000042"
+        }
+      }
+    }
+  }
+}
