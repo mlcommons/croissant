@@ -1,7 +1,7 @@
 # mlcroissant 🥐
 
 Discover `mlcroissant 🥐` with this
-[introduction tutorial in Google Colab](https://colab.sandbox.google.com/github/mlcommons/croissant/blob/main/python/mlcroissant/recipes/introduction.ipynb).
+[introduction tutorial in Google Colab](https://colab.research.google.com/github/mlcommons/croissant/blob/main/python/mlcroissant/recipes/introduction.ipynb).
 
 ## Python requirements
 
@@ -46,7 +46,7 @@ conda install graphviz
 python3 -m pip install ".[dev]"
 ```
 
-## Verify/load a Croissant dataset
+## Verify, load, and visualize a Croissant dataset
 
 ```bash
 mlcroissant validate --jsonld ../../datasets/1.0/titanic/metadata.json
@@ -65,6 +65,16 @@ mlcroissant load \
     --record_set passengers \
     --num_records 10
 ```
+
+To generate a standalone interactive HTML visualization of a Croissant dataset:
+
+```bash
+mlcroissant visualize \
+    --jsonld ../../datasets/1.0/titanic/metadata.json \
+    --output titanic.html
+```
+
+You can also browse pre-rendered dataset pages in the [Croissant Dataset Gallery](https://docs.mlcommons.org/croissant/datasets/index.html) or explore the [full documentation](https://docs.mlcommons.org/croissant/).
 
 ### Loading a `distribution` via `git+https`
 
@@ -109,7 +119,7 @@ class CreativeWork(Node):
     )
 ```
 
-**Example 2**: implement [RecordSet](https://mlcommons.github.io/croissant/docs/croissant-spec.html#recordset):
+**Example 2**: implement [RecordSet](https://docs.mlcommons.org/croissant/docs/croissant-spec-1.1.html#recordset):
 
 ```python
 @mlc_dataclasses.dataclass

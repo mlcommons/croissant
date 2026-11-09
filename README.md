@@ -1,13 +1,13 @@
 # Croissant 🥐
 
-[![CI](https://github.com/mlcommons/datasets_format/actions/workflows/ci.yml/badge.svg)](https://github.com/mlcommons/datasets_format/actions/workflows/ci.yml/badge.svg)
+[![CI](https://github.com/mlcommons/croissant/actions/workflows/ci.yml/badge.svg)](https://github.com/mlcommons/croissant/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
 ## Summary
 
 Croissant 🥐 is a high-level format for machine learning datasets that combines metadata, resource file descriptions, data structure, and default ML semantics into a single file; it works with existing datasets to make them easier to find, use, and support with tools. Croissant builds on <a href="https://schema.org/">schema.org</a>, and its Dataset vocabulary, a widely used format to represent datasets on the Web, and make them searchable. You can find a gentle introduction in the companion paper [Croissant: A Metadata Format for ML-Ready Datasets](https://doi.org/10.1145/3650203.3663326).
 
-<img src='/docs/images/croissant-summary.png' width='500'>
+<img src='docs/images/croissant-summary.png' width='500'>
 
 ## Trying It Out
 
@@ -125,14 +125,21 @@ Here is an extremely simple example of the Croissant format, with comments showi
 
 ## Resources
 
-- [Format Specification (Croissant 1.1)](https://docs.mlcommons.org/croissant/docs/croissant-spec-1.1.html)
-- [Github Repo](https://github.com/mlcommons/croissant)
-  - [mlcroissant code](https://github.com/mlcommons/croissant/tree/main/python/mlcroissant)
-  - Examples
-  - Verifier
-- [Shared Drive](https://drive.google.com/corp/drive/folders/1StGRO4CGWUsX9kHdM5aOQNOF1L5e2y97)
-  - Requirements Document
-  - Responsible AI Approach
+- [Documentation Site](https://docs.mlcommons.org/croissant/)
+- Format Specifications:
+  - [Croissant 1.1](https://docs.mlcommons.org/croissant/docs/croissant-spec-1.1.html) (latest) and [Croissant 1.0](https://docs.mlcommons.org/croissant/docs/croissant-spec-1.0.html)
+  - [Responsible AI (RAI) Extension](https://docs.mlcommons.org/croissant/docs/croissant-rai-spec.html)
+  - [GeoCroissant Extension](https://docs.mlcommons.org/croissant/docs/croissant-geo-spec.html)
+  - [Croissant Tasks](tasks/README.md) ([Interactive Tasks Visualizer](https://docs.mlcommons.org/croissant/tasks/index.html))
+- Datasets & Visualizer:
+  - [Interactive Dataset Gallery](https://docs.mlcommons.org/croissant/datasets/index.html)
+  - [Example Croissant Files](datasets/)
+- Tools & Libraries:
+  - [`mlcroissant` Python library & CLI](python/mlcroissant/README.md) (`validate`, `load`, `visualize`) and [notebook recipes](python/mlcroissant/recipes)
+  - [Croissant Visual Editor](editor/README.md)
+  - [Eclair MCP Server](eclair/docs/index.md)
+  - [Dataset Health Monitor](health/README.md) & [Online Validator](health/croissant-validator-neurips/README.md)
+  - [Croissant RDF Tools](croissant-rdf/README.md)
 
 <!---
 ## How to use
@@ -146,9 +153,9 @@ Here is an extremely simple example of the Croissant format, with comments showi
 ## Getting involved
 
 - [Join](https://mlcommons.org/community/subscribe/) the mailing list
-- Attend Croissant meetings (please joint the list to automatically receive the invite)
-- [File issues for](https://github.com/mlcommons/croissant) bugs for feature requests
-- [Contribute to the code](https://github.com/mlcommons/croissant). To merge PRs, you will need to sign the MLCommons Association CLA at: https://mlcommons.org/community/subscribe/
+- Attend Croissant meetings (please join the list to automatically receive the invite)
+- [File issues](https://github.com/mlcommons/croissant/issues) for bugs or feature requests
+- [Contribute to the code](CONTRIBUTING.md). To merge PRs, you will need to sign the MLCommons Association CLA at: https://mlcommons.org/community/subscribe/
 
 ## Integrations
 
@@ -193,5 +200,5 @@ Thank you for supporting Croissant! 🙂
 ```
 
 ## Licensing
-- Croissant implementation and examples are licensed under Apache 2.
+- Croissant implementation and examples are licensed under [Apache 2.0](LICENSE.md).
 - <a href="https://mlcommons.org/croissant/1.1">Croissant specification</a>© 2024-2026 by <a href="https://mlcommons.org">MLCommons Association and contributors</a> is licensed under <a href="https://creativecommons.org/licenses/by-nd/4.0/">CC BY-ND 4.0</a> <br> <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg" alt="" style="max-width: 1em;max-height:1em;margin-left: .2em;"> <br>Note: The CC BY-ND license was selected to facilitate widespread adoption and use of the Croissant specification while maintaining a canonical reference version. However, this license can raise questions around what downstream uses are permissible. MLCommons wants to assure all prospective users that they are free to remix and adapt the Croissant specification for their internal use. If users want to distribute something they have created based on or that adds to the specification, they can as long as the Croissant specification is referenced through a link, (i.e., not incorporated directly) and the specification itself isn't changed. Just remember to include the attribution. Don’t hesitate to reach out if you have any questions.

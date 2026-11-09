@@ -21,7 +21,7 @@ Clone the Repository
 
 ```bash
 git clone https://github.com/mlcommons/croissant.git
-cd eclair
+cd croissant/eclair
 ```
 
 Install Dependencies
@@ -63,7 +63,7 @@ This script will:
 - Start the Eclair server automatically
 
 
-<img src="../../images/eclair-screen.png" alt="Eclair Diagram" style="max-width: 500px; height: auto;"/>
+<img src="../images/eclair-screen.png" alt="Eclair Diagram" style="max-width: 500px; height: auto;"/>
 
 
 ## Configuration
