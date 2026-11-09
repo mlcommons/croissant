@@ -1,0 +1,79 @@
+target_var: oline 26
+other_vars: 
+  - b_na 14
+early_return:
+  - 10
+  - 12
+  - 20
+  - 36
+variables:
+  oline 26:
+    datadep:
+      - ix 15
+      - ix 26
+      - s 18
+      - t 25
+      - letter 8
+    controldep:
+      - c 20
+  ix 26:
+    datadep:
+      - ix 15
+      - ix 26
+    controldep:
+      - c 20
+  letter 8:
+    datadep: Null
+    controldep: Null
+  s 18:
+    datadep:
+      - c 9
+      - c 27
+    controldep:
+      - c 16
+  ix 15:
+    datadep: Null
+    controldep:
+      - c 12
+  t 25:
+    datadep:
+      - c 19
+    controldep:
+      - c 20
+  c 19:
+    datadep: Null
+    controldep: 
+      - c 16
+  c 20:
+    reset: False
+    datadep:
+      - c 19
+    controldep:
+      - c 16
+  c 16:
+    reset: False
+    datadep: 
+      - c 9
+      - c 27
+    controldep:
+      - c 12
+      - c 20
+      - c 16
+  c 9:
+    datadep: Null
+    controldep: Null
+  c 27:
+    datadep: Null
+    controldep: 
+      - c 20
+  c 12:
+    reset: False
+    datadep:
+      - c 9
+    controldep:
+      - c 10
+  c 10:
+    reset: False
+    datadep:
+      - c 9
+    controldep: Null

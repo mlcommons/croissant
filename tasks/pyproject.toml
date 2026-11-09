@@ -9,8 +9,13 @@ description = "A validator and toolkit for Croissant Tasks"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "datasets>=4.8.5",
+    "evaluate>=0.4.6",
+    "nltk>=3.9.4",
+    "pillow>=12.2.0",
+    "pycocotools>=2.0.11",
     "pyshacl",
-    "rdflib"
+    "rdflib",
 ]
 
 [project.optional-dependencies]

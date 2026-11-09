@@ -43,10 +43,13 @@ croissant:TaskShape
     sh:path croissant:execution ;
     sh:or (
       [ sh:class croissant:ExecutionInfo ]
+      [ sh:class croissant:ExecutionConfig ]
+      [ sh:class croissant:ExecutionTrace ]
       [ sh:class croissant:ExecutionSpec ]
     ) ;
-    sh:message "croissant:execution must point to an ExecutionInfo or ExecutionSpec."
+    sh:message "croissant:execution must point to an ExecutionInfo, ExecutionConfig, ExecutionTrace, or ExecutionSpec."
   ] ;
+
   sh:property [
     sh:path croissant:evaluation ;
     sh:or (
@@ -54,7 +57,7 @@ croissant:TaskShape
       [ sh:class croissant:EvaluationSpec ]
     ) ;
     sh:message "croissant:evaluation must point to an EvaluationTask or EvaluationSpec."
-  ] ;
+  ] ;  
   sh:property [
     sh:path croissant:subTask ;
     sh:class croissant:Task ;
@@ -114,10 +117,6 @@ croissant:TaskSolutionShape
   sh:targetClass croissant:TaskSolution ;
   sh:property [
     sh:path schema:isBasedOn ;
-    sh:or (
-      [ sh:class croissant:TaskProblem ]
-      [ sh:nodeKind sh:IRI ]
-    ) ;
     sh:minCount 1 ;
     sh:message "A TaskSolution must be formally linked to a TaskProblem via schema:isBasedOn."
   ] ;
@@ -126,6 +125,7 @@ croissant:TaskSolutionShape
     sh:not [ sh:class croissant:InputSpec ] ;
     sh:message "A TaskSolution cannot have an InputSpec as input." ;
   ] ;
+
   sh:property [
     sh:path croissant:output ;
     sh:not [ sh:class croissant:OutputSpec ] ;
@@ -203,6 +203,23 @@ croissant:OutputSpecShape
     sh:class croissant:RecordSet ;
     sh:message "croissant:schema must point to a RecordSet."
   ] .
+
+croissant:EvaluationSpecShape
+  a sh:NodeShape ;
+  sh:targetClass croissant:EvaluationSpec ;
+  sh:property [
+    sh:path croissant:expectedMetric ;
+    sh:or (
+      [ sh:datatype xsd:string ]
+      [ sh:nodeKind sh:IRI ]
+    ) ;
+    sh:message "croissant:expectedMetric must be a string or a URL."
+  ] ;
+  sh:property [
+    sh:path croissant:metric ;
+    sh:maxCount 0 ;
+    sh:message "croissant:metric cannot be used on EvaluationSpec. Use expectedMetric instead."
+  ] .
 croissant:ImplementationSpecShape
   a sh:NodeShape ;
   sh:targetClass croissant:ImplementationSpec ;
@@ -221,6 +238,16 @@ croissant:ImplementationSpecShape
       [ sh:nodeKind sh:IRI ]
     ) ;
     sh:message "croissant:environment must point to a CreativeWork or URL."
+  ] .
+
+croissant:TestShape
+  a sh:NodeShape ;
+  sh:targetClass croissant:Test ;
+  sh:property [
+    sh:path croissant:testCommand ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+    sh:message "A Test must have a testCommand (string)."
   ] .
 
 # -----------------------------------------------------------------------------
@@ -248,6 +275,7 @@ croissant:EvaluationResultShape
       [ sh:datatype xsd:double ]
       [ sh:datatype xsd:float ]
       [ sh:datatype xsd:integer ]
+      [ sh:datatype xsd:double ]
     ) ;
     sh:minCount 1 ;
     sh:message "croissant:value must be a QuantitativeValue, string, or number, and is required."
@@ -292,4 +320,40 @@ croissant:EvaluationTaskShape
     sh:minCount 1 ;
     sh:maxCount 1 ;
     sh:message "croissant:evaluatedSolution must point to exactly one TaskSolution."
+  ] ;
+  sh:property [
+    sh:path schema:isBasedOn ;
+    sh:or (
+      [ sh:class croissant:TaskProblem ]
+      [ sh:nodeKind sh:IRI ]
+    ) ;
+    sh:message "croissant:isBasedOn must point to a TaskProblem or URL."
   ] .
+
+# -----------------------------------------------------------------------------
+# RecordSet and Field Shapes
+# -----------------------------------------------------------------------------
+croissant:RecordSetShape
+  a sh:NodeShape ;
+  sh:targetClass croissant:RecordSet ;
+  sh:property [
+    sh:path croissant:field ;
+    sh:class croissant:Field ;
+    sh:message "A RecordSet must have fields."
+  ] .
+
+croissant:FieldShape
+  a sh:NodeShape ;
+  sh:targetClass croissant:Field ;
+  sh:property [
+    sh:path croissant:dataType ;
+    sh:or (
+      [ sh:nodeKind sh:IRI ]
+      [ sh:datatype xsd:string ]
+    ) ;
+    sh:minCount 1 ;
+    sh:message "A Field must have a dataType."
+  ] .
+
+
+

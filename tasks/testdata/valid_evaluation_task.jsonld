@@ -9,13 +9,15 @@
     "@type": "croissant:TaskSolution",
     "@id": "http://example.org/my-solution",
     "schema:isBasedOn": {
-      "@id": "http://example.org/my-problem"
+      "@id": "http://example.org/ValidProblem"
     },
     "croissant:implementation": {
-      "@type": "schema:SoftwareApplication",
-      "@id": "http://example.org/my-model"
+      "@type": "schema:SoftwareSourceCode",
+      "@id": "http://example.org/concreteImplementation"
     }
   },
+
+
   "croissant:evaluationResults": [
     {
       "@type": "croissant:EvaluationResult",

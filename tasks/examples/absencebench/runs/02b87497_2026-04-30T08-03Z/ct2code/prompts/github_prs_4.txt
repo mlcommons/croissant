@@ -1,0 +1,94 @@
+You are roleplaying as the LLM addressed by the prompts below. Respond as that model would. Hard constraints: do NOT use any tools, do NOT write to any files, do NOT explain what you are doing, do NOT add a preamble like "Here are the missing lines:". Your final assistant message must contain ONLY the literal model output text.
+
+The prompts are delimited below. The SYSTEM PROMPT defines the model role, and the USER MESSAGE is what the user sent.
+
+=== SYSTEM PROMPT ===
+You are helping a software developer determine if their merge of a pull request was successful. The developer had to edit the commit history and just wants to make sure that they have not changed what will be merged. They will list the changed lines. Your job is to figure out if they have missed any insertions or deletions from the original merge. Only pay attention to the insertions and deletions (ignore the context of the diff).
+=== USER MESSAGE ===
+Here is the complete original diff:
+diff --git a/src/Illuminate/Database/Eloquent/Concerns/HasRelationships.php b/src/Illuminate/Database/Eloquent/Concerns/HasRelationships.php
+index fc211e179a5..b27b7110909 100644
+--- a/src/Illuminate/Database/Eloquent/Concerns/HasRelationships.php
++++ b/src/Illuminate/Database/Eloquent/Concerns/HasRelationships.php
+@@ -1088,7 +1088,11 @@ public function relationLoaded($key)
+         if ($nestedRelation !== null) {
+             $relatedModels = is_iterable($relatedModels = $this->$relation)
+                 ? $relatedModels
+-                : [$relatedModels];
++                : array_filter([$relatedModels]);
++
++            if (count($relatedModels) === 0) {
++                return false;
++            }
+ 
+             foreach ($relatedModels as $related) {
+                 if (! $related->relationLoaded($nestedRelation)) {
+diff --git a/tests/Integration/Database/EloquentModelRelationLoadedTest.php b/tests/Integration/Database/EloquentModelRelationLoadedTest.php
+index 548a50d1195..265926d9cd4 100644
+--- a/tests/Integration/Database/EloquentModelRelationLoadedTest.php
++++ b/tests/Integration/Database/EloquentModelRelationLoadedTest.php
+@@ -135,6 +135,21 @@ public function testWhenParentRelationIsASingleInstance()
+         $this->assertTrue($model->relationLoaded('two.one'));
+         $this->assertTrue($model->two->one->is($one));
+     }
++
++    public function testWhenRelationIsNull()
++    {
++        $one = One::query()->create();
++        $two = $one->twos()->create();
++        $three = $two->threes()->create();
++
++        $model = Three::query()
++            ->with('one.twos')
++            ->find($three->id);
++
++        $this->assertTrue($model->relationLoaded('one'));
++        $this->assertNull($model->one);
++        $this->assertFalse($model->relationLoaded('one.twos'));
++    }
+ }
+ 
+ class One extends Model
+
+
+And here is the merge diff after the developer fixed the commit history:
+diff --git a/src/Illuminate/Database/Eloquent/Concerns/HasRelationships.php b/src/Illuminate/Database/Eloquent/Concerns/HasRelationships.php
+index fc211e179a5..b27b7110909 100644
+--- a/src/Illuminate/Database/Eloquent/Concerns/HasRelationships.php
++++ b/src/Illuminate/Database/Eloquent/Concerns/HasRelationships.php
+@@ -1088,7 +1088,11 @@ public function relationLoaded($key)
+         if ($nestedRelation !== null) {
+             $relatedModels = is_iterable($relatedModels = $this->$relation)
+                 ? $relatedModels
+-                : [$relatedModels];
++                : array_filter([$relatedModels]);
++            if (count($relatedModels) === 0) {
++                return false;
++            }
+             foreach ($relatedModels as $related) {
+                 if (! $related->relationLoaded($nestedRelation)) {
+diff --git a/tests/Integration/Database/EloquentModelRelationLoadedTest.php b/tests/Integration/Database/EloquentModelRelationLoadedTest.php
+index 548a50d1195..265926d9cd4 100644
+--- a/tests/Integration/Database/EloquentModelRelationLoadedTest.php
++++ b/tests/Integration/Database/EloquentModelRelationLoadedTest.php
+@@ -135,6 +135,21 @@ public function testWhenParentRelationIsASingleInstance()
+         $this->assertTrue($model->relationLoaded('two.one'));
+         $this->assertTrue($model->two->one->is($one));
+     }
++    {
++        $one = One::query()->create();
++        $two = $one->twos()->create();
++        $three = $two->threes()->create();
++        $model = Three::query()
++            ->with('one.twos')
++            ->find($three->id);
++        $this->assertTrue($model->relationLoaded('one'));
++        $this->assertNull($model->one);
++        $this->assertFalse($model->relationLoaded('one.twos'));
++    }
+ }
+ class One extends Model
+
+What changed lines (insertions or deletions) present in the original diff are missing in the merge diff (if any)? List only the missing changed lines, nothing else.
+
+Now respond as the model would, following the system prompt and user message exactly.

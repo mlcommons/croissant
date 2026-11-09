@@ -1,0 +1,106 @@
+target_var: L 13
+other_vars:  
+  - sorted_list 2
+early_return: 
+  - 18
+variables: 
+  L 1:
+    datadep: Null
+    controldep: Null
+  done 3:
+    datadep: Null
+    controldep: Null
+  lengthList 4:
+    datadep: 
+      - L 1
+    controldep: Null
+  done 5:
+    reset: False
+    datadep:
+      - done 3
+      - done 6
+      - done 10
+    controldep:
+      - done 5
+  done 6:
+    datadep: Null
+    controldep:
+      - done 5
+  i 7:
+    datadep: Null
+    controldep:
+      - done 5
+  i 8:
+    reset: False
+    datadep:
+      - i 7
+      - i 14
+    controldep:
+      - done 5
+      - i 8
+      - lengthList 8
+  lengthList 8:
+    reset: False
+    datadep:
+      - lengthList 4
+    controldep:
+      - done 5
+      - i 8
+      - lengthList 8
+  L 9:
+    reset: False
+    datadep:
+      - L 1
+      - L 12
+      - L 13
+    controldep:
+      - i 8
+      - lengthList 8
+  i 9:
+    reset: False
+    datadep:
+      - i 7
+      - i 14
+    controldep:
+      - i 8
+      - lengthList 8
+  done 10:
+    datadep: Null
+    controldep:
+      - L 9
+      - i 9
+  tmp 11:
+    datadep:
+      - i 7
+      - i 14
+      - L 1
+      - L 12
+      - L 13
+    controldep:
+      - L 9
+      - i 9
+  L 12:
+    datadep:
+      - i 7
+      - i 14
+      - L 1
+      - L 12
+      - L 13
+    controldep:
+      - L 9
+      - i 9
+  L 13:
+    datadep:
+      - i 7
+      - i 14
+      - tmp 11
+    controldep:
+      - L 9
+      - i 9
+  i 14:
+    datadep:
+      - i 7
+      - i 14
+    controldep:
+      - i 8
+      - lengthList 8

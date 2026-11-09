@@ -1,0 +1,137 @@
+target_var: badv 51
+other_vars:
+  - token 26
+  - token 28
+early_return: 
+  - 23
+  - 34
+  - 47
+  - 53
+  - 59
+  - 61
+  - 66
+  - 80
+variables:
+  curd 20:
+    datadep: Null
+    controldep: Null
+  curd 21:
+    reset: False
+    datadep:
+      - curd 20
+      - curd 22
+    controldep: 
+      - curd 21
+      - curd 23
+  curd 22:
+    datadep: Null
+    controldep:
+      - curd 21
+  curd 23:
+    reset: False
+    datadep:
+      - curd 22
+    controldep:
+      - curd 21
+  badv 31:
+    datadep: Null
+    controldep: Null
+  curd 32:
+    reset: False
+    datadep:
+      - curd 20
+      - curd 22
+      - curd 33
+    controldep: 
+      - curd 32
+      - curd 34
+  curd 33:
+    datadep: Null
+    controldep:
+      - curd 32
+  curd 34:
+    reset: False
+    datadep:
+      - curd 33
+    controldep:
+      - curd 32
+  v 36:
+    datadep:
+      - curd 33
+    controldep:
+      - curd 34
+  offset 39:
+    datadep: Null
+    controldep:
+      - curd 34
+  curd 40:
+    reset: False
+    datadep:
+      - curd 33
+    controldep:
+      - curd 34
+  offset 41:
+    datadep: Null
+    controldep:
+      - curd 40
+  badv 42:
+    datadep:
+      - badv 31
+      - badv 42
+      - offset 39
+      - offset 41
+      - v 36
+    controldep:
+      - curd 34
+  badv 43:
+    datadep:
+      - badv 31
+      - badv 42
+    controldep: Null
+  Null 44:
+    reset: False
+    datadep: Null
+    controldep:
+      - Null 44
+      - curd 53
+  i 45:
+    datadep:
+      - badv 43
+      - badv 51
+    controldep:
+      - Null 44
+  x 45:
+    datadep:
+      - badv 43
+      - badv 51
+    controldep:
+      - Null 44
+  curd 46:
+    datadep: Null
+    controldep:
+      - Null 44
+  curd 47:
+    reset: False
+    datadep:
+      - curd 46
+    controldep:
+      - Null 44
+  badv 50:
+    datadep:
+      - i 45
+      - x 45
+    controldep:
+      - curd 47
+  badv 51:
+    datadep:
+      - badv 50
+      - badv 43
+      - badv 51
+    controldep:
+      - curd 47
+  curd 53:
+    reset: False
+    datadep:
+      - curd 46
+    controldep:
+      - curd 47

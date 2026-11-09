@@ -1,0 +1,496 @@
+target_var: ans 85
+other_vars:
+  - ans 66
+  - ans 70
+  - ans 74
+early_return: 
+  - 47
+  - 59
+  - 65
+  - 69
+  - 73
+  - 77
+variables:
+  A 33:
+    datadep: Null
+    controldep: Null
+  C 33:
+    datadep: Null
+    controldep: Null
+  L 33:
+    datadep: Null
+    controldep: Null
+  ans 34:
+    datadep: Null
+    controldep: Null
+  pos 35:
+    datadep: Null
+    controldep: Null
+  isAlive 36:
+    datadep: 
+      - A 33
+    controldep: Null
+  Null 37:
+    reset: False
+    datadep: Null
+    controldep:
+      - Null 37
+      - ans 77
+  possibilities 39:
+    datadep: Null
+    controldep:
+      - Null 37
+  possibilities 40:
+    datadep: Null
+    controldep:
+      - Null 37
+  possibilities 41:
+    datadep: Null
+    controldep:
+      - Null 37
+  predS 43:
+    datadep: Null
+    controldep:
+      - Null 37
+  predR 42:
+    datadep: Null
+    controldep:
+      - Null 37
+  predP 44:
+    datadep: Null
+    controldep:
+      - Null 37
+  isAlive 47:
+    reset: False
+    datadep:
+      - isAlive 36
+      - isAlive 84
+      - isAlive 88
+      - isAlive 92
+    controldep:
+      - Null 37
+  A 50:
+    reset: False
+    datadep:
+      - A 33
+    controldep:
+      - isAlive 47
+      - A 50
+      - possibilities 59
+  i 50:
+    datadep:
+      - A 33
+    controldep:
+      - isAlive 47
+      - A 50
+      - possibilities 59
+  isAlive 51:
+    reset: False
+    reset: False
+    datadep:
+      - isAlive 36
+      - isAlive 84
+      - isAlive 88
+      - isAlive 92
+    controldep:
+      - A 50
+  i 51:
+    reset: False
+    datadep:
+      - i 50
+    controldep:
+      - A 50
+  possibilities 52:
+    datadep:
+      - C 33
+      - i 50
+      - L 33
+      - pos 35
+      - pos 94
+    controldep:
+      - i 51
+      - isAlive 51
+  C 53:
+    reset: False
+    datadep:
+      - C 33
+    controldep:
+      - i 51
+      - isAlive 51
+  i 53:
+    reset: False
+    datadep:
+      - i 50
+    controldep:
+      - i 51
+      - isAlive 51
+  pos 53:
+    reset: False
+    datadep:
+      - pos 35
+      - pos 94
+    controldep:
+      - i 51
+      - isAlive 51
+  L 53:
+    reset: False
+    datadep:
+      - L 33
+    controldep:
+      - i 51
+      - isAlive 51
+  C 55:
+    reset: False
+    datadep:
+      - C 33
+    controldep:
+      - i 51
+      - isAlive 51
+  i 55:
+    reset: False
+    datadep:
+      - i 50
+    controldep:
+      - i 51
+      - isAlive 51
+  pos 55:
+    reset: False
+    datadep:
+      - pos 35
+      - pos 94
+    controldep:
+      - i 51
+      - isAlive 51
+  L 55:
+    reset: False
+    datadep:
+      - L 33
+    controldep:
+      - i 51
+      - isAlive 51
+  C 57:
+    reset: False
+    datadep:
+      - C 33
+    controldep:
+      - i 51
+      - isAlive 51
+  i 57:
+    reset: False
+    datadep:
+      - i 50
+    controldep:
+      - i 51
+      - isAlive 51
+  pos 57:
+    reset: False
+    datadep:
+      - pos 35
+      - pos 94
+    controldep:
+      - i 51
+      - isAlive 51
+  L 57:
+    reset: False
+    datadep:
+      - L 33
+    controldep:
+      - i 51
+      - isAlive 51
+  predR 54:
+    datadep:
+      - predR 42
+      - predR 54
+      - i 50
+    controldep:
+      - C 53
+      - i 53
+      - pos 53
+      - L 53
+  predS 56:
+    datadep:
+      - predS 43
+      - predS 56
+      - i 50
+    controldep:
+      - C 55
+      - i 55
+      - pos 55
+      - L 55
+  predP 58:
+    datadep:
+      - predP 58
+      - predP 44
+      - i 50
+    controldep:
+      - C 57
+      - i 57
+      - pos 57
+      - L 57
+  possibilities 59:
+    reset: False
+    datadep:
+      - possibilities 39
+      - possibilities 40
+      - possibilities 41
+      - possibilities 52
+    controldep:
+      - i 51
+      - isAlive 51
+  r 62:
+    datadep:
+      - possibilities 39
+      - possibilities 52
+    controldep:
+      - isAlive 47
+  s 62:
+    datadep:
+      - possibilities 40
+      - possibilities 52
+    controldep:
+      - isAlive 47
+  p 62:
+    datadep:
+      - possibilities 41
+      - possibilities 52
+    controldep:
+      - isAlive 47
+  r 65:
+    reset: False
+    datadep:
+      - r 62
+    controldep:
+      - isAlive 47
+  s 65:
+    reset: False
+    datadep:
+      - s 62
+    controldep:
+      - isAlive 47
+  p 65:
+    reset: False
+    datadep:
+      - p 62
+    controldep:
+      - isAlive 47
+  r 69:
+    reset: False
+    datadep:
+      - r 62
+    controldep:
+      - r 65
+      - s 65
+      - p 65
+  s 69:
+    reset: False
+    datadep:
+      - s 62
+    controldep:
+      - r 65
+      - s 65
+      - p 65
+  p 69:
+    reset: False
+    datadep:
+      - p 62
+    controldep:
+      - r 65
+      - s 65
+      - p 65
+  r 73:
+    reset: False
+    datadep:
+      - r 62
+    controldep:
+      - r 69
+      - s 69
+      - p 69
+  s 73:
+    reset: False
+    datadep:
+      - s 62
+    controldep:
+      - r 69
+      - s 69
+      - p 69
+  p 73:
+    reset: False
+    datadep:
+      - p 62
+    controldep:
+      - r 69
+      - s 69
+      - p 69
+  ans 77:
+    reset: False
+    datadep:
+      - ans 34
+      - ans 85
+      - ans 89
+      - ans 93
+    controldep:
+      - r 73
+      - s 73
+      - p 73
+  r 82:
+    reset: False
+    datadep:
+      - r 62
+    controldep:
+      - ans 77
+  s 82:
+    reset: False
+    datadep:
+      - s 62
+    controldep:
+      - ans 77
+  p 82:
+    reset: False
+    datadep:
+      - p 62
+    controldep:
+      - ans 77
+  r 86:
+    reset: False
+    datadep:
+      - r 62
+    controldep:
+      - ans 77
+  s 86:
+    reset: False
+    datadep:
+      - s 62
+    controldep:
+      - ans 77
+  p 86:
+    reset: False
+    datadep:
+      - p 62
+    controldep:
+      - ans 77
+  r 90:
+    reset: False
+    datadep:
+      - r 62
+    controldep:
+      - ans 77
+  s 90:
+    reset: False
+    datadep:
+      - s 62
+    controldep:
+      - ans 77
+  p 90:
+    reset: False
+    datadep:
+      - p 62
+    controldep:
+      - ans 77
+  i 83:
+    datadep:
+      - predS 43
+      - predS 56
+    controldep:
+      - predS 83
+      - r 82
+      - s 82
+      - p 82
+  predS 83:
+    reset: False
+    datadep:
+      - predS 43
+      - predS 56
+    controldep:
+      - predS 83
+      - r 82
+      - s 82
+      - p 82
+  isAlive 84:
+    datadep:
+      - i 83
+    controldep:
+      - predS 83
+  ans 85:
+    datadep:
+      - ans 34
+      - ans 85
+      - ans 89
+      - ans 93
+    controldep:
+      - r 82
+      - s 82
+      - p 82
+  i 87:
+    datadep:
+      - predR 42
+      - predR 54
+    controldep:
+      - predR 87
+      - r 86
+      - s 86
+      - p 86
+  predR 87:
+    reset: False
+    datadep:
+      - predR 42
+      - predR 54
+    controldep:
+      - predR 87
+      - r 86
+      - s 86
+      - p 86
+  isAlive 88:
+    datadep:
+      - i 87
+    controldep:
+      - predR 87
+  ans 89:
+    datadep:
+      - ans 34
+      - ans 85
+      - ans 89
+      - ans 93
+    controldep:
+      - r 86
+      - s 86
+      - p 86
+  i 91:
+    datadep:
+      - predP 58
+      - predP 44
+    controldep:
+      - predP 91
+      - r 90
+      - s 90
+      - p 90
+  predP 91:
+    reset: False
+    datadep:
+      - predP 58
+      - predP 44
+    controldep:
+      - predP 91
+      - r 90
+      - s 90
+      - p 90
+  isAlive 92:
+    datadep:
+      - i 91
+    controldep:
+      - predP 91
+  ans 93:
+    datadep:
+      - ans 34
+      - ans 85
+      - ans 89
+      - ans 93
+    controldep:
+      - r 90
+      - s 90
+      - p 90
+  pos 94:
+    datadep:
+      - pos 35
+      - pos 94
+    controldep:
+      - ans 77

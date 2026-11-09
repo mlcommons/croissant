@@ -1,0 +1,87 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskProblem",
+  "@id": "http://example.org/core-benchmark",
+  "schema:name": "CoRe: Code Reasoning Benchmark",
+  "schema:description": "A human-verified, multi-lingual benchmark that evaluates LLMs on fundamental static analysis tasks — data dependency, control dependency, and information flow — across programs written in C/C++, Java, and Python. It consists of 12,553 task instances drawn from 180 programs, each manually curated to ensure semantic diversity and reasoning complexity.",
+
+  "croissant:input": {
+    "@type": "schema:Dataset",
+    "@id": "https://corebench.github.io/",
+    "schema:name": "CoRe Dataset",
+    "schema:description": "12,553 task instances derived from 180 C/C++, Java, and Python programs sourced from CodeNet and Google Code Jam, annotated with ground-truth data dependency, control dependency, and information flow labels."
+  },
+
+  "croissant:output": {
+    "@type": "croissant:OutputSpec",
+    "@id": "http://example.org/core-benchmark#outputSpec",
+    "croissant:schema": {
+      "@type": "croissant:RecordSet",
+      "croissant:field": [
+        {
+          "@type": "croissant:Field",
+          "schema:name": "dependency_exists",
+          "croissant:dataType": { "@id": "xsd:boolean" },
+          "schema:description": "Whether the specified dependency holds between the two queried program elements (pairwise query output)."
+        },
+        {
+          "@type": "croissant:Field",
+          "schema:name": "trace",
+          "croissant:dataType": { "@id": "xsd:string" },
+          "schema:description": "A transitive sequence of direct dependencies or flows from source to target, expressed as a chain of variable/line relationships (e.g. x1 ->D y3 ->D z5). Required when dependency_exists is true for pairwise queries."
+        },
+        {
+          "@type": "croissant:Field",
+          "schema:name": "source",
+          "croissant:dataType": { "@id": "xsd:string" },
+          "croissant:repeated": true,
+          "schema:description": "The complete (orderless) set of program elements — variables or line numbers — that have the specified dependency relation over the target (target-centric query output)."
+        }
+      ]
+    }
+  },
+
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationSpec",
+    "@id": "http://example.org/core-benchmark#evaluationSpec",
+    "croissant:expectedMetric": [
+      "F1 Score",
+      "Correct Trace Rate",
+      "Exact Match"
+    ]
+  },
+
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/core-benchmark#data_dependency",
+      "schema:name": "CoRe - Data Dependency",
+      "schema:description": "Given two program variables, determine whether a data dependency (direct or transitive) exists from one to the other. If so, provide a valid transitive trace. In target-centric mode, list all variables in the same function that the target variable is directly or transitively data-dependent on.",
+      "croissant:input": { "@id": "https://corebench.github.io/" },
+      "croissant:output": { "@id": "http://example.org/core-benchmark#outputSpec" },
+      "croissant:evaluation": { "@id": "http://example.org/core-benchmark#evaluationSpec" }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/core-benchmark#control_dependency",
+      "schema:name": "CoRe - Control Dependency",
+      "schema:description": "Given two program lines, determine whether the execution of one is governed (directly or transitively) by a condition at the other. In target-centric mode, list all lines in the same function whose conditions directly or transitively govern the execution of the target line.",
+      "croissant:input": { "@id": "https://corebench.github.io/" },
+      "croissant:output": { "@id": "http://example.org/core-benchmark#outputSpec" },
+      "croissant:evaluation": { "@id": "http://example.org/core-benchmark#evaluationSpec" }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/core-benchmark#information_flow",
+      "schema:name": "CoRe - Information Flow",
+      "schema:description": "Given two program variables, determine whether an information flow exists from source to target — either explicitly (via data dependency) or implicitly (via control dependency). In target-centric mode, list all variables with a direct or transitive information flow to the target.",
+      "croissant:input": { "@id": "https://corebench.github.io/" },
+      "croissant:output": { "@id": "http://example.org/core-benchmark#outputSpec" },
+      "croissant:evaluation": { "@id": "http://example.org/core-benchmark#evaluationSpec" }
+    }
+  ]
+}

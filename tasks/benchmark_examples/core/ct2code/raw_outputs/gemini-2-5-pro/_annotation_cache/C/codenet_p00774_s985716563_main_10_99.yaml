@@ -1,0 +1,446 @@
+target_var: a 87
+other_vars:  
+  - point 17
+  - point 39
+  - point 44
+  - point 50
+  - point 68
+variables:
+  a 87:
+    datadep:
+      - a 87
+      - a 77
+      - a 20
+      - a 25
+      - j 84
+      - l 86
+    controldep:
+      - l 86
+  a 77:
+    datadep: 
+      - j 75
+      - i 74
+    controldep:
+      - j 76
+      - i 76
+      - b 76
+  a 20:
+    datadep: 
+      - j 19
+      - i 18
+    controldep:
+      - j 19
+  a 25:
+    datadep: 
+      - j 24
+      - i 23
+      - n 15
+    controldep:
+      - j 24
+  l 86:
+    datadep:
+      - l 86
+      - i 83
+    controldep:
+      - l 86
+      - a 85
+      - j 85
+      - i 85
+  a 85:
+    reset: False
+    datadep:
+      - a 20
+      - a 77
+      - a 87
+      - a 25
+    controldep:
+      - j 84
+  j 84:
+    datadep:
+      - j 84
+    controldep:
+      - j 84
+      - i 83
+      - n 83
+  i 83:
+    datadep:
+      - i 83
+    controldep:
+      - i 83
+      - n 83
+      - e 82
+      - n 82
+  e 82:
+    datadep:
+      - e 82
+    controldep:
+      - e 82
+      - n 82
+      - m 29
+  n 82:
+    reset: False
+    datadep:
+      - n 15
+    controldep:
+      - e 82
+      - n 82
+      - m 29
+  n 83:
+    reset: False
+    datadep:
+      - n 15
+    controldep:
+      - i 83
+      - n 83
+      - e 82
+      - n 82
+  n 16:
+    reset: False
+    datadep:
+      - n 15
+    controldep: Null
+  n 15:
+    datadep: Null
+    controldep: Null
+  m 29:
+    reset: False
+    datadep:
+      - m 28
+      - m 93
+    controldep: 
+      - n 16
+      - m 29
+  m 28:
+    datadep: Null
+    controldep: 
+      - n 16
+  m 93:
+    datadep:
+      - m 93
+      - m 28
+    controldep: 
+      - m 29
+  j 19:
+    datadep:
+      - j 19
+    controldep:
+      - j 19
+      - i 18
+  j 24:
+    datadep:
+      - j 24
+    controldep:
+      - j 24
+      - i 23
+      - n 23
+  b 76:
+    reset: False
+    datadep:
+      - b 78
+      - b 70
+      - b 64
+      - b 59
+      - b 52
+      - b 46
+      - b 41
+      - b 32
+    controldep:
+      - j 75
+  b 78:
+    datadep: 
+      - j 75
+      - i 74
+    controldep:
+      - b 76
+      - j 76
+      - i 76
+  b 70:
+    datadep: 
+      - j 69
+      - i 35
+    controldep:
+      - j 69
+  b 64:
+    datadep: 
+      - j 63
+      - i 35
+    controldep:
+      - j 63
+  b 59:
+    datadep: 
+      - j 58
+      - i 35
+    controldep:
+      - j 58
+  b 52:
+    datadep: 
+      - j 51
+      - i 35
+    controldep:
+      - j 51
+  b 46:
+    datadep: 
+      - j 45
+      - i 35
+    controldep:
+      - j 45
+  b 41:
+    datadep: 
+      - j 40
+      - i 35
+    controldep:
+      - j 40
+  b 32:
+    datadep: 
+      - j 31
+      - i 30
+    controldep:
+      - j 31
+  j 31:
+    datadep:
+      - j 31
+    controldep:
+      - j 31
+      - i 30
+      - n 30
+  i 30:
+    datadep:
+      - i 30
+    controldep:
+      - i 30
+      - n 30
+      - m 29
+  n 30:
+    reset: False
+    datadep:
+      - n 15
+    controldep:
+      - i 30
+      - n 30
+      - m 29
+  j 51:
+    datadep:
+      - j 51
+    controldep:
+      - j 51
+      - a 37
+      - i 37
+  j 45:
+    datadep:
+      - j 45
+    controldep:
+      - j 45
+      - a 38
+      - i 38
+  j 40:
+    datadep:
+      - j 40
+    controldep:
+      - a 38
+      - i 38
+      - j 40
+  i 18:
+    datadep:
+      - i 18
+    controldep:
+      - i 18
+      - n 16
+  i 23:
+    datadep:
+      - i 23
+    controldep:
+      - i 23
+      - n 23
+      - n 16
+  n 23:
+    reset: False
+    datadep:
+      - n 15
+    controldep:
+      - i 23
+      - n 23
+      - n 16
+  j 75:
+    datadep:
+      - j 75
+    controldep:
+      - j 75
+      - i 74
+      - n 74
+  j 69:
+    datadep:
+      - j 69
+    controldep:
+      - j 69
+      - a 67
+      - i 67
+  j 63:
+    datadep:
+      - j 63
+    controldep:
+      - j 63
+      - a 56
+      - i 56
+  j 58:
+    datadep:
+      - j 58
+    controldep:
+      - j 58
+      - a 56
+      - i 56
+  a 37:
+    reset: False
+    datadep:
+      - a 20
+      - a 77
+      - a 87
+      - a 25
+    controldep:
+      - a 36
+      - i 36
+  a 38:
+    reset: False
+    datadep:
+      - a 20
+      - a 77
+      - a 87
+      - a 25
+    controldep:
+      - a 37
+      - i 37
+  i 74:
+    datadep:
+      - i 74
+    controldep:
+      - i 74
+      - n 74
+      - m 29
+  n 74:
+    reset: False
+    datadep:
+      - n 15
+    controldep:
+      - i 74
+      - n 74
+      - m 29
+  a 67:
+    reset: False
+    datadep:
+      - a 77
+      - a 87
+      - a 20
+      - a 25
+    controldep:
+      - a 55
+      - i 55
+  a 56:
+    reset: False
+    datadep:
+      - a 87
+      - a 77
+      - a 20
+      - a 25
+    controldep:
+      - a 55
+      - i 55
+  a 36:
+    reset: False
+    datadep:
+      - a 77
+      - a 87
+      - a 20
+      - a 25
+    controldep:
+      - i 35
+      - n 35
+  a 55:
+    reset: False
+    datadep:
+      - a 77
+      - a 87
+      - a 20
+      - a 25
+    controldep:
+      - a 36
+      - i 36
+  i 35:
+    datadep:
+      - i 35
+    controldep:
+      - i 35
+      - n 35
+      - m 29
+  n 35:
+    reset: False
+    datadep:
+      - n 15
+    controldep: 
+      - i 35
+      - n 35
+      - m 29
+  i 76:
+    reset: False
+    datadep: 
+      - i 74
+    controldep:
+      - j 75
+  j 76:
+    reset: False
+    datadep: 
+      - j 75
+    controldep:
+      - j 75
+  i 85:
+    reset: False
+    datadep: 
+      - i 83
+    controldep:
+      - j 84
+  j 85:
+    reset: False
+    datadep: 
+      - j 84
+    controldep:
+      - j 84
+  i 36:
+    reset: False
+    datadep: 
+      - i 35
+    controldep:
+      - i 35
+      - n 35
+  i 38:
+    reset: False
+    datadep: 
+      - i 35
+    controldep:
+      - a 37
+      - i 37
+  i 67:
+    reset: False
+    datadep: 
+      - i 35
+    controldep:
+      - a 55
+      - i 55
+  i 37:
+    reset: False
+    datadep: 
+      - i 35
+    controldep:
+      - a 36
+      - i 36
+  i 56:
+    reset: False
+    datadep: 
+      - i 35
+    controldep:
+      - a 55
+      - i 55
+  i 55:
+    reset: False
+    datadep: 
+      - i 35
+    controldep:
+      - a 36
+      - i 36

@@ -1,0 +1,800 @@
+target_var: ans 75
+other_vars: Null
+variables:
+  N 24:
+    datadep: Null
+    controldep: Null
+  s 25:
+    datadep: Null
+    controldep: Null
+  i 26:
+    datadep:
+      - i 26
+    controldep:
+      - i 26
+      - N 26
+  N 26:
+    reset: False
+    datadep: 
+      - N 24
+    controldep:
+      - i 26
+      - N 26
+  ans 27:
+    datadep:
+      - i 26
+    controldep:
+      - i 26
+      - N 26
+  ans 28:
+    datadep:
+      - N 24
+    controldep: Null
+  i 29:
+    datadep:
+      - i 29
+    controldep:
+      - i 29
+      - N 29
+  N 29:
+    reset: False
+    datadep:
+      - N 24
+    controldep:
+      - i 29
+      - N 29
+  pre 30:
+    datadep:
+      - N 24
+      - i 29
+    controldep:
+      - i 29
+      - N 29
+  next 31:
+    datadep:
+      - N 24
+      - i 29
+    controldep:
+      - i 29
+      - N 29
+  ans 32:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+    controldep:
+      - i 29
+      - N 29
+  i 32:
+    reset: False
+    datadep:
+      - i 29
+    controldep:
+      - i 29
+      - N 29
+  s 33:
+    reset: False
+    datadep:
+      - s 25
+    controldep:
+      - ans 32
+      - i 32
+  i 33:
+    reset: False
+    datadep:
+      - i 29
+    controldep:
+      - ans 32
+      - i 32
+  ans 33:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+    controldep:
+      - ans 32
+      - i 32
+  pre 33:
+    reset: False
+    datadep:
+      - pre 30
+    controldep:
+      - ans 32
+      - i 32
+  next 33:
+    reset: False
+    datadep:
+      - next 31
+    controldep:
+      - ans 32
+      - i 32
+  ans 34:
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - pre 30
+      - next 31
+    controldep:
+      - s 33
+      - i 33
+      - ans 33
+      - pre 33
+      - next 33
+  s 36:
+    reset: False
+    datadep:
+      - s 25
+    controldep:
+      - ans 32
+      - i 32
+  i 36:
+    reset: False
+    datadep:
+      - i 29
+    controldep:
+      - ans 32
+      - i 32
+  ans 36:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+    controldep:
+      - ans 32
+      - i 32
+  pre 36:
+    reset: False
+    datadep:
+      - pre 30
+    controldep:
+      - ans 32
+      - i 32
+  next 36:
+    reset: False
+    datadep:
+      - next 31
+    controldep:
+      - ans 32
+      - i 32
+  ans 37:
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - next 31
+    controldep:
+      - s 36
+      - i 36
+      - ans 36
+      - pre 36
+      - next 36
+  s 40:
+    reset: False
+    datadep:
+      - s 25
+    controldep:
+      - ans 32
+      - i 32
+  i 40:
+    reset: False
+    datadep:
+      - i 29
+    controldep:
+      - ans 32
+      - i 32
+  ans 40:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+    controldep:
+      - ans 32
+      - i 32
+  pre 40:
+    reset: False
+    datadep:
+      - pre 30
+    controldep:
+      - ans 32
+      - i 32
+  next 40:
+    reset: False
+    datadep:
+      - next 31
+    controldep:
+      - ans 32
+      - i 32
+  ans 41:
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - next 31
+    controldep:
+      - s 40
+      - i 40
+      - ans 40
+      - pre 40
+      - next 40
+  s 43:
+    reset: False
+    datadep:
+      - s 25
+    controldep:
+      - ans 32
+      - i 32
+  i 43:
+    reset: False
+    datadep:
+      - i 29
+    controldep:
+      - ans 32
+      - i 32
+  ans 43:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+    controldep:
+      - ans 32
+      - i 32
+  pre 43:
+    reset: False
+    datadep:
+      - pre 30
+    controldep:
+      - ans 32
+      - i 32
+  next 43:
+    reset: False
+    datadep:
+      - next 31
+    controldep:
+      - ans 32
+      - i 32
+  ans 44:
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - pre 30
+      - next 31
+    controldep:
+      - s 43
+      - i 43
+      - ans 43
+      - pre 43
+      - next 43
+  ans 48:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+    controldep: Null
+  N 48:
+    reset: False
+    datadep:
+      - N 24
+    controldep: Null
+  s 49:
+    reset: False
+    datadep:
+      - s 25
+    controldep:
+      - ans 48
+      - N 48
+  N 49:
+    reset: False
+    datadep:
+      - N 24
+    controldep:
+      - ans 48
+      - N 48
+  ans 49:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+    controldep:
+      - ans 48
+      - N 48
+  s 53:
+    reset: False
+    datadep:
+      - s 25
+    controldep:
+      - s 49
+      - N 49
+      - ans 49
+  N 53:
+    reset: False
+    datadep:
+      - N 24
+    controldep:
+      - s 49
+      - N 49
+      - ans 49
+  ans 53:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+    controldep:
+      - s 49
+      - N 49
+      - ans 49
+  s 58:
+    reset: False
+    datadep:
+      - s 25
+    controldep:
+      - ans 48
+      - N 48
+  N 58:
+    reset: False
+    datadep:
+      - N 24
+    controldep:
+      - ans 48
+      - N 48
+  ans 58:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+    controldep:
+      - ans 48
+      - N 48
+  s 62:
+    reset: False
+    datadep:
+      - s 25
+    controldep:
+      - s 58
+      - N 58
+      - ans 58
+  N 62:
+    reset: False
+    datadep:
+      - N 24
+    controldep:
+      - s 58
+      - N 58
+      - ans 58
+  ans 62:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+    controldep:
+      - s 58
+      - N 58
+      - ans 58
+  i 67:
+    datadep:
+      - i 67
+    controldep:
+      - i 67
+      - N 67
+      - s 62
+      - N 62
+      - ans 62
+      - s 53
+      - N 53
+      - ans 53
+  N 67:
+    reset: False
+    datadep:
+      - N 24
+    controldep:
+      - i 67
+      - N 67
+      - s 62
+      - N 62
+      - ans 62
+      - s 53
+      - N 53
+      - ans 53
+  ans 68:
+    datadep:
+      - i 67
+    controldep:
+      - i 67
+      - N 67
+  ans 69:
+    datadep:
+      - N 24
+    controldep: 
+      - s 62
+      - ans 62
+      - N 62
+      - s 53
+      - ans 53
+      - N 53
+  i 70:
+    datadep:
+      - i 70
+    controldep:
+      - s 62
+      - ans 62
+      - N 62
+      - s 53
+      - ans 53
+      - N 53
+      - i 70
+      - N 70
+  N 70:
+    reset: False
+    datadep:
+      - N 24
+    controldep:
+      - s 62
+      - ans 62
+      - N 62
+      - s 53
+      - ans 53
+      - N 53
+      - i 70
+      - N 70
+  pre 71:
+    datadep:
+      - N 24
+      - i 70
+    controldep:
+      - i 70
+      - N 70
+  next 72:
+    datadep:
+      - N 24
+      - i 70
+    controldep:
+      - i 70
+      - N 70
+  ans 73:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - ans 68
+      - ans 69
+      - ans 75
+      - ans 78
+      - ans 82
+      - ans 85
+    controldep:
+      - i 70
+      - N 70
+  i 73:
+    reset: False
+    datadep:
+      - i 70
+    controldep:
+      - i 70
+      - N 70
+  s 74:
+    reset: False
+    datadep:
+      - s 25
+    controldep:
+      - ans 73
+      - i 73
+  i 74:
+    reset: False
+    datadep:
+      - i 70
+    controldep:
+      - ans 73
+      - i 73
+  ans 74:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - ans 68
+      - ans 69
+      - ans 75
+      - ans 78
+      - ans 82
+      - ans 85
+    controldep:
+      - ans 73
+      - i 73
+  pre 74:
+    reset: False
+    datadep:
+      - pre 71
+    controldep:
+      - ans 73
+      - i 73
+  next 74:
+    reset: False
+    datadep:
+      - next 72
+    controldep:
+      - ans 73
+      - i 73
+  ans 75:
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - ans 68
+      - ans 69
+      - ans 75
+      - ans 78
+      - ans 82
+      - ans 85
+      - pre 71
+      - next 72
+    controldep:
+      - s 74
+      - i 74
+      - ans 74
+      - pre 74
+      - next 74
+  s 77:
+    reset: False
+    datadep:
+      - s 25
+    controldep:
+      - ans 73
+      - i 73
+  i 77:
+    reset: False
+    datadep:
+      - i 70
+    controldep:
+      - ans 73
+      - i 73
+  ans 77:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - ans 68
+      - ans 69
+      - ans 75
+      - ans 78
+      - ans 82
+      - ans 85
+    controldep:
+      - ans 73
+      - i 73
+  pre 77:
+    reset: False
+    datadep:
+      - pre 71
+    controldep:
+      - ans 73
+      - i 73
+  next 77:
+    reset: False
+    datadep:
+      - next 72
+    controldep:
+      - ans 73
+      - i 73
+  ans 78:
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - ans 68
+      - ans 69
+      - ans 75
+      - ans 78
+      - ans 82
+      - ans 85
+      - next 72
+    controldep:
+      - s 77
+      - i 77
+      - ans 77
+      - pre 77
+      - next 77
+  s 81:
+    reset: False
+    datadep:
+      - s 25
+    controldep:
+      - ans 73
+      - i 73
+  i 81:
+    reset: False
+    datadep:
+      - i 70
+    controldep:
+      - ans 73
+      - i 73
+  ans 81:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - ans 68
+      - ans 69
+      - ans 75
+      - ans 78
+      - ans 82
+      - ans 85
+    controldep:
+      - ans 73
+      - i 73
+  pre 81:
+    reset: False
+    datadep:
+      - pre 71
+    controldep:
+      - ans 73
+      - i 73
+  next 81:
+    reset: False
+    datadep:
+      - next 72
+    controldep:
+      - ans 73
+      - i 73
+  ans 82:
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - ans 68
+      - ans 69
+      - ans 75
+      - ans 78
+      - ans 82
+      - ans 85
+      - next 72
+    controldep:
+      - s 81
+      - i 81
+      - ans 81
+      - pre 81
+      - next 81
+  s 84:
+    reset: False
+    datadep:
+      - s 25
+    controldep:
+      - ans 73
+      - i 73
+  i 84:
+    reset: False
+    datadep:
+      - i 70
+    controldep:
+      - ans 73
+      - i 73
+  ans 84:
+    reset: False
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - ans 68
+      - ans 69
+      - ans 75
+      - ans 78
+      - ans 82
+      - ans 85
+    controldep:
+      - ans 73
+      - i 73
+  pre 84:
+    reset: False
+    datadep:
+      - pre 71
+    controldep:
+      - ans 73
+      - i 73
+  next 84:
+    reset: False
+    datadep:
+      - next 72
+    controldep:
+      - ans 73
+      - i 73
+  ans 85:
+    datadep:
+      - ans 27
+      - ans 28
+      - ans 34
+      - ans 37
+      - ans 41
+      - ans 44
+      - ans 68
+      - ans 69
+      - ans 75
+      - ans 78
+      - ans 82
+      - ans 85
+      - pre 71
+      - next 72
+    controldep:
+      - s 84
+      - i 84
+      - ans 84
+      - pre 84
+      - next 84

@@ -1,0 +1,2 @@
+index,category,instruction,image,reference_img,ApprConsistency,Reasoning,VisualPlausibility,complete
+logical_reasoning_1,logical_reasoning,"This is an image of a maze, where black represents obstacles and white represents walkable paths. Draw the path from the red dot to the green dot in blue.",logical_reasoning_images/1.jpg,logical_reasoning_images/1_ref.png,1,1,,0

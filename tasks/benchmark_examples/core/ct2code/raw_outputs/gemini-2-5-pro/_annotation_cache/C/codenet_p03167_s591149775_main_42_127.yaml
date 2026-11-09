@@ -1,0 +1,319 @@
+target_var: dp 102
+other_vars: 
+  - j 63
+variables:
+  h 45:
+    datadep: Null
+    controldep: Null
+  w 45:
+    datadep: Null
+    controldep: Null
+  i 46:
+    datadep: Null
+    controldep: Null
+  j 47:
+    datadep: Null
+    controldep: Null
+  i 52:
+    reset: False
+    datadep:
+      - i 46
+      - i 55
+    controldep: 
+      - i 52
+      - w 52
+  w 52:
+    reset: False
+    datadep:
+      - w 45
+    controldep:
+      - i 52
+      - w 52
+  dp 54:
+    datadep:
+      - i 46
+      - i 55
+      - h 45
+    controldep:
+      - i 52
+      - w 52
+  i 55:
+    datadep:
+      - i 46
+      - i 55
+    controldep:
+      - i 52
+      - w 52
+  j 57:
+    reset: False
+    datadep:
+      - j 47
+      - j 60
+    controldep:
+      - j 57
+      - h 57
+  h 57:
+    reset: False
+    datadep:
+      - h 45
+    controldep:
+      - j 57
+      - h 57
+  a 59:
+    datadep:
+      - j 47
+      - j 60
+      - w 45
+    controldep:
+      - j 57
+      - h 57
+  j 60:
+    datadep:
+      - j 47
+      - j 60
+    controldep:
+      - j 57
+      - h 57
+  i 62:
+    datadep: Null
+    controldep: Null
+  i 64:
+    reset: False
+    datadep:
+      - i 62
+      - i 77
+    controldep:
+      - i 64
+      - h 64
+  h 64:
+    reset: False
+    datadep:
+      - h 45
+    controldep:
+      - i 64
+      - h 64
+  j 66:
+    datadep: Null
+    controldep:
+      - i 64
+      - h 64
+  a 67:
+    datadep:
+      - i 62
+      - i 77
+    controldep:
+      - i 64
+      - h 64
+  j 68:
+    reset: False
+    datadep:
+      - j 66
+      - j 75
+    controldep:
+      - i 64
+      - h 64
+      - j 68
+      - w 68
+  w 68:
+    reset: False
+    datadep:
+      - w 45
+    controldep:
+      - i 64
+      - h 64
+      - j 68
+      - w 68
+  dp 70:
+    datadep:
+      - j 66
+      - j 75
+      - i 62
+      - i 77
+    controldep:
+      - j 68
+      - w 68
+  a 71:
+    reset: False
+    datadep:  
+      - a 67
+      - a 59
+    controldep:
+      - j 68
+      - w 68
+  i 71:
+    reset: False
+    datadep:
+      - i 62
+      - i 77
+    controldep:
+      - j 68
+      - w 68
+  j 71:
+    reset: False
+    datadep:
+      - j 66
+      - j 75
+    controldep:
+      - j 68
+      - w 68
+  dp 73:
+    datadep:
+      - i 62
+      - i 77
+      - j 66
+      - j 75
+    controldep:
+      - a 71
+      - i 71
+      - j 71
+  j 75:
+    datadep:
+      - j 66
+      - j 75
+    controldep:
+      - j 68
+      - w 68
+  i 77:
+    datadep:
+      - i 62
+      - i 77
+    controldep:
+      - i 64
+      - h 64
+  dp 79:
+    datadep: Null
+    controldep: Null
+  i 80:
+    datadep: Null
+    controldep: Null
+  j 81:
+    datadep: Null
+    controldep: Null
+  i 82:
+    reset: False
+    datadep: 
+      - i 80
+      - i 92
+    controldep:
+      - i 82
+      - h 82
+  h 82:
+    reset: False
+    datadep:
+      - h 45
+    controldep:
+      - i 82
+      - h 82
+  dp 84:
+    reset: False
+    datadep:
+      - dp 54
+      - dp 70
+      - dp 73
+      - dp 79
+      - dp 86
+      - dp 90
+    controldep:
+      - i 82
+      - h 82
+  i 84:
+    reset: False
+    datadep:
+      - i 80
+      - i 92
+    controldep:
+      - i 82
+      - h 82
+  dp 86:
+    datadep:
+      - i 80
+      - i 92
+    controldep:
+      - dp 84
+      - i 84
+  dp 90:
+    datadep:
+      - i 80
+      - i 92
+      - dp 54
+      - dp 70
+      - dp 73
+      - dp 79
+      - dp 86
+      - dp 90
+    controldep:
+      - dp 84
+      - i 84
+  i 92:
+    datadep:
+      - i 80
+      - i 92
+    controldep:
+      - i 82
+      - h 82
+  j 94:
+    reset: False
+    datadep:
+      - j 81
+      - j 104
+    controldep:
+      - j 94
+      - w 94
+  w 94:
+    reset: False
+    datadep:
+      - w 45
+    controldep:
+      - j 94
+      - w 94
+  dp 96:
+    reset: False
+    datadep:
+      - dp 54
+      - dp 70
+      - dp 73
+      - dp 79
+      - dp 86
+      - dp 90
+      - dp 98
+      - dp 102
+    controldep:
+      - j 94
+      - w 94
+  j 96:
+    reset: False
+    datadep:
+      - j 81
+      - j 104
+    controldep:
+      - j 94
+      - w 94
+  dp 98:
+    datadep:
+      - j 81
+      - j 104
+    controldep:
+      - dp 96
+      - j 96
+  dp 102:
+    datadep:
+      - dp 54
+      - dp 70
+      - dp 73
+      - dp 79
+      - dp 86
+      - dp 90
+      - dp 98
+      - dp 102
+      - j 81
+      - j 104
+    controldep:
+      - dp 96
+      - j 96
+  j 104:
+    datadep:
+      - j 81
+      - j 104
+    controldep:
+      - j 94
+      - w 94

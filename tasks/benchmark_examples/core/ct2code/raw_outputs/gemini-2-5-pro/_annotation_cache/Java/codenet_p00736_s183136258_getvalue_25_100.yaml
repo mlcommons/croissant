@@ -1,0 +1,361 @@
+target_var: rightv 85
+other_vars: Null
+early_return: 
+  - 71
+  - 77
+variables: 
+  rightv 85:
+    datadep:
+      - rightcon 66
+      - rightcon 73
+      - rightcon 79
+    controldep:
+      - cur 63
+  rightcon 66:
+    datadep: Null
+    controldep:
+      - cur 63
+  rightcon 73:
+    datadep: 
+      - content 95
+      - content 55
+      - content 33
+      - content 25
+    controldep:
+      - curj 71
+  rightcon 79:
+    datadep:
+      - content 95
+      - content 55
+      - content 33
+      - content 25
+      - i 60
+    controldep:
+      - j 77
+      - content 77
+  content 60:
+    reset: False
+    datadep:
+      - content 95
+      - content 55
+      - content 33
+      - content 25
+    controldep:
+      - i 60
+      - content 60
+  i 60:
+    datadep:
+      - i 60
+      - i 96
+    controldep:
+      - i 60
+      - content 60
+  cur 62:
+    datadep:
+      - content 95
+      - content 55
+      - content 33
+      - content 25
+      - i 60
+    controldep:
+      - i 60
+      - content 60
+  cur 63:
+    reset: False
+    datadep:
+      - cur 62
+    controldep:
+      - i 60
+      - content 60
+  leftcon 65:
+    datadep:
+      - content 95
+      - content 55
+      - content 33
+      - content 25
+      - i 60
+    controldep:
+      - cur 63
+  j 68:
+    datadep:
+      - i 60
+      - j 68
+    controldep:
+      - cur 63
+      - j 77
+      - content 77
+  content 68:
+    reset: False
+    datadep:
+      - content 95
+      - content 55
+      - content 33
+      - content 25
+    controldep:
+      - cur 63
+      - j 77
+      - content 77
+  curj 70:
+    datadep:
+      - content 95
+      - content 55
+      - content 33
+      - content 25
+      - j 68
+    controldep:
+      - j 68
+      - content 68
+  curj 71:
+    reset: False
+    datadep:
+      - curj 70
+    controldep:
+      - j 68
+      - content 68
+  j 77:
+    reset: False
+    datadep:
+      - j 68
+    controldep:
+      - curj 71
+  content 77:
+    reset: False
+    datadep:
+      - content 95
+      - content 55
+      - content 33
+      - content 25
+    controldep:
+      - curj 71
+  endofrightcon 67:
+    datadep: Null
+    controldep:
+      - cur 63
+  endofrightcon 74:
+    datadep: 
+      - j 68
+    controldep:
+      - curj 71
+  endofrightcon 80:
+    datadep:
+      - j 68
+    controldep:
+      - j 77
+      - content 77
+  leftv 84:
+    datadep:
+      - leftcon 65
+    controldep:
+      - cur 63
+  minires 86:
+    datadep: Null
+    controldep:
+      - cur 63
+  cur 87:
+    reset: False
+    datadep:
+      - cur 62
+    controldep:
+      - cur 63
+  minires 89:
+    datadep:
+      - leftv 84
+      - rightv 85
+    controldep:
+      - cur 87
+  cur 91:
+    reset: False
+    datadep:
+      - cur 62
+    controldep:
+      - cur 87
+  minires 93:
+    datadep:
+      - leftv 84
+      - rightv 85
+    controldep:
+      - cur 91
+  content 95:
+    datadep:
+      - content 95
+      - content 55
+      - content 33
+      - content 25
+      - minires 89
+      - minires 93
+      - minires 86
+      - endofrightcon 67
+      - endofrightcon 74
+      - endofrightcon 80
+    controldep:
+      - cur 63
+  i 96:
+    datadep: Null
+    controldep:
+      - cur 63
+  content 25:
+    datadep: Null
+    controldep: Null
+  p 25:
+    datadep: Null
+    controldep: Null
+  q 25:
+    datadep: Null
+    controldep: Null
+  r 25:
+    datadep: Null
+    controldep: Null
+  replace 25:
+    datadep: Null
+    controldep: Null
+  curdepth 27:
+    datadep: Null
+    controldep: Null
+  startbracket 28:
+    datadep: Null
+    controldep: Null
+  replace 29:
+    reset: False
+    datadep:
+      - replace 25
+    controldep: Null
+  content 31:
+    datadep:
+      - content 25
+      - p 25
+    controldep:
+      - replace 29
+  content 32:
+    datadep:
+      - content 31
+      - q 25
+    controldep:
+      - replace 29
+  content 33:
+    datadep:
+      - content 32
+      - r 25
+    controldep:
+      - replace 29
+  i 35:
+    datadep:
+      - i 35
+      - i 56
+    controldep:
+      - i 35
+      - content 35
+  content 35:
+    reset: False
+    datadep:
+      - content 55
+      - content 33
+      - content 25
+    controldep:
+      - i 35
+      - content 35
+  cur 37:
+    datadep:
+      - content 55
+      - content 33
+      - content 25
+      - i 35
+    controldep:
+      - i 35
+      - content 35
+  cur 38:
+    reset: False
+    datadep:
+      - cur 37
+    controldep:
+      - i 35
+      - content 35
+  curdepth 40:
+    reset: False
+    datadep:
+      - curdepth 27
+      - curdepth 44
+      - curdepth 48
+    controldep:
+      - cur 38
+  startbracket 42:
+    datadep:
+      - i 35
+    controldep:
+      - curdepth 40
+  curdepth 44:
+    datadep:
+      - curdepth 27
+      - curdepth 44
+      - curdepth 48
+    controldep:
+      - cur 38
+  cur 46:
+    reset: False
+    datadep:
+      - cur 37
+    controldep:
+      - i 35
+      - content 35
+  curdepth 48:
+    datadep:
+      - curdepth 27
+      - curdepth 44
+      - curdepth 48
+    controldep:
+      - cur 46
+  curdepth 49:
+    reset: False
+    datadep:
+      - curdepth 27
+      - curdepth 44
+      - curdepth 48
+    controldep:
+      - cur 46
+  subcontent 51:
+    datadep:
+      - content 55
+      - content 33
+      - content 25
+      - startbracket 28
+      - startbracket 42
+      - i 35
+    controldep:
+      - curdepth 49
+  left 52:
+    datadep:
+      - content 55
+      - content 33
+      - content 25
+      - startbracket 42
+      - startbracket 28
+    controldep:
+      - curdepth 49
+  right 53:
+    datadep:
+      - content 55
+      - content 33
+      - content 25
+      - i 35
+    controldep:
+      - curdepth 49
+  subvalue 54:
+    datadep:
+      - subcontent 51
+      - p 25
+      - q 25
+      - r 25
+    controldep:
+      - curdepth 49
+  content 55:
+    datadep:
+      - left 52
+      - right 53
+      - subvalue 54
+    controldep:
+      - curdepth 49
+  i 56:
+    datadep:
+      - startbracket 42
+      - startbracket 28
+    controldep:
+      - curdepth 49

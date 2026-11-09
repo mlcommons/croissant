@@ -1,0 +1,107 @@
+target_var: idx 41
+other_vars: 
+  - ans 37
+  - ans 40
+variables:
+  T 38:
+    reset: False
+    datadep:
+      - T 27
+      - T 39
+    controldep:
+      - T 38
+      - idx 38
+      - N 38
+  N 38:
+    reset: False
+    datadep:
+      - N 26
+    controldep:
+      - T 38
+      - idx 38
+      - N 38
+  idx 38:
+    reset: False
+    datadep:
+      - idx 36
+      - idx 41
+    controldep:
+      - T 38
+      - idx 38
+      - N 38
+  T 39:
+    datadep:
+      - T 27
+      - T 39
+      - idx 36
+      - idx 41
+      - ROOT 35
+    controldep:
+      - T 38
+      - idx 38
+      - N 38
+  idx 41:
+    datadep:
+      - idx 36
+      - idx 41
+    controldep:
+      - T 38
+      - idx 38
+      - N 38
+  idx 36:
+    datadep: Null
+    controldep: Null
+  N 26:
+    datadep: Null
+    controldep: Null
+  T 27:
+    datadep: Null
+    controldep: Null
+  ROOT 28:
+    datadep: 
+      - N 26
+    controldep: Null
+  ROOT 33:
+    datadep:
+      - tm 32
+      - i 29
+    controldep:
+      - i 29
+      - N 29
+  tm 32:
+    datadep: 
+      - tm 31
+    controldep:
+      - i 29
+      - N 29
+  tm 31:
+    datadep: 
+      - tm 30
+    controldep:
+      - i 29
+      - N 29
+  tm 30:
+    datadep: Null
+    controldep:
+      - i 29
+      - N 29
+  i 29:
+    datadep:
+      - i 29
+    controldep:
+      - i 29
+      - N 29
+  N 29:
+    reset: False
+    datadep:
+      - N 26
+    controldep:
+      - i 29
+      - N 29
+  ROOT 35:
+    datadep:
+      - ROOT 33
+      - ROOT 28
+    controldep: Null
+
+  

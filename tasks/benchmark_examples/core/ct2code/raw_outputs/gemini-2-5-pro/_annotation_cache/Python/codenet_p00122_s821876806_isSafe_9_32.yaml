@@ -1,0 +1,218 @@
+target_var: dy 23
+other_vars: Null
+variables:
+  dy 23:
+    datadep:
+      - flog 11
+      - i 21
+    controldep:
+      - Null 21
+  flog 11:
+    datadep:
+      - wfs 9 
+      - wfs 31
+    controldep:
+      - wfs 10
+  wfs 9:
+    datadep: Null
+    controldep: Null
+  wfs 10:
+    reset: False
+    datadep:
+      - wfs 9 
+      - wfs 31
+    controldep: 
+      - wfs 10
+  wfs 31:
+    datadep:
+      - safe 9
+      - wfs 31
+      - wfs 9
+      - spn 13
+      - i 26
+    controldep:
+      - spn 30
+  spn 30:
+    reset: False
+    datadep:
+      - spn 13
+    controldep:
+      - spn 28
+  spn 28:
+    reset: False
+    datadep:
+      - spn 13
+    controldep:
+      - safe 27
+      - spn 27
+      - i 27
+      - flogArea 27
+  spn 13:
+    datadep: 
+      - flog 11
+    controldep:
+      - wfs 10
+  flogArea 27:
+    reset: False
+    datadep:
+      - flogArea 25
+      - flogArea 19
+      - flogArea 12
+    controldep:
+      - safe 26
+      - spn 26
+  flogArea 25:
+    datadep:
+      - dx 22
+      - dy 23
+      - spn 13
+      - flogArea 19
+      - flogArea 12
+      - flogArea 25
+    controldep:
+      - dx 24
+      - dy 24
+  flogArea 12: 
+    datadep: Null
+    controldep:   
+      - wfs 10
+  flogArea 19:
+    datadep:
+      - dx 16
+      - dy 17
+      - spn 13
+      - flogArea 19
+      - flogArea 12
+      - flogArea 25
+    controldep:
+      - dx 18
+      - dy 18
+  dx 16:
+    datadep:
+      - flog 11
+      - j 15
+    controldep:
+      - Null 15
+  dx 18:
+    reset: False
+    datadep:
+      - dx 16
+    controldep:
+      - Null 15
+  dx 22:
+    datadep:
+      - flog 11
+      - j 20
+    controldep:
+      - Null 21
+  dx 24:
+    reset: False
+    datadep:
+      - dx 22
+    controldep:
+      - Null 21
+  dy 17:
+    datadep:
+      - flog 11
+      - i 14
+    controldep:
+      - Null 15
+  dy 18:
+    reset: False
+    datadep:
+      - dy 17
+    controldep:
+      - Null 15
+  dy 24:
+    reset: False
+    datadep:
+      - dy 23
+    controldep:
+      - Null 21
+  safe 27:
+    reset: False
+    datadep:
+      - safe 9
+    controldep:
+      - safe 26
+      - spn 26
+  safe 26:
+    reset: False
+    datadep:
+      - safe 9
+    controldep:
+      - wfs 10
+      - spn 28
+  safe 9: 
+    datadep: Null
+    controldep: Null
+  i 21:
+    datadep: Null
+    controldep:
+      - Null 20
+  j 20:
+    datadep: Null
+    controldep:
+      - wfs 10
+      - Null 20
+  i 14:
+    datadep: Null
+    controldep:
+      - wfs 10
+      - Null 14
+  j 15:
+    datadep: Null
+    controldep:
+      - Null 14
+      - Null 15
+  Null 14:
+    reset: False
+    datadep: Null
+    controldep:
+      - wfs 10
+      - Null 14
+  Null 15:
+    reset: False
+    datadep: Null
+    controldep:
+      - Null 14
+      - Null 15
+  Null 20:
+    reset: False
+    datadep: Null
+    controldep:
+      - wfs 10
+      - Null 20
+  Null 21:
+    reset: False
+    datadep: Null
+    controldep:
+      - Null 20
+  spn 26:
+    reset: False
+    datadep:
+      - spn 13
+    controldep:
+      - wfs 10
+      - spn 28
+  spn 27:
+    reset: False
+    datadep:
+      - spn 13
+    controldep:
+      - safe 26
+      - spn 26
+  i 27:
+    reset: False
+    datadep:
+      - i 26
+    controldep:
+      - safe 26
+      - spn 26
+  i 26:
+    datadep:
+      - safe 9
+      - spn 13
+    controldep:
+      - wfs 10
+      - spn 28

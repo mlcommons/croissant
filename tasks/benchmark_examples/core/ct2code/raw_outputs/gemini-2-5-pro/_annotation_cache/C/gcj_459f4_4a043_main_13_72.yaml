@@ -1,0 +1,120 @@
+target_var: j 48
+other_vars:
+  - last 29
+  - last 34
+  - temp 36
+  - temp 39
+  - quads 40
+  - quads 44
+  - quads 41
+  - extras 33
+variables:
+  j 48:
+    datadep:
+      - grid 32
+      - y 45
+      - x 46
+    controldep:
+      - x 46
+      - r 46
+  y 45:
+    datadep:
+      - y 45
+    controldep:
+      - no_cases 17
+      - case_no 17
+      - y 45
+      - r 45
+  r 45:
+    reset: False
+    datadep:
+      - r 24
+    controldep:
+      - no_cases 17
+      - case_no 17
+      - y 45
+      - r 45
+  x 46:
+    datadep:
+      - x 46
+    controldep:
+      - y 45
+      - r 45
+      - x 46
+      - r 46
+  r 46:
+    reset: False
+    datadep:
+      - r 24
+    controldep:
+      - y 45
+      - r 45
+      - x 46
+      - r 46
+  y 25:
+    datadep:
+      - y 25
+    controldep:
+      - no_cases 17
+      - case_no 17
+      - y 25
+      - r 25
+  r 25:
+    reset: False
+    datadep:
+      - r 24
+    controldep:
+      - no_cases 17
+      - case_no 17
+      - y 25
+      - r 25
+  x 30:
+    datadep:
+    - x 30
+    controldep:
+      - y 25
+      - r 25
+      - x 30
+      - c 30
+  c 30:
+    reset: False
+    datadep:
+      - c 24
+    controldep:
+      - y 25
+      - r 25
+      - x 30
+      - c 30
+  grid 32:
+    datadep:
+      - y 25
+      - x 30
+    controldep:
+      - x 30
+      - c 30
+  case_no 17:
+    datadep:
+      - case_no 17
+    controldep:
+      - no_cases 17
+      - case_no 17
+  no_cases 17:
+    reset: False
+    datadep:
+      - no_cases 16
+    controldep:
+      - no_cases 17
+      - case_no 17
+  no_cases 16:
+    datadep: Null
+    controldep: Null
+  r 24:
+    datadep: Null
+    controldep:
+      - no_cases 17
+      - case_no 17
+  c 24:
+    datadep: Null
+    controldep:
+      - no_cases 17
+      - case_no 17

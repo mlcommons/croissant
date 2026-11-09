@@ -1,0 +1,203 @@
+target_var: fi 151
+other_vars: 
+    - w 108
+    - w 100
+    - st 146
+    - st 149
+early_return: 
+    - 119
+    - 123
+    - 132
+    - 140
+variables:  
+    dg 133:
+        datadep:
+            - i 131
+        controldep:
+            - mem 132
+            - i 132
+    i 131:
+        datadep:
+            - i 131
+        controldep:
+            - i 131
+            - fl 130
+            - mem 132
+            - i 132
+    i 132:
+        reset: False
+        datadep: 
+            - i 131
+        controldep:
+            - i 131
+    mem 132:
+        reset: False
+        datadep:
+            - mem 113
+            - mem 105
+            - mem 97
+        controldep:
+            - i 131
+    fl 130:
+        reset: False
+        datadep:
+            - fl 107
+            - fl 115
+            - fl 96
+        controldep: Null
+    fl 107:
+        datadep:
+            - fl 107
+            - fl 115
+            - fl 96
+        controldep:
+            - s 104
+    fl 115:
+        datadep:
+            - fl 115
+            - fl 96
+            - fl 107
+        controldep:
+            - t 112
+    fl 96:
+        datadep: Null
+        controldep: Null
+    mem 113:
+        datadep: 
+            - i 99
+        controldep:
+            - t 112
+    mem 105:
+        datadep: 
+            - i 99
+        controldep:
+            - s 104
+    mem 97:
+        datadep: Null
+        controldep: Null
+    mem 119:
+        reset: False
+        datadep:
+            - mem 113
+            - mem 105
+            - mem 97
+        controldep:
+            - i 118
+    dg 120:
+        datadep:
+            - i 118
+        controldep:
+            - mem 119
+            - i 119
+    i 119:
+        reset: False
+        datadep:
+            - i 118
+        controldep:
+            - i 118
+    i 123:
+        reset: False
+        datadep: 
+            - i 118
+        controldep:
+            - mem 119
+            - i 119
+    i 118:
+        datadep:
+            - i 118
+        controldep:
+            - i 118
+            - fl 117
+            - i 123
+    fl 117:
+        reset: False
+        datadep:
+            - fl 115
+            - fl 107
+            - fl 96
+        controldep: Null
+    t 112:
+        reset: False
+        datadep:
+            - t 111
+        controldep:
+            - i 99
+    s 104:
+        reset: False
+        datadep:
+            - s 103
+        controldep:
+            - i 99
+    t 111:
+        datadep: Null
+        controldep:
+            - i 99
+    s 103:
+        datadep: Null
+        controldep:
+            - i 99
+    i 99:
+        datadep:
+            - i 99
+        controldep:
+            - i 99
+    fl 138:
+        reset: False
+        datadep:
+            - fl 107
+            - fl 115
+            - fl 96
+        controldep: Null
+    i 139:
+        datadep:
+            - i 139
+        controldep:
+            - i 139
+            - fl 138
+            - mem 140
+            - i 140
+    mem 140:
+        reset: False
+        datadep:
+            - mem 113
+            - mem 105
+            - mem 97
+        controldep:
+            - i 139
+    i 140:
+        reset: False
+        datadep:
+            - i 139
+        controldep:
+            - i 139
+    dg 141:
+        datadep:
+            - i 139
+        controldep:
+            - mem 140
+            - i 140
+    fi 147:
+        datadep: Null
+        controldep: Null
+    fi 151:
+        datadep:
+            - fi 151
+            - fi 147
+        controldep:
+            - i 150
+            - dg 150
+    i 150:
+        datadep:
+            - i 150
+        controldep:
+            - i 150
+            - dg 150
+    dg 150:
+        reset: False
+        datadep:
+            - dg 120
+            - dg 133
+            - dg 141
+        controldep:
+            - i 150
+            - dg 150

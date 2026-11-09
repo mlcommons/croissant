@@ -1,0 +1,172 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper",
+  "schema:name": "RISEBench Solution - GPT-image-1",
+  "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench" },
+
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#implementation",
+    "schema:name": "GPT-image-1 (OpenAI)",
+    "schema:description": "Accessed via OpenAI official API service."
+  },
+
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "evaluation_judge",
+        "schema:value": "GPT-4.1"
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "access_method",
+        "schema:value": "official API"
+      }
+    ]
+  },
+
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:risebench-gpt-image-1-outputs",
+    "schema:name": "GPT-image-1 outputs on RISEBench-360"
+  },
+
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#temporal",
+      "schema:name": "RISEBench - Temporal Reasoning Solution - GPT-image-1",
+      "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#temporal-reasoning" },
+      "croissant:implementation": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#implementation" },
+      "croissant:execution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#execution" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:risebench-gpt-image-1-temporal-outputs",
+        "schema:name": "GPT-image-1 outputs on RISEBench Temporal Reasoning"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "https://github.com/PhoenixZ810/RISEBench_evaluation_gpt-image-1_paper#temporal",
+        "schema:name": "Evaluation of GPT-image-1 on RISEBench - Temporal Reasoning",
+        "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#temporal-reasoning" },
+        "croissant:evaluatedSolution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#temporal" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Accuracy",
+            "croissant:value": "34.1",
+            "schema:description": "Percentage of temporal samples achieving scores of 5 on all applicable evaluation dimensions (Instruction Reasoning, Appearance Consistency, Visual Plausibility)."
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#causal",
+      "schema:name": "RISEBench - Causal Reasoning Solution - GPT-image-1",
+      "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#causal-reasoning" },
+      "croissant:implementation": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#implementation" },
+      "croissant:execution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#execution" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:risebench-gpt-image-1-causal-outputs",
+        "schema:name": "GPT-image-1 outputs on RISEBench Causal Reasoning"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "https://github.com/PhoenixZ810/RISEBench_evaluation_gpt-image-1_paper#causal",
+        "schema:name": "Evaluation of GPT-image-1 on RISEBench - Causal Reasoning",
+        "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#causal-reasoning" },
+        "croissant:evaluatedSolution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#causal" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Accuracy",
+            "croissant:value": "32.2",
+            "schema:description": "Percentage of causal samples achieving scores of 5 on all applicable evaluation dimensions."
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#spatial",
+      "schema:name": "RISEBench - Spatial Reasoning Solution - GPT-image-1",
+      "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#spatial-reasoning" },
+      "croissant:implementation": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#implementation" },
+      "croissant:execution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#execution" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:risebench-gpt-image-1-spatial-outputs",
+        "schema:name": "GPT-image-1 outputs on RISEBench Spatial Reasoning"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "https://github.com/PhoenixZ810/RISEBench_evaluation_gpt-image-1_paper#spatial",
+        "schema:name": "Evaluation of GPT-image-1 on RISEBench - Spatial Reasoning",
+        "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#spatial-reasoning" },
+        "croissant:evaluatedSolution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#spatial" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Accuracy",
+            "croissant:value": "37.0",
+            "schema:description": "Percentage of spatial samples achieving scores of 5 on all applicable evaluation dimensions."
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#logical",
+      "schema:name": "RISEBench - Logical Reasoning Solution - GPT-image-1",
+      "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#logical-reasoning" },
+      "croissant:implementation": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#implementation" },
+      "croissant:execution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#execution" },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:risebench-gpt-image-1-logical-outputs",
+        "schema:name": "GPT-image-1 outputs on RISEBench Logical Reasoning"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "https://github.com/PhoenixZ810/RISEBench_evaluation_gpt-image-1_paper#logical",
+        "schema:name": "Evaluation of GPT-image-1 on RISEBench - Logical Reasoning",
+        "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench#logical-reasoning" },
+        "croissant:evaluatedSolution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper#logical" },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Accuracy",
+            "croissant:value": "10.6",
+            "schema:description": "Percentage of logical samples achieving scores of 5 on Instruction Reasoning and Appearance Consistency (Visual Plausibility not evaluated for this category)."
+          }
+        ]
+      }
+    }
+  ],
+
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "https://github.com/PhoenixZ810/RISEBench_evaluation_gpt-image-1_paper",
+    "schema:name": "Evaluation of GPT-image-1 on RISEBench-360",
+    "schema:isBasedOn": { "@id": "https://github.com/PhoenixZ810/RISEBench" },
+    "croissant:evaluatedSolution": { "@id": "https://github.com/PhoenixZ810/RISEBench_solution_gpt-image-1_paper" },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Accuracy",
+        "croissant:value": "28.9",
+        "schema:description": "Overall accuracy across all 360 samples (highest among evaluated models)."
+      }
+    ]
+  }
+}

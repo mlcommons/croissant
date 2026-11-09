@@ -1,0 +1,318 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskProblem",
+  "@id": "http://example.org/mmlu_problem",
+  "schema:name": "MMLU (Massive Multitask Language Understanding)",
+  "schema:description": "Massive Multitask Language Understanding benchmark consisting of 15908 multiple-choice questions from 57 branches of knowledge.",
+  "croissant:input": {
+    "@type": "schema:Dataset",
+    "@id": "https://huggingface.co/datasets/cais/mmlu",
+    "schema:name": "MMLU Dataset on Hugging Face"
+  },
+  "croissant:output": {
+    "@type": "croissant:OutputSpec",
+    "@id": "http://example.org/mmlu#outputSpec",
+    "croissant:schema": {
+      "@type": "croissant:RecordSet",
+      "croissant:field": [
+        {
+          "@type": "croissant:Field",
+          "schema:name": "answer",
+          "croissant:dataType": "xsd:string",
+          "schema:valuePattern": "^[A-D]$",
+          "schema:description": "The predicted answer choice (A, B, C, or D)."
+        },
+        {
+          "@type": "croissant:Field",
+          "schema:name": "confidence_score",
+          "croissant:dataType": "xsd:float",
+          "schema:description": "The confidence score or probability assigned to the predicted answer."
+        }
+      ]
+    }
+  },
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationSpec",
+    "@id": "http://example.org/mmlu#evaluationSpec",
+    "croissant:expectedMetric": [
+      "Accuracy",
+      "Calibration Error"
+    ]
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#humanities_preprocess",
+      "schema:name": "MMLU - Humanities Preprocessing",
+      "schema:description": "Preprocess raw MMLU data to extract humanities questions.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/cais/mmlu"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#humanities_preprocessed_spec",
+        "schema:description": "The filtered humanities dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter humanities questions."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#humanities",
+      "schema:name": "MMLU - Humanities",
+      "schema:description": "Sub-task for humanities questions.",
+      "croissant:input": {
+        "@id": "http://example.org/mmlu#humanities_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "http://example.org/mmlu#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#stem_preprocess",
+      "schema:name": "MMLU - STEM Preprocessing",
+      "schema:description": "Preprocess raw MMLU data to extract STEM questions.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/cais/mmlu"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#stem_preprocessed_spec",
+        "schema:description": "The filtered STEM dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter STEM questions."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#stem",
+      "schema:name": "MMLU - STEM",
+      "schema:description": "Sub-task for STEM questions.",
+      "croissant:input": {
+        "@id": "http://example.org/mmlu#stem_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "http://example.org/mmlu#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#social_sciences_preprocess",
+      "schema:name": "MMLU - Social Sciences Preprocessing",
+      "schema:description": "Preprocess raw MMLU data to extract social sciences questions.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/cais/mmlu"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#social_sciences_preprocessed_spec",
+        "schema:description": "The filtered social sciences dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter social sciences questions."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#social_sciences",
+      "schema:name": "MMLU - Social Sciences",
+      "schema:description": "Sub-task for social sciences questions.",
+      "croissant:input": {
+        "@id": "http://example.org/mmlu#social_sciences_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "http://example.org/mmlu#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#other_preprocess",
+      "schema:name": "MMLU - Other Preprocessing",
+      "schema:description": "Preprocess raw MMLU data to extract other questions.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/cais/mmlu"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#other_preprocessed_spec",
+        "schema:description": "The filtered other dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter other questions."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#other",
+      "schema:name": "MMLU - Other",
+      "schema:description": "Sub-task for other questions.",
+      "croissant:input": {
+        "@id": "http://example.org/mmlu#other_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "http://example.org/mmlu#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#humanities_fewshot",
+      "schema:name": "MMLU - Humanities (Few-shot)",
+      "schema:description": "Sub-task for humanities questions with 5 few-shot examples.",
+      "croissant:input": [
+        {
+          "@id": "http://example.org/mmlu#humanities_preprocessed_spec",
+          "schema:description": "Test data for humanities category."
+        },
+        {
+          "@type": "schema:Dataset",
+          "@id": "https://huggingface.co/datasets/cais/mmlu",
+          "schema:description": "5 fixed few-shot examples from the dev split for humanities."
+        }
+      ],
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "http://example.org/mmlu#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#stem_fewshot",
+      "schema:name": "MMLU - STEM (Few-shot)",
+      "schema:description": "Sub-task for STEM questions with 5 few-shot examples.",
+      "croissant:input": [
+        {
+          "@id": "http://example.org/mmlu#stem_preprocessed_spec",
+          "schema:description": "Test data for STEM category."
+        },
+        {
+          "@type": "schema:Dataset",
+          "@id": "https://huggingface.co/datasets/cais/mmlu",
+          "schema:description": "5 fixed few-shot examples from the dev split for STEM."
+        }
+      ],
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "http://example.org/mmlu#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#social_sciences_fewshot",
+      "schema:name": "MMLU - Social Sciences (Few-shot)",
+      "schema:description": "Sub-task for social sciences questions with 5 few-shot examples.",
+      "croissant:input": [
+        {
+          "@id": "http://example.org/mmlu#social_sciences_preprocessed_spec",
+          "schema:description": "Test data for social sciences category."
+        },
+        {
+          "@type": "schema:Dataset",
+          "@id": "https://huggingface.co/datasets/cais/mmlu",
+          "schema:description": "5 fixed few-shot examples from the dev split for social sciences."
+        }
+      ],
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "http://example.org/mmlu#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#other_fewshot",
+      "schema:name": "MMLU - Other (Few-shot)",
+      "schema:description": "Sub-task for other questions with 5 few-shot examples.",
+      "croissant:input": [
+        {
+          "@id": "http://example.org/mmlu#other_preprocessed_spec",
+          "schema:description": "Test data for other category."
+        },
+        {
+          "@type": "schema:Dataset",
+          "@id": "https://huggingface.co/datasets/cais/mmlu",
+          "schema:description": "5 fixed few-shot examples from the dev split for other."
+        }
+      ],
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "http://example.org/mmlu#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/mmlu#overall_fewshot",
+      "schema:name": "MMLU - Overall (Few-shot)",
+      "schema:description": "Overall task on all data points with 5 few-shot examples.",
+      "croissant:input": [
+        {
+          "@type": "schema:Dataset",
+          "@id": "https://huggingface.co/datasets/cais/mmlu",
+          "schema:description": "All test data."
+        },
+        {
+          "@type": "schema:Dataset",
+          "@id": "https://huggingface.co/datasets/cais/mmlu",
+          "schema:description": "5 fixed few-shot examples from the dev split."
+        }
+      ],
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/mmlu#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationSpec",
+        "@id": "http://example.org/mmlu#evaluationSpec"
+      }
+    }
+  ]
+}

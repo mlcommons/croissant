@@ -1,0 +1,467 @@
+target_var: x 73
+other_vars:
+  - y 16
+  - prey 19
+  - y 32
+  - y 34
+  - prey 36
+  - prey 40
+  - y 43
+  - y 45
+  - prey 47
+  - y 61
+  - y 63
+  - prey 69
+  - y 72
+  - y 74
+  - prey 69
+  - prey 76
+variables:
+  h 7:
+    datadep: Null
+    controldep: Null
+  w 8:
+    datadep: Null
+    controldep: Null
+  a 9:
+    datadep:
+      - h 7
+      - w 8
+    controldep: Null
+  i 10:
+    datadep:
+      - i 10
+    controldep:
+      - i 10
+      - h 10
+  h 10:
+    reset: False
+    datadep:
+      - h 7
+    controldep:
+      - i 10
+      - h 10
+  j 11:
+    datadep:
+      - j 11
+    controldep:
+      - i 10
+      - h 10
+      - j 11
+      - w 11
+  w 11:
+    reset: False
+    datadep:
+      - w 8
+    controldep:
+      - i 10
+      - h 10
+      - j 11
+      - w 11
+  a 12:
+    datadep:
+      - i 10
+      - j 11
+    controldep:
+      - j 11
+      - w 11
+  x 15:
+    datadep: Null
+    controldep: Null
+  flag 17:
+    datadep: Null
+    controldep: Null
+  prex 18:
+    datadep: Null
+    controldep: Null
+  i 21:
+    datadep:
+      - i 21
+    controldep:
+      - i 21
+      - h 21
+  h 21:
+    reset: False
+    datadep:
+      - h 7
+    controldep:
+      - i 21
+      - h 21
+  i 22:
+    reset: False
+    datadep:
+      - i 21
+    controldep:
+      - i 21
+      - h 21
+  j 23:
+    datadep:
+      - w 8
+      - j 23
+    controldep:
+      - i 22
+      - j 23
+  a 24:
+    reset: False
+    datadep:
+      - a 9
+      - a 12
+    controldep:
+      - j 23
+  i 24:
+    reset: False
+    datadep:
+      - i 21   
+    controldep:
+      - j 23
+  j 24:
+    reset: False
+    datadep:
+      - j 23
+    controldep:
+      - j 23
+  odd 25:
+    datadep: Null
+    controldep:
+      - a 24
+      - i 24
+      - j 24
+  odd 27:
+    datadep: Null
+    controldep:
+      - a 24
+      - i 24
+      - j 24
+  odd 29:
+    reset: False
+    datadep: 
+      - odd 25
+      - odd 27
+    controldep:
+      - j 23
+  flag 29:
+    reset: False
+    datadep:
+      - flag 17
+      - flag 30
+      - flag 38
+      - flag 59
+      - flag 67
+    controldep:
+      - j 23
+  odd 37:
+    reset: False
+    datadep:
+      - odd 25
+      - odd 27
+    controldep:
+      - odd 29
+      - flag 29
+  flag 37:
+    reset: False
+    datadep:
+      - flag 17
+      - flag 30
+      - flag 38
+      - flag 59
+      - flag 67
+    controldep:
+      - odd 29
+      - flag 29
+  odd 41:
+    reset: False
+    datadep:
+      - odd 25
+      - odd 27
+    controldep:
+      - odd 37
+      - flag 37
+  flag 41:
+    reset: False
+    datadep:
+      - flag 17
+      - flag 30
+      - flag 38
+      - flag 59
+      - flag 67
+    controldep:
+      - odd 37
+      - flag 37
+  flag 30:
+    datadep:
+      - flag 17
+      - flag 30
+      - flag 38
+      - flag 59
+      - flag 67
+    controldep:
+      - odd 29
+      - flag 29
+  x 31:
+    datadep:
+      - x 15
+      - x 33
+      - x 44
+      - x 62
+      - x 73
+      - prex 18
+      - prex 35
+      - prex 39
+      - prex 46
+      - prex 64
+      - prex 68
+      - prex 75
+    controldep:
+      - odd 29
+      - flag 29
+  x 33:
+    datadep:
+      - x 31
+      - j 23
+    controldep:
+      - odd 29
+      - flag 29
+  prex 35:
+    datadep:
+      - j 23
+    controldep:
+      - odd 29
+      - flag 29
+  flag 38:
+    datadep:
+      - flag 17
+      - flag 30
+      - flag 38
+      - flag 59
+      - flag 67
+    controldep:
+      - odd 37
+      - flag 37
+  prex 39:
+    datadep:
+      - j 23
+    controldep:
+      - odd 37
+      - flag 37
+  x 42:
+    datadep:
+      - x 15
+      - x 33
+      - x 44
+      - x 62
+      - x 73
+      - prex 18
+      - prex 35
+      - prex 39
+      - prex 46
+      - prex 64
+      - prex 68
+      - prex 75
+    controldep:
+      - odd 41
+      - flag 41
+  x 44:
+    datadep:
+      - x 42
+      - j 23
+    controldep:
+      - odd 41
+      - flag 41
+  prex 46:
+    datadep:
+      - j 23
+    controldep:
+      - odd 41
+      - flag 41
+  j 52:
+    datadep:
+      - j 52
+    controldep:
+      - i 22
+      - j 52
+      - w 52
+  w 52:
+    reset: False
+    datadep:
+      - w 8
+    controldep:
+      - i 22
+      - j 52
+      - w 52
+  a 53:
+    reset: False
+    datadep:
+      - a 9
+      - a 12
+    controldep:
+      - j 52
+      - w 52
+  i 53:
+    reset: False
+    datadep:
+      - i 21   
+    controldep:
+      - j 52
+      - w 52
+  j 53:
+    reset: False
+    datadep:
+      - j 52
+    controldep:
+      - j 52
+      - w 52
+  odd 54:
+    datadep: Null
+    controldep:
+      - a 53
+      - i 53
+      - j 53
+  odd 56:
+    datadep: Null
+    controldep:
+      - a 53
+      - i 53
+      - j 53
+  odd 58:
+    reset: False
+    datadep:
+      - odd 54
+      - odd 56
+    controldep:
+      - j 52
+      - w 52
+  flag 58:
+    reset: False
+    datadep:
+      - flag 17
+      - flag 30
+      - flag 38
+      - flag 59
+      - flag 67
+    controldep:
+      - j 52
+      - w 52
+  odd 66:
+    reset: False
+    datadep:
+      - odd 54
+      - odd 56
+    controldep:
+      - odd 58
+      - flag 58
+  flag 66:
+    reset: False
+    datadep:
+      - flag 17
+      - flag 30
+      - flag 38
+      - flag 59
+      - flag 67
+    controldep:
+      - odd 58
+      - flag 58
+  odd 70:
+    reset: False
+    datadep:
+      - odd 54
+      - odd 56
+    controldep:
+      - odd 66
+      - flag 66
+  flag 70:
+    reset: False
+    datadep:
+      - flag 17
+      - flag 30
+      - flag 38
+      - flag 59
+      - flag 67
+    controldep:
+      - odd 66
+      - flag 66
+  flag 59:
+    datadep:
+      - flag 17
+      - flag 30
+      - flag 38
+      - flag 59
+      - flag 67
+    controldep:
+      - odd 58
+      - flag 58
+  x 60:
+    datadep:
+      - x 15
+      - x 33
+      - x 44
+      - x 62
+      - x 73
+      - prex 18
+      - prex 35
+      - prex 39
+      - prex 46
+      - prex 64
+      - prex 68
+      - prex 75
+    controldep:
+      - odd 58
+      - flag 58
+  x 62:
+    datadep:
+      - x 60
+      - j 52
+    controldep:
+      - odd 58
+      - flag 58
+  prex 64:
+    datadep:
+      - j 52
+    controldep:
+      - odd 58
+      - flag 58
+  flag 67:
+    datadep:
+      - flag 17
+      - flag 30
+      - flag 38
+      - flag 59
+      - flag 67
+    controldep:
+      - odd 66
+      - flag 66
+  prex 68:
+    datadep:
+      - j 52
+    controldep:
+      - odd 66
+      - flag 66
+  x 71:
+    datadep:
+      - x 15
+      - x 33
+      - x 44
+      - x 62
+      - x 73
+      - prex 18
+      - prex 35
+      - prex 39
+      - prex 46
+      - prex 64
+      - prex 68
+      - prex 75
+    controldep:
+      - odd 70
+      - flag 70
+  x 73:
+    datadep:
+      - x 71
+      - j 52
+    controldep:
+      - odd 70
+      - flag 70
+  prex 75:
+    datadep:
+      - j 52
+    controldep:
+      - odd 70
+      - flag 70

@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croissant Tasks Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        #visualization {
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        .node circle {
+            stroke: #fff;
+            stroke-width: 1.5px;
+        }
+        .link {
+            fill: none;
+            stroke-opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Croissant Tasks Visualization</h1>
+    <div id="visualization"></div>
+
+    <!-- Include visualizer logic -->
+    <script>
+// visualizer.js - Custom D3 visualization for Croissant Tasks
+// This script assumes D3.js is loaded in the global scope.
+
+function renderVisualization(problemData, solutionData, containerSelector, alignSolutions = false) {
+  const width = 1200;
+  const height = 800;
+  const margin = { top: 40, right: 100, bottom: 40, left: 100 };
+
+  const svg = d3.select(containerSelector)
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  const mainGroup = svg.append("g")
+    .attr("class", "main-group");
+
+  const zoom = d3.zoom()
+    .scaleExtent([0.1, 5])
+    .on("zoom", (event) => {
+      mainGroup.attr("transform", event.transform);
+    });
+
+  svg.call(zoom);
+  svg.call(zoom.transform, d3.zoomIdentity.translate(margin.left, margin.top));
+
+  const linkLayer = mainGroup.append("g").attr("class", "link-layer");
+  const nodeLayer = mainGroup.append("g").attr("class", "node-layer");
+
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+
+  // Process hierarchies
+  const probRoot = d3.hierarchy(problemData, d => d["croissant:subTask"]);
+  const solRoot = d3.hierarchy(solutionData, d => d["croissant:subTask"]);
+  // Extract solved problem IDs to sort problems
+  const solvedProblemIds = new Set();
+  const extractSolvedIds = (node) => {
+    const basedOn = node["schema:isBasedOn"];
+    if (basedOn && basedOn["@id"]) {
+      solvedProblemIds.add(basedOn["@id"]);
+    }
+    const subTasks = node["croissant:subTask"];
+    if (subTasks) {
+      subTasks.forEach(extractSolvedIds);
+    }
+  };
+  extractSolvedIds(solutionData);
+
+  // Sort probRoot so solved problems come first
+  probRoot.sort((a, b) => {
+    const aSolved = solvedProblemIds.has(a.data["@id"]);
+    const bSolved = solvedProblemIds.has(b.data["@id"]);
+    if (aSolved && !bSolved) return -1;
+    if (!aSolved && bSolved) return 1;
+    return 0;
+  });
+  // Create a map from problem ID to its index in the sorted probRoot
+  const problemOrder = new Map();
+  if (probRoot.children) {
+    probRoot.children.forEach((d, i) => {
+      problemOrder.set(d.data["@id"], i);
+    });
+  }
+
+  // Sort solRoot to match the order of problems
+  solRoot.sort((a, b) => {
+    const aProbId = a.data["schema:isBasedOn"] && a.data["schema:isBasedOn"]["@id"];
+    const bProbId = b.data["schema:isBasedOn"] && b.data["schema:isBasedOn"]["@id"];
+    const aIdx = problemOrder.has(aProbId) ? problemOrder.get(aProbId) : Infinity;
+    const bIdx = problemOrder.has(bProbId) ? problemOrder.get(bProbId) : Infinity;
+    return aIdx - bIdx;
+  });
+
+  // Layouts
+  const probTree = d3.tree().size([innerHeight, innerWidth / 3]);
+  const solTree = d3.tree().size([innerHeight, innerWidth / 3]);
+
+  probTree(probRoot);
+  solTree(solRoot);
+
+  // Align solutions with problems if requested
+  if (alignSolutions) {
+    const probXMap = new Map();
+    probRoot.descendants().forEach(d => {
+      probXMap.set(d.data["@id"], d.x);
+    });
+
+    solRoot.descendants().forEach(d => {
+      const basedOn = d.data["schema:isBasedOn"];
+      if (basedOn && basedOn["@id"]) {
+        const probX = probXMap.get(basedOn["@id"]);
+        if (probX !== undefined) {
+          d.x = probX;
+        }
+      }
+    });
+  }
+
+  // Custom positioning to bring roots to the top
+  const shiftTreeToTop = (root) => {
+    let minX = Infinity;
+    root.each(d => {
+      if (d !== root && d.x < minX) minX = d.x;
+    });
+    // Shift all children so min among them is at least 40
+    const shift = 40 - minX;
+    root.each(d => {
+      if (d !== root) d.x = d.x + shift;
+    });
+    root.x = 0; // Force root to the very top
+  };
+
+  shiftTreeToTop(probRoot);
+  shiftTreeToTop(solRoot);
+
+  // Shift solution tree to the right and flip it
+  solRoot.each(d => {
+    d.y = innerWidth - d.y;
+  });
+
+  // Shift problem tree slightly to the left to leave space in the middle
+  probRoot.each(d => {
+    d.y = d.y;
+  });
+
+  // Draw Problem Tree (Left)
+  const probNodes = probRoot.descendants();
+  const probLinks = probRoot.links();
+
+  linkLayer.selectAll(".prob-link")
+    .data(probLinks)
+    .enter().append("path")
+    .attr("class", "prob-link")
+    .attr("d", d3.linkHorizontal()
+      .x(d => d.y)
+      .y(d => d.x))
+    .attr("fill", "none")
+    .attr("stroke", "#9ecae1")
+    .attr("stroke-width", 2);
+
+  const probNode = nodeLayer.selectAll(".prob-node")
+    .data(probNodes)
+    .enter().append("g")
+    .attr("class", "prob-node")
+    .attr("transform", d => `translate(${d.y},${d.x})`)
+    .style("opacity", d => (d === probRoot || solvedProblemIds.has(d.data["@id"])) ? 1.0 : 0.4);
+
+  probNode.append("circle")
+    .attr("r", 6)
+    .attr("fill", "#3182bd");
+
+  probNode.append("text")
+    .attr("dy", ".35em")
+    .attr("x", d => d.children ? -10 : 10)
+    .attr("text-anchor", d => d.children ? "end" : "start")
+    .text(d => d.data["schema:name"] || d.data["@id"])
+    .style("font-size", "12px")
+    .style("font-family", "sans-serif");
+
+  // Draw Solution Tree (Right)
+  const solNodes = solRoot.descendants();
+  const solLinks = solRoot.links();
+
+  linkLayer.selectAll(".sol-link")
+    .data(solLinks)
+    .enter().append("path")
+    .attr("class", "sol-link")
+    .attr("d", d3.linkHorizontal()
+      .x(d => d.y)
+      .y(d => d.x))
+    .attr("fill", "none")
+    .attr("stroke", "#a1d99b")
+    .attr("stroke-width", 2);
+
+  const solNode = nodeLayer.selectAll(".sol-node")
+    .data(solNodes)
+    .enter().append("g")
+    .attr("class", "sol-node")
+    .attr("transform", d => `translate(${d.y},${d.x})`);
+
+  solNode.append("circle")
+    .attr("r", 6)
+    .attr("fill", "#31a354");
+
+  solNode.append("text")
+    .attr("dy", ".35em")
+    .attr("x", d => d.children ? 10 : -10)
+    .attr("text-anchor", d => d.children ? "start" : "end")
+    .text(d => {
+      if (d.data["schema:name"]) return d.data["schema:name"];
+      const id = d.data["@id"];
+      if (id) {
+        const hashIdx = id.lastIndexOf("#");
+        if (hashIdx !== -1) return id.substring(hashIdx + 1);
+        const slashIdx = id.lastIndexOf("/");
+        if (slashIdx !== -1) return id.substring(slashIdx + 1);
+        return id;
+      }
+      return "";
+    })
+    .style("font-size", "12px")
+    .style("font-family", "sans-serif");
+
+  // Draw cross-links between solutions and problems
+  // We need to map solution nodes to problem nodes based on schema:isBasedOn
+  const solMap = new Map();
+  solNodes.forEach(d => {
+    const basedOn = d.data["schema:isBasedOn"];
+    if (basedOn && basedOn["@id"]) {
+      solMap.set(d.data["@id"], { solNode: d, basedOnId: basedOn["@id"] });
+    }
+  });
+
+  const probMap = new Map();
+  probNodes.forEach(d => {
+    probMap.set(d.data["@id"], d);
+  });
+
+  const crossLinks = [];
+  solMap.forEach((val, key) => {
+    const probNode = probMap.get(val.basedOnId);
+    if (probNode) {
+      crossLinks.push({
+        source: val.solNode,
+        target: probNode
+      });
+    }
+  });
+
+  linkLayer.selectAll(".cross-link")
+    .data(crossLinks)
+    .enter().append("path")
+    .attr("class", "cross-link")
+    .attr("d", d => {
+      const sourceX = d.source.y;
+      const sourceY = d.source.x;
+      const targetX = d.target.y;
+      const targetY = d.target.x;
+      // Draw a curve between source and target
+      return `M${sourceX},${sourceY}C${(sourceX+targetX)/2},${sourceY} ${(sourceX+targetX)/2},${targetY} ${targetX},${targetY}`;
+    })
+    .attr("fill", "none")
+    .attr("stroke", "#fdae6b")
+    .attr("stroke-width", 1.5)
+    .attr("stroke-dasharray", "4,4");
+
+  // Add Evaluation Results
+  // Solutions might have croissant:evaluation with evaluationResults
+  solNodes.forEach(d => {
+    const evalData = d.data["croissant:evaluation"];
+    if (evalData && evalData["croissant:evaluationResults"]) {
+      const results = evalData["croissant:evaluationResults"];
+      results.forEach((res, i) => {
+        const metric = res["croissant:metric"];
+        const value = res["croissant:value"];
+        
+        // Add a node for the result
+        const resultNode = nodeLayer.append("g")
+          .attr("transform", `translate(${d.y - 40}, ${d.x + 20 + i*15})`);
+
+        resultNode.append("rect")
+          .attr("width", 80)
+          .attr("height", 12)
+          .attr("fill", "#fee391")
+          .attr("stroke", "#fe9929")
+          .attr("rx", 3);
+
+        resultNode.append("text")
+          .attr("x", 40)
+          .attr("y", 9)
+          .attr("text-anchor", "middle")
+          .text(`${metric}: ${value}`)
+          .style("font-size", "10px")
+          .style("font-family", "sans-serif");
+
+        // Draw a line from solution node to result node
+        linkLayer.append("line")
+          .attr("x1", d.y)
+          .attr("y1", d.x)
+          .attr("x2", d.y - 20)
+          .attr("y2", d.x + 20 + i*15)
+          .attr("stroke", "#fe9929")
+          .attr("stroke-width", 1);
+      });
+    }
+  });
+}
+
+</script>
+
+    <script>
+        // Placeholders to be replaced by generate_vis.py
+        const problemData = {
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskProblem",
+  "@id": "http://example.org/xlsum_problem",
+  "schema:name": "XL-Sum",
+  "schema:description": "Large-Scale Multilingual Abstractive Summarization for 44 Languages.",
+  "croissant:input": {
+    "@type": "schema:Dataset",
+    "@id": "https://huggingface.co/datasets/GEM/xlsum",
+    "schema:name": "XL-Sum Dataset on Hugging Face"
+  },
+  "croissant:output": {
+    "@type": "croissant:OutputSpec",
+    "@id": "http://example.org/xlsum#outputSpec",
+    "croissant:schema": {
+      "@type": "croissant:RecordSet",
+      "croissant:field": [
+        {
+          "@type": "croissant:Field",
+          "schema:name": "summary",
+          "croissant:dataType": "xsd:string",
+          "schema:description": "The generated summary."
+        }
+      ]
+    }
+  },
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationSpec",
+    "@id": "http://example.org/xlsum#evaluationSpec",
+    "croissant:expectedMetric": [
+      "RougeL"
+    ]
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#amharic_preprocess",
+      "schema:name": "XL-Sum - Amharic Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Amharic entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#amharic_preprocessed_spec",
+        "schema:description": "The filtered Amharic dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Amharic entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#amharic",
+      "schema:name": "XL-Sum - Amharic",
+      "schema:description": "Sub-task for Amharic summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#amharic_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#arabic_preprocess",
+      "schema:name": "XL-Sum - Arabic Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Arabic entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#arabic_preprocessed_spec",
+        "schema:description": "The filtered Arabic dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Arabic entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#arabic",
+      "schema:name": "XL-Sum - Arabic",
+      "schema:description": "Sub-task for Arabic summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#arabic_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#azerbaijani_preprocess",
+      "schema:name": "XL-Sum - Azerbaijani Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Azerbaijani entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#azerbaijani_preprocessed_spec",
+        "schema:description": "The filtered Azerbaijani dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Azerbaijani entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#azerbaijani",
+      "schema:name": "XL-Sum - Azerbaijani",
+      "schema:description": "Sub-task for Azerbaijani summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#azerbaijani_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#bengali_preprocess",
+      "schema:name": "XL-Sum - Bengali Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Bengali entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#bengali_preprocessed_spec",
+        "schema:description": "The filtered Bengali dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Bengali entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#bengali",
+      "schema:name": "XL-Sum - Bengali",
+      "schema:description": "Sub-task for Bengali summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#bengali_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#burmese_preprocess",
+      "schema:name": "XL-Sum - Burmese Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Burmese entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#burmese_preprocessed_spec",
+        "schema:description": "The filtered Burmese dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Burmese entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#burmese",
+      "schema:name": "XL-Sum - Burmese",
+      "schema:description": "Sub-task for Burmese summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#burmese_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#chinese_preprocess",
+      "schema:name": "XL-Sum - Chinese Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Chinese entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#chinese_preprocessed_spec",
+        "schema:description": "The filtered Chinese dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Chinese entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#chinese",
+      "schema:name": "XL-Sum - Chinese",
+      "schema:description": "Sub-task for Chinese summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#chinese_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#english_preprocess",
+      "schema:name": "XL-Sum - English Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract English entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#english_preprocessed_spec",
+        "schema:description": "The filtered English dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter English entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#english",
+      "schema:name": "XL-Sum - English",
+      "schema:description": "Sub-task for English summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#english_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#french_preprocess",
+      "schema:name": "XL-Sum - French Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract French entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#french_preprocessed_spec",
+        "schema:description": "The filtered French dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter French entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#french",
+      "schema:name": "XL-Sum - French",
+      "schema:description": "Sub-task for French summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#french_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#gujarati_preprocess",
+      "schema:name": "XL-Sum - Gujarati Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Gujarati entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#gujarati_preprocessed_spec",
+        "schema:description": "The filtered Gujarati dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Gujarati entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#gujarati",
+      "schema:name": "XL-Sum - Gujarati",
+      "schema:description": "Sub-task for Gujarati summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#gujarati_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#hausa_preprocess",
+      "schema:name": "XL-Sum - Hausa Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Hausa entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#hausa_preprocessed_spec",
+        "schema:description": "The filtered Hausa dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Hausa entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#hausa",
+      "schema:name": "XL-Sum - Hausa",
+      "schema:description": "Sub-task for Hausa summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#hausa_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#hindi_preprocess",
+      "schema:name": "XL-Sum - Hindi Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Hindi entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#hindi_preprocessed_spec",
+        "schema:description": "The filtered Hindi dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Hindi entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#hindi",
+      "schema:name": "XL-Sum - Hindi",
+      "schema:description": "Sub-task for Hindi summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#hindi_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#igbo_preprocess",
+      "schema:name": "XL-Sum - Igbo Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Igbo entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#igbo_preprocessed_spec",
+        "schema:description": "The filtered Igbo dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Igbo entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#igbo",
+      "schema:name": "XL-Sum - Igbo",
+      "schema:description": "Sub-task for Igbo summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#igbo_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#indonesian_preprocess",
+      "schema:name": "XL-Sum - Indonesian Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Indonesian entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#indonesian_preprocessed_spec",
+        "schema:description": "The filtered Indonesian dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Indonesian entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#indonesian",
+      "schema:name": "XL-Sum - Indonesian",
+      "schema:description": "Sub-task for Indonesian summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#indonesian_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#japanese_preprocess",
+      "schema:name": "XL-Sum - Japanese Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Japanese entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#japanese_preprocessed_spec",
+        "schema:description": "The filtered Japanese dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Japanese entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#japanese",
+      "schema:name": "XL-Sum - Japanese",
+      "schema:description": "Sub-task for Japanese summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#japanese_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#kirundi_preprocess",
+      "schema:name": "XL-Sum - Kirundi Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Kirundi entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#kirundi_preprocessed_spec",
+        "schema:description": "The filtered Kirundi dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Kirundi entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#kirundi",
+      "schema:name": "XL-Sum - Kirundi",
+      "schema:description": "Sub-task for Kirundi summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#kirundi_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#korean_preprocess",
+      "schema:name": "XL-Sum - Korean Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Korean entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#korean_preprocessed_spec",
+        "schema:description": "The filtered Korean dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Korean entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#korean",
+      "schema:name": "XL-Sum - Korean",
+      "schema:description": "Sub-task for Korean summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#korean_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#kyrgyz_preprocess",
+      "schema:name": "XL-Sum - Kyrgyz Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Kyrgyz entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#kyrgyz_preprocessed_spec",
+        "schema:description": "The filtered Kyrgyz dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Kyrgyz entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#kyrgyz",
+      "schema:name": "XL-Sum - Kyrgyz",
+      "schema:description": "Sub-task for Kyrgyz summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#kyrgyz_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#marathi_preprocess",
+      "schema:name": "XL-Sum - Marathi Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Marathi entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#marathi_preprocessed_spec",
+        "schema:description": "The filtered Marathi dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Marathi entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#marathi",
+      "schema:name": "XL-Sum - Marathi",
+      "schema:description": "Sub-task for Marathi summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#marathi_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#nepali_preprocess",
+      "schema:name": "XL-Sum - Nepali Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Nepali entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#nepali_preprocessed_spec",
+        "schema:description": "The filtered Nepali dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Nepali entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#nepali",
+      "schema:name": "XL-Sum - Nepali",
+      "schema:description": "Sub-task for Nepali summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#nepali_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#oromo_preprocess",
+      "schema:name": "XL-Sum - Oromo Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Oromo entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#oromo_preprocessed_spec",
+        "schema:description": "The filtered Oromo dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Oromo entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#oromo",
+      "schema:name": "XL-Sum - Oromo",
+      "schema:description": "Sub-task for Oromo summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#oromo_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#pashto_preprocess",
+      "schema:name": "XL-Sum - Pashto Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Pashto entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#pashto_preprocessed_spec",
+        "schema:description": "The filtered Pashto dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Pashto entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#pashto",
+      "schema:name": "XL-Sum - Pashto",
+      "schema:description": "Sub-task for Pashto summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#pashto_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#persian_preprocess",
+      "schema:name": "XL-Sum - Persian Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Persian entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#persian_preprocessed_spec",
+        "schema:description": "The filtered Persian dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Persian entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#persian",
+      "schema:name": "XL-Sum - Persian",
+      "schema:description": "Sub-task for Persian summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#persian_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#pidgin_west_african_pidgin_english_preprocess",
+      "schema:name": "XL-Sum - Pidgin (West African Pidgin English) Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Pidgin (West African Pidgin English) entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#pidgin_west_african_pidgin_english_preprocessed_spec",
+        "schema:description": "The filtered Pidgin (West African Pidgin English) dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Pidgin (West African Pidgin English) entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#pidgin_west_african_pidgin_english",
+      "schema:name": "XL-Sum - Pidgin (West African Pidgin English)",
+      "schema:description": "Sub-task for Pidgin (West African Pidgin English) summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#pidgin_west_african_pidgin_english_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#portuguese_preprocess",
+      "schema:name": "XL-Sum - Portuguese Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Portuguese entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#portuguese_preprocessed_spec",
+        "schema:description": "The filtered Portuguese dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Portuguese entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#portuguese",
+      "schema:name": "XL-Sum - Portuguese",
+      "schema:description": "Sub-task for Portuguese summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#portuguese_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#punjabi_preprocess",
+      "schema:name": "XL-Sum - Punjabi Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Punjabi entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#punjabi_preprocessed_spec",
+        "schema:description": "The filtered Punjabi dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Punjabi entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#punjabi",
+      "schema:name": "XL-Sum - Punjabi",
+      "schema:description": "Sub-task for Punjabi summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#punjabi_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#russian_preprocess",
+      "schema:name": "XL-Sum - Russian Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Russian entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#russian_preprocessed_spec",
+        "schema:description": "The filtered Russian dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Russian entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#russian",
+      "schema:name": "XL-Sum - Russian",
+      "schema:description": "Sub-task for Russian summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#russian_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#scottish_gaelic_preprocess",
+      "schema:name": "XL-Sum - Scottish Gaelic Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Scottish Gaelic entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#scottish_gaelic_preprocessed_spec",
+        "schema:description": "The filtered Scottish Gaelic dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Scottish Gaelic entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#scottish_gaelic",
+      "schema:name": "XL-Sum - Scottish Gaelic",
+      "schema:description": "Sub-task for Scottish Gaelic summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#scottish_gaelic_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#serbian_cyrillic_preprocess",
+      "schema:name": "XL-Sum - Serbian (Cyrillic) Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Serbian (Cyrillic) entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#serbian_cyrillic_preprocessed_spec",
+        "schema:description": "The filtered Serbian (Cyrillic) dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Serbian (Cyrillic) entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#serbian_cyrillic",
+      "schema:name": "XL-Sum - Serbian (Cyrillic)",
+      "schema:description": "Sub-task for Serbian (Cyrillic) summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#serbian_cyrillic_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#serbian_latin_preprocess",
+      "schema:name": "XL-Sum - Serbian (Latin) Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Serbian (Latin) entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#serbian_latin_preprocessed_spec",
+        "schema:description": "The filtered Serbian (Latin) dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Serbian (Latin) entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#serbian_latin",
+      "schema:name": "XL-Sum - Serbian (Latin)",
+      "schema:description": "Sub-task for Serbian (Latin) summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#serbian_latin_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#sinhala_preprocess",
+      "schema:name": "XL-Sum - Sinhala Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Sinhala entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#sinhala_preprocessed_spec",
+        "schema:description": "The filtered Sinhala dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Sinhala entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#sinhala",
+      "schema:name": "XL-Sum - Sinhala",
+      "schema:description": "Sub-task for Sinhala summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#sinhala_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#somali_preprocess",
+      "schema:name": "XL-Sum - Somali Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Somali entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#somali_preprocessed_spec",
+        "schema:description": "The filtered Somali dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Somali entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#somali",
+      "schema:name": "XL-Sum - Somali",
+      "schema:description": "Sub-task for Somali summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#somali_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#spanish_preprocess",
+      "schema:name": "XL-Sum - Spanish Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Spanish entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#spanish_preprocessed_spec",
+        "schema:description": "The filtered Spanish dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Spanish entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#spanish",
+      "schema:name": "XL-Sum - Spanish",
+      "schema:description": "Sub-task for Spanish summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#spanish_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#swahili_preprocess",
+      "schema:name": "XL-Sum - Swahili Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Swahili entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#swahili_preprocessed_spec",
+        "schema:description": "The filtered Swahili dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Swahili entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#swahili",
+      "schema:name": "XL-Sum - Swahili",
+      "schema:description": "Sub-task for Swahili summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#swahili_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#tamil_preprocess",
+      "schema:name": "XL-Sum - Tamil Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Tamil entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#tamil_preprocessed_spec",
+        "schema:description": "The filtered Tamil dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Tamil entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#tamil",
+      "schema:name": "XL-Sum - Tamil",
+      "schema:description": "Sub-task for Tamil summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#tamil_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#telugu_preprocess",
+      "schema:name": "XL-Sum - Telugu Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Telugu entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#telugu_preprocessed_spec",
+        "schema:description": "The filtered Telugu dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Telugu entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#telugu",
+      "schema:name": "XL-Sum - Telugu",
+      "schema:description": "Sub-task for Telugu summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#telugu_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#thai_preprocess",
+      "schema:name": "XL-Sum - Thai Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Thai entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#thai_preprocessed_spec",
+        "schema:description": "The filtered Thai dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Thai entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#thai",
+      "schema:name": "XL-Sum - Thai",
+      "schema:description": "Sub-task for Thai summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#thai_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#tigrinya_preprocess",
+      "schema:name": "XL-Sum - Tigrinya Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Tigrinya entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#tigrinya_preprocessed_spec",
+        "schema:description": "The filtered Tigrinya dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Tigrinya entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#tigrinya",
+      "schema:name": "XL-Sum - Tigrinya",
+      "schema:description": "Sub-task for Tigrinya summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#tigrinya_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#turkish_preprocess",
+      "schema:name": "XL-Sum - Turkish Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Turkish entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#turkish_preprocessed_spec",
+        "schema:description": "The filtered Turkish dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Turkish entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#turkish",
+      "schema:name": "XL-Sum - Turkish",
+      "schema:description": "Sub-task for Turkish summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#turkish_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#ukrainian_preprocess",
+      "schema:name": "XL-Sum - Ukrainian Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Ukrainian entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#ukrainian_preprocessed_spec",
+        "schema:description": "The filtered Ukrainian dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Ukrainian entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#ukrainian",
+      "schema:name": "XL-Sum - Ukrainian",
+      "schema:description": "Sub-task for Ukrainian summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#ukrainian_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#urdu_preprocess",
+      "schema:name": "XL-Sum - Urdu Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Urdu entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#urdu_preprocessed_spec",
+        "schema:description": "The filtered Urdu dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Urdu entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#urdu",
+      "schema:name": "XL-Sum - Urdu",
+      "schema:description": "Sub-task for Urdu summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#urdu_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#uzbek_preprocess",
+      "schema:name": "XL-Sum - Uzbek Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Uzbek entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#uzbek_preprocessed_spec",
+        "schema:description": "The filtered Uzbek dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Uzbek entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#uzbek",
+      "schema:name": "XL-Sum - Uzbek",
+      "schema:description": "Sub-task for Uzbek summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#uzbek_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#vietnamese_preprocess",
+      "schema:name": "XL-Sum - Vietnamese Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Vietnamese entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#vietnamese_preprocessed_spec",
+        "schema:description": "The filtered Vietnamese dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Vietnamese entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#vietnamese",
+      "schema:name": "XL-Sum - Vietnamese",
+      "schema:description": "Sub-task for Vietnamese summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#vietnamese_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#welsh_preprocess",
+      "schema:name": "XL-Sum - Welsh Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Welsh entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#welsh_preprocessed_spec",
+        "schema:description": "The filtered Welsh dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Welsh entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#welsh",
+      "schema:name": "XL-Sum - Welsh",
+      "schema:description": "Sub-task for Welsh summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#welsh_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#yoruba_preprocess",
+      "schema:name": "XL-Sum - Yoruba Preprocessing",
+      "schema:description": "Preprocess raw XL-Sum data to extract Yoruba entries.",
+      "croissant:input": {
+        "@type": "schema:Dataset",
+        "@id": "https://huggingface.co/datasets/GEM/xlsum"
+      },
+      "croissant:output": {
+        "@type": "croissant:OutputSpec",
+        "@id": "http://example.org/xlsum#yoruba_preprocessed_spec",
+        "schema:description": "The filtered Yoruba dataset."
+      },
+      "croissant:implementation": {
+        "@type": "croissant:ImplementationSpec",
+        "schema:description": "Implementation of data processing to filter Yoruba entries."
+      }
+    },
+    {
+      "@type": "croissant:TaskProblem",
+      "@id": "http://example.org/xlsum#yoruba",
+      "schema:name": "XL-Sum - Yoruba",
+      "schema:description": "Sub-task for Yoruba summarization.",
+      "croissant:input": {
+        "@id": "http://example.org/xlsum#yoruba_preprocessed_spec"
+      },
+      "croissant:output": {
+        "@id": "http://example.org/xlsum#outputSpec"
+      },
+      "croissant:evaluation": {
+        "@id": "http://example.org/xlsum#evaluationSpec"
+      }
+    }
+  ]
+};
+        const solutionData = {
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/xlsum_solution_geminipro",
+  "schema:name": "XL-Sum Solution - Gemini Pro 3.1",
+  "schema:isBasedOn": {
+    "@id": "http://example.org/xlsum_problem"
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:geminipro-xlsum-overall-output",
+    "schema:name": "XL-Sum Gemini Pro 3.1 Overall Outputs"
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "http://example.org/xlsum_solution_geminipro#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "few_shot",
+        "schema:value": 3
+      }
+    ]
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "http://example.org/xlsum_solution_geminipro#implementation",
+    "schema:name": "Gemini Pro 3.1"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/xlsum_solution_geminipro#english_sol",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/xlsum#english"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/xlsum_solution_geminipro#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/xlsum_solution_geminipro#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:geminipro-xlsum-english-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/xlsum_evaluation_geminipro#english",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/xlsum#english"
+        },
+        "schema:name": "XL-Sum - English",
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/xlsum_solution_geminipro#english_sol"
+        },
+        "croissant:evaluationResults": []
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/xlsum_solution_geminipro#french_sol",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/xlsum#french"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/xlsum_solution_geminipro#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/xlsum_solution_geminipro#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:geminipro-xlsum-french-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/xlsum_evaluation_geminipro#french",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/xlsum#french"
+        },
+        "schema:name": "XL-Sum - French",
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/xlsum_solution_geminipro#french_sol"
+        },
+        "croissant:evaluationResults": []
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/xlsum_solution_geminipro#spanish_sol",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/xlsum#spanish"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/xlsum_solution_geminipro#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/xlsum_solution_geminipro#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:geminipro-xlsum-spanish-output"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/xlsum_evaluation_geminipro#spanish",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/xlsum#spanish"
+        },
+        "schema:name": "XL-Sum - Spanish",
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/xlsum_solution_geminipro#spanish_sol"
+        },
+        "croissant:evaluationResults": []
+      }
+    }
+  ],
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "http://example.org/xlsum_evaluation_geminipro",
+    "schema:name": "XL-Sum Evaluation - Gemini Pro 3.1",
+    "schema:isBasedOn": {
+      "@id": "http://example.org/xlsum_problem"
+    },
+    "croissant:evaluatedSolution": {
+      "@id": "http://example.org/xlsum_solution_geminipro"
+    },
+    "croissant:evaluationResults": []
+  }
+};
+        const alignSolutions = true;
+
+        renderVisualization(problemData, solutionData, "#visualization", alignSolutions);
+    </script>
+</body>
+</html>

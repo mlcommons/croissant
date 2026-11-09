@@ -1,0 +1,43 @@
+{
+  "model": "gemini-2.5-pro",
+  "_model_comment": "Stable endpoint used; paper used gemini-2.5-pro-preview-05-06 — results not directly comparable.",
+  "task": "control_dependency_trace",
+  "run_timestamp": "2026-04-29T21:31:43.073462+00:00",
+
+  "metrics_all": {
+    "_comment": "Metrics over all 489 instances. The 15 API failures produced no response and were forced to pred=False — unfairly counted as wrong answers. Use 'metrics' below for fair evaluation.",
+    "f1": 80.2,
+    "precision": 99.39,
+    "recall": 67.22,
+    "ct": 96.93,
+    "tp": 162,
+    "fp": 1,
+    "fn": 79,
+    "tn": 247,
+    "correct_traces": 158,
+    "total_pred_pos": 163,
+    "n_instances": 489,
+    "n_api_failures": 15,
+    "_api_failures_note": "Parse failures == API failures (same 15 instances; no response means nothing to parse)."
+  },
+
+  "metrics": {
+    "_comment": "Metrics excluding the 15 API/parse failures (474 instances with valid responses).",
+    "f1": 82.03,
+    "precision": 99.39,
+    "recall": 69.83,
+    "ct": 96.93,
+    "tp": 162,
+    "fp": 1,
+    "fn": 70,
+    "tn": 241,
+    "correct_traces": 158,
+    "total_pred_pos": 163,
+    "n_instances": 474,
+    "n_excluded_failures": 15
+  },
+
+  "expected_f1": 92.49,
+  "_expected_comment": "Paper results from Table 4 (CoRe Lite, control dependency, gemini-2.5-pro-preview-05-06).",
+  "expected_ct": 92.26
+}

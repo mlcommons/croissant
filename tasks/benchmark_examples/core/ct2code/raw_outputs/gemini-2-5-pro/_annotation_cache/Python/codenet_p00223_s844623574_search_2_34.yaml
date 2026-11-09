@@ -1,0 +1,391 @@
+target_var: que 32
+other_vars: Null
+early_return: 
+  - 25
+variables: 
+  tx 2:
+    datadep: Null
+    controldep: Null
+  ty 2:
+    datadep: Null
+    controldep: Null
+  kx 2:
+    datadep: Null
+    controldep: Null
+  ky 2:
+    datadep: Null
+    controldep: Null
+  mp 2:
+    datadep: Null
+    controldep: Null
+  direct 3:
+    datadep: Null
+    controldep: Null
+  dic 5:
+    datadep:  
+      - tx 2
+      - ty 2
+      - kx 2
+      - ky 2
+    controldep: Null
+  que 6:
+    datadep: Null
+    controldep: Null
+  que 7:
+    datadep:
+      - tx 2
+      - ty 2
+      - kx 2
+      - ky 2
+      - que 6
+    controldep: Null
+  que 8:
+    reset: False
+    datadep:
+      - que 7
+      - que 9
+      - que 32
+    controldep:
+      - que 8
+  dist 9:
+    datadep:
+      - que 7
+      - que 9
+      - que 32
+    controldep:
+      - que 8
+  p 9:
+    datadep:
+      - que 7
+      - que 9
+      - que 32
+    controldep:
+      - que 8
+  que 9:
+    datadep:
+      - que 7
+      - que 9
+      - que 32
+    controldep:
+      - que 8
+  tx 10:
+    datadep:
+      - p 9
+    controldep:
+      - que 8
+  ty 10:
+    datadep:
+      - p 9
+    controldep:
+      - que 8
+  kx 10:
+    datadep:
+      - p 9
+    controldep:
+      - que 8
+  ky 10:
+    datadep:
+      - p 9
+    controldep:
+      - que 8
+  dtx 11:
+    datadep:
+      - direct 3
+    controldep:
+      - que 8
+      - direct 11
+      - ntx 25
+      - nty 25
+      - nkx 25
+      - nky 25
+  dty 11:
+    datadep:
+      - direct 3
+    controldep:
+      - que 8
+      - direct 11
+      - ntx 25
+      - nty 25
+      - nkx 25
+      - nky 25
+  dkx 11:
+    datadep:
+      - direct 3
+    controldep:
+      - que 8
+      - direct 11
+      - ntx 25
+      - nty 25
+      - nkx 25
+      - nky 25
+  dky 11:
+    datadep:
+      - direct 3
+    controldep:
+      - que 8
+      - direct 11
+      - ntx 25
+      - nty 25
+      - nkx 25
+      - nky 25
+  direct 11:
+    reset: False
+    datadep:
+      - direct 3
+    controldep:
+      - que 8
+      - direct 11
+      - ntx 25
+      - nty 25
+      - nkx 25
+      - nky 25
+  mp 12:
+    reset: False
+    datadep:
+      - mp 2
+    controldep:
+      - direct 11
+  ty 12:
+    reset: False
+    datadep:
+      - ty 10
+    controldep:
+      - direct 11
+  dty 12:
+    reset: False
+    datadep:
+      - dty 11
+    controldep:
+      - direct 11
+  tx 12:
+    reset: False
+    datadep:
+      - tx 10
+    controldep:
+      - direct 11
+  dtx 12:
+    reset: False
+    datadep:
+      - dtx 11
+    controldep:
+      - direct 11
+  ntx 13:
+    datadep:
+      - dtx 11
+      - tx 10
+    controldep:
+      - mp 12
+      - ty 12
+      - dty 12
+      - tx 12
+      - dtx 12
+  nty 14:
+    datadep:
+      - dty 11
+      - ty 10
+    controldep:
+      - mp 12
+      - ty 12
+      - dty 12
+      - tx 12
+      - dtx 12
+  ntx 16:
+    datadep:
+      - tx 10
+    controldep:
+      - mp 12
+      - ty 12
+      - dty 12
+      - tx 12
+      - dtx 12
+  nty 17:
+    datadep:
+      - ty 10
+    controldep:
+      - mp 12
+      - ty 12
+      - dty 12
+      - tx 12
+      - dtx 12
+  mp 18:
+    reset: False
+    datadep:
+      - mp 2
+    controldep:
+      - direct 11
+  ky 18:
+    reset: False
+    datadep:
+      - ky 10
+    controldep:
+      - direct 11
+  dky 18:
+    reset: False
+    datadep:
+      - dky 11
+    controldep:
+      - direct 11
+  kx 18:
+    reset: False
+    datadep:
+      - kx 10
+    controldep:
+      - direct 11
+  dkx 18:
+    reset: False
+    datadep:
+      - dkx 11
+    controldep:
+      - direct 11
+  nkx 19:
+    datadep:
+      - dkx 11
+      - kx 10
+    controldep:
+      - mp 18
+      - ky 18
+      - dky 18
+      - kx 18
+      - dkx 18
+  nky 20:
+    datadep:
+      - dky 11
+      - ky 10
+    controldep:
+      - mp 18
+      - ky 18
+      - dky 18
+      - kx 18
+      - dkx 18
+  nkx 22:
+    datadep:
+      - kx 10
+    controldep:
+      - mp 18
+      - ky 18
+      - dky 18
+      - kx 18
+      - dkx 18
+  nky 23:
+    datadep:
+      - ky 10
+    controldep:
+      - mp 18
+      - ky 18
+      - dky 18
+      - kx 18
+      - dkx 18
+  ntx 24:
+    reset: False
+    datadep:
+      - ntx 13
+      - ntx 16
+    controldep:
+      - direct 11
+  nty 24:
+    reset: False
+    datadep:
+      - nty 14
+      - nty 17
+    controldep:
+      - direct 11
+  nkx 24:
+    reset: False
+    datadep:
+      - nkx 19
+      - nkx 22
+    controldep:
+      - direct 11
+  nky 24:
+    reset: False
+    datadep:
+      - nky 20
+      - nky 23
+    controldep:
+      - direct 11
+  dic 24:
+    reset: False
+    datadep:
+      - dic 5
+      - dic 31
+    controldep:
+      - direct 11
+  ntx 25:
+    reset: False
+    datadep:
+      - ntx 13
+      - ntx 16
+    controldep:
+      - ntx 24
+      - nty 24
+      - nkx 24
+      - nky 24
+      - dic 24
+  nty 25:
+    reset: False
+    datadep:
+      - nty 14
+      - nty 17
+    controldep:
+      - ntx 24
+      - nty 24
+      - nkx 24
+      - nky 24
+      - dic 24
+  nkx 25:
+    reset: False
+    datadep:
+      - nkx 19
+      - nkx 22
+    controldep:
+      - ntx 24
+      - nty 24
+      - nkx 24
+      - nky 24
+      - dic 24
+  nky 25:
+    reset: False
+    datadep:
+      - nky 20
+      - nky 23
+    controldep:
+      - ntx 24
+      - nty 24
+      - nkx 24
+      - nky 24
+      - dic 24
+  dic 31:
+    datadep:
+      - dic 5
+      - dic 31
+      - ntx 13
+      - ntx 16
+      - nty 14
+      - nty 17
+      - nkx 19
+      - nkx 22
+      - nky 20
+      - nky 23
+    controldep:
+      - ntx 25
+      - nty 25
+      - nkx 25
+      - nky 25
+  que 32:
+    datadep:
+      - que 9
+      - que 32
+      - dist 9
+      - ntx 13
+      - ntx 16
+      - nty 14
+      - nty 17
+      - nkx 19
+      - nkx 22
+      - nky 20
+      - nky 23
+    controldep:
+      - ntx 25
+      - nty 25
+      - nkx 25
+      - nky 25

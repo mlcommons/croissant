@@ -1,0 +1,149 @@
+target_var: r_a 66
+other_vars:
+  - k 21
+  - l_a 25
+  - l_b 25
+  - r_a 25
+  - r_b 25
+  - b 33
+  - l_temp 37
+  - l_temp 40
+  - l_a 46
+  - l_temp 47
+  - l_temp 50
+  - r_b 56
+early_return: 
+  - 39
+  - 49
+  - 59
+  - 69
+variables:
+  r_a 66:
+    datadep:
+      - l_temp 57
+      - l_temp 60
+    controldep:
+      - i 35
+      - n 35
+  i 35:
+    datadep:
+      - i 35
+    controldep:
+      - m 18
+      - t 18
+      - i 35
+      - n 35
+  n 35:
+    reset: False
+    datadep:
+      - n 21
+    controldep:
+      - m 18
+      - t 18
+      - i 35
+      - n 35
+  n 21:
+    datadep: Null
+    controldep:
+      - m 18
+      - t 18
+  l_temp 57:
+    datadep:
+      - i 35
+    controldep:
+      - i 35
+      - n 35
+  l_temp 58:
+    reset: False
+    datadep:
+      - l_temp 57
+      - l_temp 60
+    controldep:
+      - i 35
+      - n 35
+      - l_temp 58
+      - n 58
+      - a 59
+      - l_temp 59
+      - i 59
+  n 58:
+    reset: False
+    datadep:
+      - n 21
+    controldep:
+      - i 35
+      - n 35
+      - l_temp 58
+      - n 58
+      - a 59
+      - l_temp 59
+      - i 59
+  a 59:
+    reset: False
+    datadep:
+      - a 29
+    controldep:
+      - l_temp 58
+      - n 58
+  l_temp 59:
+    reset: False
+    datadep:
+      - l_temp 57
+      - l_temp 60
+    controldep:
+      - l_temp 58
+      - n 58
+  i 59:
+    reset: False
+    datadep:
+      - i 35
+    controldep:
+      - l_temp 58
+      - n 58
+  l_temp 60:
+    datadep:
+      - l_temp 57
+      - l_temp 60
+    controldep:
+      - a 59
+      - l_temp 59
+      - i 59
+  i 27:
+    datadep:
+      - i 27
+    controldep:
+      - m 18
+      - t 18
+      - i 27
+      - n 27
+  n 27:
+    reset: False
+    datadep:
+      - n 21
+    controldep:
+      - m 18
+      - t 18
+      - i 27
+      - n 27
+  a 29:
+    datadep:
+      - i 27
+    controldep:
+      - i 27
+      - n 27
+  m 18:
+    datadep:
+      - m 18
+    controldep:
+      - m 18
+      - t 18
+  t 18:
+    reset: False
+    datadep:
+      - t 17
+    controldep:
+      - m 18
+      - t 18
+  t 17:
+    datadep: Null
+    controldep: Null

@@ -1,0 +1,127 @@
+target_var: array 49
+other_vars:
+  - array 48
+variables:
+  pair 50:
+    datadep:
+      - pair 39
+      - pair 50
+    controldep:
+      - tmp 46
+  pair 39:
+    datadep: Null
+    controldep:
+      - cas 32
+      - cases 32
+  i 40:
+    datadep:
+      - i 40
+    controldep:
+      - cas 32
+      - cases 32
+      - i 40
+      - N 40
+  N 40:
+    reset: False
+    datadep:
+      - N 34
+    controldep:
+      - cas 32
+      - cases 32
+      - i 40
+      - N 40
+  j 42:
+    datadep:
+      - j 42
+      - i 40
+    controldep:
+      - i 40
+      - N 40
+      - j 42
+      - N 42
+  N 42:
+    reset: False
+    datadep:
+      - N 34
+    controldep:
+      - i 40
+      - N 40
+      - j 42
+      - N 42
+  tmp 44:
+    datadep:
+      - input 37
+      - i 40
+      - j 42
+    controldep:
+      - j 42
+      - N 42
+  tmp 45:
+    datadep:
+      - input 37
+      - i 40
+      - j 42
+      - tmp 44
+    controldep:
+      - j 42
+      - N 42
+  tmp 46:
+    reset: False
+    datadep:
+      - tmp 45
+    controldep:
+      - j 42
+      - N 42
+  array 49:
+    datadep:
+      - pair 39
+      - pair 50
+      - input 37
+      - i 40
+      - j 42
+    controldep:
+      - tmp 46
+  cas 32:
+    datadep:
+      - cas 32
+    controldep:
+      - cas 32
+      - cases 32
+  cases 32:
+    reset: False
+    datadep:
+      - cases 31
+    controldep:
+      - cas 32
+      - cases 32
+  cases 31:
+    datadep: Null
+    controldep: Null
+  N 34:
+    datadep: Null
+    controldep:
+      - cas 32
+      - cases 32
+  i 35:
+    datadep:
+      - i 35
+    controldep:
+      - cas 32
+      - cases 32
+      - i 35
+      - N 35
+  N 35:
+    reset: False
+    datadep:
+      - N 34
+    controldep:
+      - cas 32
+      - cases 32
+      - i 35
+      - N 35
+  input 37:
+    datadep:
+      - i 35
+    controldep:
+      - i 35
+      - N 35

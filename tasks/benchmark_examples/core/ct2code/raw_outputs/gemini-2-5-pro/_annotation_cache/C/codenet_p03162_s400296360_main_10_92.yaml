@@ -1,0 +1,319 @@
+target_var: SUM 77
+other_vars: 
+  - ref 16
+  - SUM 62
+  - SUM 66
+  - SUM 73
+early_return: 
+  - 18
+  - 21
+  - 28
+  - 31
+  - 33
+  - 35
+  - 41
+variables:
+  sumA 15:
+    datadep: Null
+    controldep: Null
+  sumB 15:
+    datadep: Null
+    controldep: Null
+  sumC 15:
+    datadep: Null
+    controldep: Null
+  N_limit 17:
+    datadep: Null
+    controldep: Null
+  N 18:
+    datadep: Null
+    controldep: Null
+  N 21:
+    reset: False
+    datadep:
+      - N 18
+    controldep:
+      - N 18
+  N_limit 21:
+    reset: False
+    datadep:
+      - N_limit 17
+    controldep:
+      - N 18
+  i 26:
+    datadep:
+      - i 26
+    controldep:
+      - N 21
+      - N_limit 21
+      - i 26
+      - N 26
+      - C 35
+      - i 35
+  N 26:
+    reset: False
+    datadep:
+      - N 18
+    controldep:
+      - N 21
+      - N_limit 21
+      - i 26
+      - N 26
+      - C 35
+      - i 35
+  A 28:
+    datadep:
+      - i 26
+    controldep:
+      - i 26
+      - N 26
+  B 28:
+    datadep:
+      - i 26
+    controldep:
+      - i 26
+      - N 26
+  C 28:
+    datadep:
+      - i 26
+    controldep:
+      - i 26
+      - N 26
+  i 28:
+    reset: False
+    datadep:
+      - i 26
+    controldep:
+      - i 26
+      - N 26
+  A 31:
+    reset: False
+    datadep:
+      - A 28
+    controldep:
+      - A 28
+      - i 28
+      - B 28
+      - C 28
+  i 31:
+    reset: False
+    datadep:
+      - i 26
+    controldep:
+      - A 28
+      - i 28
+      - B 28
+      - C 28
+  B 33:
+    reset: False
+    datadep:
+      - B 28
+    controldep:
+      - A 31
+      - i 31
+  i 33:
+    reset: False
+    datadep:
+      - i 26
+    controldep:
+      - A 31
+      - i 31
+  C 35:
+    reset: False
+    datadep:
+      - C 28
+    controldep:
+      - B 33
+      - i 33
+  i 35:
+    reset: False
+    datadep:
+      - i 26
+    controldep:
+      - B 33
+      - i 33
+  ref_A 38:
+    datadep: Null
+    controldep:
+      - N 21
+      - N_limit 21
+  ref_B 38:
+    datadep: Null
+    controldep:
+      - N 21
+      - N_limit 21
+  ref_C 38:
+    datadep: Null
+    controldep:
+      - N 21
+      - N_limit 21
+  i 39:
+    datadep:
+      - i 39
+    controldep:
+      - N 21
+      - N_limit 21
+      - i 39
+      - N 39
+  N 39:
+    reset: False
+    datadep:
+      - N 18
+    controldep:
+      - N 21
+      - N_limit 21
+      - i 39
+      - N 39
+  i 41:
+    reset: False
+    datadep:
+      - i 39
+    controldep:
+      - i 39
+      - N 39
+  sumA 43:
+    datadep:
+      - i 39
+      - A 28
+    controldep:
+      - i 41
+  sumB 44:
+    datadep:
+      - i 39
+      - B 28
+    controldep:
+      - i 41
+  sumC 45:
+    datadep:
+      - i 39
+      - C 28
+    controldep:
+      - i 41
+  ref_A 46:
+    datadep:
+      - sumA 43
+    controldep:
+      - i 41
+  ref_B 47:
+    datadep:
+      - sumB 44
+    controldep:
+      - i 41
+  ref_C 48:
+    datadep:
+      - sumC 45
+    controldep:
+      - i 41
+  sumA 51:
+    datadep:
+      - ref_B 38
+      - ref_B 47
+      - ref_B 55
+      - ref_C 38
+      - ref_C 48
+      - ref_C 56
+      - i 39
+      - A 28
+    controldep:
+      - i 41
+  sumB 52:
+    datadep:
+      - ref_A 38
+      - ref_A 46
+      - ref_A 54
+      - ref_C 38
+      - ref_C 48
+      - ref_C 56
+      - i 39
+      - B 28
+    controldep:
+      - i 41
+  sumC 53:
+    datadep:
+      - ref_B 38
+      - ref_B 47
+      - ref_B 55
+      - ref_A 38
+      - ref_A 46
+      - ref_A 54
+      - i 39
+      - C 28
+    controldep:
+      - i 41
+  ref_A 54:
+    datadep:
+      - sumA 51
+    controldep:
+      - i 41
+  ref_B 55:
+    datadep:
+      - sumB 52
+    controldep:
+      - i 41
+  ref_C 56:
+    datadep:
+      - sumC 53
+    controldep:
+      - i 41
+  sumA 58:
+    reset: False
+    datadep:
+      - sumA 15
+      - sumA 51
+      - sumA 43
+    controldep:
+      - N 21
+      - N_limit 21
+  sumB 58:
+    reset: False
+    datadep:
+      - sumB 15
+      - sumB 52
+      - sumB 44
+    controldep:
+      - N 21
+      - N_limit 21
+  sumB 69:
+    reset: False
+    datadep:
+      - sumB 15
+      - sumB 52
+      - sumB 44
+    controldep:
+      - sumA 58
+      - sumB 58
+  sumA 69:
+    reset: False
+    datadep:
+      - sumA 15
+      - sumA 51
+      - sumA 43
+    controldep:
+      - sumA 58
+      - sumB 58
+  sumB 71:
+    reset: False
+    datadep:
+      - sumB 15
+      - sumB 52
+      - sumB 44
+    controldep:
+      - sumA 69
+      - sumB 69
+  sumC 71:
+    reset: False
+    datadep:
+      - sumC 15
+      - sumC 45
+      - sumC 53
+    controldep:
+      - sumA 69
+      - sumB 69
+  SUM 77:
+    datadep:
+      - sumC 15
+      - sumC 45
+      - sumC 53
+    controldep:
+      - sumB 71
+      - sumC 71

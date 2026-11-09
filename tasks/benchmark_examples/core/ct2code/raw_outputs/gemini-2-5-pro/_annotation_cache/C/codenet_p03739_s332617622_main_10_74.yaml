@@ -1,0 +1,309 @@
+target_var: sum 62
+other_vars: 
+  - i 42
+  - i 48
+  - ans 16
+  - ans 41
+  - ans 47
+  - ans 53
+  - ans 61
+  - ans 66
+early_return: 
+  - 22
+  - 26
+  - 37
+  - 39
+  - 45
+variables:
+  sum 15:
+    datadep: Null
+    controldep: Null
+  n 18:
+    datadep: Null
+    controldep: Null
+  n 19:
+    reset: False
+    datadep:
+      - n 18
+    controldep:
+      - i 19
+      - n 19
+  i 19:
+    datadep:
+      - i 19
+    controldep:
+      - i 19
+      - n 19
+  a 20:
+    datadep:
+      - i 19
+    controldep:
+      - i 19
+      - n 19
+  i 21:
+    datadep:
+      - i 21
+    controldep:
+      - i 21
+      - n 21
+      - a 26
+      - i 26
+  n 21:
+    reset: False
+    datadep:
+      - n 18
+    controldep:
+      - i 21
+      - n 21
+      - a 26
+      - i 26
+  a 22:
+    reset: False
+    datadep:
+      - a 20
+    controldep:
+      - i 21
+      - n 21
+  i 22:
+    reset: False
+    datadep:
+      - i 21
+    controldep:
+      - i 21
+      - n 21
+  sign 23:
+    datadep: Null
+    controldep:
+      - a 22
+      - i 22
+  a 26:
+    reset: False
+    datadep:
+      - a 20
+    controldep:
+      - a 22
+      - i 22
+  i 26:
+    reset: False
+    datadep:
+      - i 21
+    controldep:
+      - a 22
+      - i 22
+  sign 27:
+    datadep: Null
+    controldep:
+      - a 26
+      - i 26
+  i 33:
+    datadep:
+      - i 33
+      - i 52
+      - i 21
+    controldep:
+      - i 33
+      - n 33
+  n 33:
+    reset: False
+    datadep:
+      - n 18
+    controldep:
+      - i 33
+      - n 33
+  sum 34:
+    datadep:
+      - a 20
+      - i 33
+      - sum 15
+      - sum 40
+      - sum 46
+      - sum 62
+      - sum 67
+    controldep:
+      - i 33
+      - n 33
+  sum 35:
+    reset: False
+    datadep:
+      - sum 34
+    controldep:
+      - i 33
+      - n 33
+  j 36:
+    datadep:
+      - j 36
+      - i 33
+    controldep:
+      - sum 35
+      - j 36
+      - n 36
+      - sign 45
+  n 36:
+    reset: False
+    datadep:
+      - n 18
+    controldep:
+      - sum 35
+      - j 36
+      - n 36
+      - sign 45
+  sum 37:
+    reset: False
+    datadep:
+      - sum 34
+      - sum 40
+      - sum 46
+    controldep:
+      - j 36
+      - n 36
+  a 37:
+    reset: False
+    datadep:
+      - a 20
+    controldep:
+      - j 36
+      - n 36
+  j 37:
+    reset: False
+    datadep:
+      - j 36
+    controldep:
+      - j 36
+      - n 36
+  sign 39:
+    reset: False
+    datadep:
+      - sign 23
+      - sign 27
+      - sign 56
+      - sign 58
+      - sign 63
+      - sign 68
+    controldep:
+      - sum 37
+      - a 37
+      - j 37
+  sum 40:
+    datadep:
+      - sum 34
+      - sum 40
+      - sum 46
+    controldep:
+      - sign 39
+  sign 45:
+    reset: False
+    datadep:
+      - sign 23
+      - sign 27
+      - sign 56
+      - sign 58
+      - sign 63
+      - sign 68
+    controldep:
+      - sign 39
+  sum 46:
+    datadep:
+      - sum 34
+      - sum 40
+      - sum 46
+    controldep:
+      - sign 45
+  i 52:
+    datadep:
+      - j 36
+    controldep:
+      - sum 35
+  sum 55:
+    reset: False
+    datadep:
+      - sum 34
+    controldep:
+      - sum 35
+  sign 55:
+    reset: False
+    datadep:
+      - sign 23
+      - sign 27
+      - sign 56
+      - sign 58
+      - sign 63
+      - sign 68
+    controldep:
+      - sum 35
+  sum 55:
+    reset: False
+    datadep:
+      - sum 34
+    controldep:
+      - sum 35
+  sign 56:
+    datadep: Null
+    controldep:
+      - sum 55
+      - sign 55
+  sum 57:
+    reset: False
+    datadep:
+      - sum 34
+    controldep:
+      - sum 55
+      - sign 55
+  sign 57:
+    reset: False
+    datadep:
+      - sign 23
+      - sign 27
+      - sign 56
+      - sign 58
+      - sign 63
+      - sign 68
+    controldep:
+      - sum 55
+      - sign 55
+  sign 58:
+    datadep: Null
+    controldep:
+      - sum 57
+      - sign 57
+  sign 60:
+    reset: False
+    datadep:
+      - sign 23
+      - sign 27
+      - sign 56
+      - sign 58
+      - sign 63
+      - sign 68
+    controldep:
+      - sum 57
+      - sign 57
+  sum 62:
+    datadep:
+      - sum 34
+    controldep:
+      - sign 60
+  sign 63:
+    datadep: Null
+    controldep:
+      - sign 60
+  sign 65:
+    reset: False
+    datadep:
+      - sign 23
+      - sign 27
+      - sign 56
+      - sign 58
+      - sign 63
+      - sign 68
+    controldep:
+      - sign 60
+  sum 67:
+    datadep:
+      - sum 34
+    controldep:
+      - sign 65
+  sign 68:
+    datadep: Null
+    controldep:
+      - sign 65
+

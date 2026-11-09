@@ -1,0 +1,236 @@
+target_var: abs_times 22
+other_vars:
+  - a 21
+  - received_count 31
+  - received_count 34
+  - edges 1
+  - latencies 2
+  - edges 3
+early_return: 
+  - 41
+  - 45
+variables:
+  in_times 1:
+    datadep: Null
+    controldep: Null
+  abs_times 4:
+    datadep:
+      - in_times 1
+    controldep: Null
+  i 5:
+    datadep:
+      - in_times 1
+    controldep:
+      - in_times 5
+  index 5:
+    datadep:
+      - in_times 1
+    controldep:
+      - in_times 5
+  in_times 5:
+    reset: False
+    datadep:
+      - in_times 1
+    controldep:
+      - in_times 5
+  i 6:
+    reset: False
+    datadep:
+      - i 5
+    controldep:
+      - in_times 5
+  abs_times 7:
+    datadep:
+      - index 5
+      - i 5
+    controldep:
+      - i 6
+  pos_times 8:
+    datadep: Null
+    controldep: Null
+  index 9:
+    datadep:
+      - in_times 1
+    controldep:
+      - in_times 9
+  i 9:
+    datadep:
+      - in_times 1
+    controldep:
+      - in_times 9
+  in_times 9:
+    reset: False
+    datadep:
+      - in_times 1
+    controldep:
+      - in_times 9
+  i 10:
+    reset: False
+    datadep:
+      - i 9
+    controldep:
+      - in_times 9
+  pos_times 11:
+    datadep:
+      - index 9
+      - pos_times 8
+      - pos_times 11
+      - i 9
+    controldep:
+      - i 10
+  pos_times 12:
+    datadep:
+      - pos_times 8
+      - pos_times 11
+    controldep: Null
+  current_time 13:
+    datadep: Null
+    controldep: Null
+  received 14:
+    datadep: Null
+    controldep: Null
+  pos_times 15:
+    reset: False
+    datadep:
+      - pos_times 12
+      - pos_times 23
+    controldep:
+      - pos_times 15
+  pos_times 16:
+    reset: False
+    datadep:
+      - pos_times 12
+      - pos_times 23
+    controldep:
+      - pos_times 15
+  received 16:
+    reset: False
+    datadep: 
+      - received 14
+      - received 24
+    controldep:
+      - pos_times 15
+  current_time 17:
+    datadep:
+      - current_time 13
+      - current_time 17
+      - current_time 30
+    controldep:
+      - pos_times 16
+      - received 16
+  new_received 18:
+    datadep: Null
+    controldep:
+      - pos_times 16
+      - received 16
+  pos_times 19:
+    reset: False
+    datadep:
+      - pos_times 12
+      - pos_times 23
+    controldep:
+      - pos_times 16
+      - received 16
+      - pos_times 19
+      - received 19
+  received 19:
+    reset: False
+    datadep:
+      - received 14
+      - received 24
+    controldep:
+      - pos_times 16
+      - received 16
+      - pos_times 19
+      - received 19
+  new_received 20:
+    datadep:
+      - new_received 20
+      - new_received 18
+    controldep:
+      - pos_times 19
+      - received 19
+  b 21:
+    datadep:
+      - pos_times 12
+      - pos_times 23
+    controldep:
+      - pos_times 19
+      - received 19
+  abs_times 22:
+    datadep:
+      - current_time 17
+      - b 21
+    controldep:
+      - pos_times 19
+      - received 19
+  pos_times 23:
+    datadep:
+      - pos_times 12
+      - pos_times 23
+    controldep:
+      - pos_times 19
+      - received 19
+  received 24:
+    datadep:
+      - received 14
+      - received 24
+      - new_received 20
+      - new_received 18
+    controldep:
+      - pos_times 16
+      - received 16
+  next_times 26:
+    datadep: Null
+    controldep:
+      - pos_times 16
+      - received 16
+  i 27:
+    datadep:
+      - abs_times 4
+      - abs_times 7
+      - abs_times 22
+    controldep:
+      - pos_times 16
+      - received 16
+      - abs_times 27
+  abs_times 27:
+    reset: False
+    datadep:
+      - abs_times 4
+      - abs_times 7
+      - abs_times 22
+    controldep:
+      - pos_times 16
+      - received 16
+      - abs_times 27
+  i 28:
+    reset: False
+    datadep:
+      - i 27
+    controldep:
+      - abs_times 27
+  current_time 28:
+    reset: False
+    datadep:
+      - current_time 13
+      - current_time 17
+      - current_time 30
+    controldep:
+      - abs_times 27
+  next_times 29:
+    datadep:
+      - next_times 26
+      - next_times 29
+      - i 27
+    controldep:
+      - i 28
+      - current_time 28
+  current_time 30:
+    datadep:
+      - next_times 26
+      - next_times 29
+    controldep: 
+      - pos_times 16
+      - received 16
+  

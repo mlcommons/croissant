@@ -1,0 +1,229 @@
+{
+  "@context": {
+    "croissant": "http://mlcommons.org/croissant/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "croissant:TaskSolution",
+  "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper",
+  "schema:name": "CoRe Solution - Gemini 2.5 Pro (paper-reported)",
+  "schema:description": "TaskSolution carrying the paper-reported metrics from Xie et al. (Table 4, CoRe Lite) for Gemini 2.5 Pro. No actual run is associated with this solution; for the corresponding implementation run see ../ct2code/core_solution_gemini-2-5-pro.jsonld.",
+  "schema:isBasedOn": {
+    "@id": "http://example.org/core-benchmark"
+  },
+  "croissant:implementation": {
+    "@type": "schema:SoftwareApplication",
+    "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#implementation",
+    "schema:name": "Google Gemini API - Gemini 2.5 Pro (paper)",
+    "schema:version": "gemini-2.5-pro-preview-05-06"
+  },
+  "croissant:execution": {
+    "@type": "croissant:ExecutionConfig",
+    "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#execution",
+    "croissant:hyperparameter": [
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "few_shot_examples",
+        "schema:value": "5-7",
+        "schema:description": "Number of illustrative few-shot examples drawn from small synthetic programs included in each prompt."
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "reasoning_model",
+        "schema:value": "true",
+        "schema:description": "Gemini 2.5 Pro is classified as a reasoning model in the paper (Table 3)."
+      },
+      {
+        "@type": "schema:PropertyValue",
+        "schema:name": "prompt_includes_trace",
+        "schema:value": "true",
+        "schema:description": "Default pairwise query setting: model is asked to both classify the dependency and produce a supporting trace."
+      }
+    ]
+  },
+  "croissant:output": {
+    "@type": "schema:Dataset",
+    "@id": "urn:uuid:gemini-2-5-pro-paper-core-lite-outputs",
+    "schema:name": "Gemini 2.5 Pro outputs on CoRe Lite (paper-reported, no artifact)"
+  },
+  "croissant:subTask": [
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#data_dependency_sol",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/core-benchmark#data_dependency"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:gemini-2-5-pro-paper-core-lite-data-dep-outputs",
+        "schema:name": "Gemini 2.5 Pro outputs on CoRe Lite - Data Dependency (paper-reported)"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/core-benchmark_evaluation_gemini-2-5-pro_paper#data_dependency",
+        "schema:name": "Evaluation of Gemini 2.5 Pro on CoRe - Data Dependency (paper-reported)",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/core-benchmark#data_dependency"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#data_dependency_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1 Score",
+            "croissant:value": "88.53",
+            "schema:description": "Dependency Classification F1 on Data Dependency (CoRe Lite)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Correct Trace Rate",
+            "croissant:value": "90.38",
+            "schema:description": "Trace Generation Correct Trace Rate on Data Dependency (CoRe Lite)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Exact Match",
+            "croissant:value": "49.43",
+            "schema:description": "Dependency Source Enumeration Exact Match on Data Dependency (CoRe Lite)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#control_dependency_sol",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/core-benchmark#control_dependency"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:gemini-2-5-pro-paper-core-lite-control-dep-outputs",
+        "schema:name": "Gemini 2.5 Pro outputs on CoRe Lite - Control Dependency (paper-reported)"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/core-benchmark_evaluation_gemini-2-5-pro_paper#control_dependency",
+        "schema:name": "Evaluation of Gemini 2.5 Pro on CoRe - Control Dependency (paper-reported)",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/core-benchmark#control_dependency"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#control_dependency_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1 Score",
+            "croissant:value": "92.49",
+            "schema:description": "Dependency Classification F1 on Control Dependency (CoRe Lite)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Correct Trace Rate",
+            "croissant:value": "92.26",
+            "schema:description": "Trace Generation Correct Trace Rate on Control Dependency (CoRe Lite)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Exact Match",
+            "croissant:value": "75.66",
+            "schema:description": "Dependency Source Enumeration Exact Match on Control Dependency (CoRe Lite)"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "croissant:TaskSolution",
+      "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#information_flow_sol",
+      "schema:isBasedOn": {
+        "@id": "http://example.org/core-benchmark#information_flow"
+      },
+      "croissant:execution": {
+        "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#execution"
+      },
+      "croissant:implementation": {
+        "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#implementation"
+      },
+      "croissant:output": {
+        "@type": "schema:Dataset",
+        "@id": "urn:uuid:gemini-2-5-pro-paper-core-lite-infoflow-outputs",
+        "schema:name": "Gemini 2.5 Pro outputs on CoRe Lite - Information Flow (paper-reported)"
+      },
+      "croissant:evaluation": {
+        "@type": "croissant:EvaluationTask",
+        "@id": "http://example.org/core-benchmark_evaluation_gemini-2-5-pro_paper#information_flow",
+        "schema:name": "Evaluation of Gemini 2.5 Pro on CoRe - Information Flow (paper-reported)",
+        "schema:isBasedOn": {
+          "@id": "http://example.org/core-benchmark#information_flow"
+        },
+        "croissant:evaluatedSolution": {
+          "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper#information_flow_sol"
+        },
+        "croissant:evaluationResults": [
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "F1 Score",
+            "croissant:value": "94.79",
+            "schema:description": "Dependency Classification F1 on Information Flow (CoRe Lite)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Correct Trace Rate",
+            "croissant:value": "68.66",
+            "schema:description": "Trace Generation Correct Trace Rate on Information Flow (CoRe Lite)"
+          },
+          {
+            "@type": "croissant:EvaluationResult",
+            "croissant:metric": "Exact Match",
+            "croissant:value": "26.73",
+            "schema:description": "Dependency Source Enumeration Exact Match on Information Flow (CoRe Lite)"
+          }
+        ]
+      }
+    }
+  ],
+  "croissant:evaluation": {
+    "@type": "croissant:EvaluationTask",
+    "@id": "http://example.org/core-benchmark_evaluation_gemini-2-5-pro_paper",
+    "schema:name": "Evaluation of Gemini 2.5 Pro on CoRe Lite - Overall (paper-reported)",
+    "schema:isBasedOn": {
+      "@id": "http://example.org/core-benchmark"
+    },
+    "croissant:evaluatedSolution": {
+      "@id": "http://example.org/core-benchmark_solution_gemini-2-5-pro_paper"
+    },
+    "croissant:evaluationResults": [
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "F1 Score",
+        "croissant:value": "91.74",
+        "schema:description": "Overall Dependency Classification F1 across all task types (CoRe Lite)"
+      },
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Correct Trace Rate",
+        "croissant:value": "84.02",
+        "schema:description": "Overall Trace Generation Correct Trace Rate across all task types (CoRe Lite)"
+      },
+      {
+        "@type": "croissant:EvaluationResult",
+        "croissant:metric": "Exact Match",
+        "croissant:value": "50.25",
+        "schema:description": "Overall Dependency Source Enumeration Exact Match across all task types (CoRe Lite)"
+      }
+    ]
+  }
+}

@@ -1,0 +1,209 @@
+target_var: left 33
+other_vars:
+  - total 7
+  - total 13
+  - total 17
+  - total 32
+  - new_precent 31
+  - total 35
+  - L 4
+  - c 19
+  - i 19
+early_return: 
+  - 16
+  - 27
+  - 43
+variables:
+  n 4:
+    datadep: Null
+    controldep: Null
+  choices 4:
+    datadep: Null
+    controldep: Null
+  left 5: 
+    datadep:
+      - n 4
+      - choices 4
+    controldep: Null
+  to_investigate 6:
+    datadep: Null
+    controldep: Null
+  choices 8:
+    reset: False
+    datadep:
+      - choices 4
+    controldep:
+      - choices 8
+  i 8:
+    datadep:
+      - choices 4
+    controldep:
+      - choices 8
+  c 8:
+    datadep:
+      - choices 4
+    controldep:
+      - choices 8
+  percent 9:
+    datadep:
+      - c 8
+      - n 4
+    controldep:
+      - choices 8
+  percent 10:
+    reset: False
+    datadep:
+      - percent 9
+    controldep:
+      - choices 8
+  to_investigate 11:
+    datadep:
+      - to_investigate 6
+      - to_investigate 11
+      - i 8
+      - c 8
+      - percent 9
+    controldep:
+      - percent 10
+  to_investigate 14:
+    datadep:
+      - to_investigate 6
+      - to_investigate 11
+    controldep: Null
+  one_unit 15:
+    datadep:
+      - n 4
+    controldep: Null
+  one_unit 16:
+    reset: False
+    datadep:
+      - one_unit 15
+    controldep: Null
+  to_investigate 19:
+    reset: False
+    datadep:
+      - to_investigate 14
+    controldep:
+      - one_unit 16
+      - to_investigate 19
+  percent 19:
+    datadep:
+      - to_investigate 14
+    controldep:
+      - one_unit 16
+      - to_investigate 19
+  decimal 20:
+    datadep:
+      - percent 19
+    controldep:
+      - to_investigate 19
+  diff 21:
+    datadep:
+      - decimal 20
+    controldep:
+      - to_investigate 19
+  diff 22:
+    reset: False
+    datadep:
+      - diff 21
+    controldep:
+      - to_investigate 19
+  one_unit 22:
+    reset: False
+    datadep:
+      - one_unit 15
+    controldep:
+      - to_investigate 19
+  min_additional_unit 23:
+    datadep: Null
+    controldep:
+      - diff 22
+      - one_unit 22
+  min_additional_unit 25:
+    datadep:
+      - one_unit 15
+      - diff 21
+    controldep:
+      - diff 22
+      - one_unit 22
+  min_additional_unit 26:
+    reset: False
+    datadep:
+      - min_additional_unit 25
+      - min_additional_unit 29
+    controldep:
+      - diff 22
+      - one_unit 22
+      - min_additional_unit 26
+      - left 26
+      - min_additional_unit 27
+      - one_unit 27
+      - diff 27
+  left 26:
+    reset: False
+    datadep:
+      - left 5
+      - left 33
+    controldep:
+      - diff 22
+      - one_unit 22
+      - min_additional_unit 26
+      - left 26
+      - min_additional_unit 27
+      - one_unit 27
+      - diff 27
+  min_additional_unit 27:
+    reset: False
+    datadep:
+      - min_additional_unit 25
+      - min_additional_unit 29
+    controldep:
+      - min_additional_unit 26
+      - left 26
+  one_unit 27:
+    reset: False
+    datadep:
+      - one_unit 15
+    controldep:
+      - min_additional_unit 26
+      - left 26
+  diff 27:
+    reset: False
+    datadep:
+      - diff 21
+    controldep:
+      - min_additional_unit 26
+      - left 26
+  min_additional_unit 29:
+    datadep:
+      - min_additional_unit 25
+      - min_additional_unit 29
+    controldep:
+      - min_additional_unit 27
+      - one_unit 27
+      - diff 27
+  min_additional_unit 30:
+    reset: False
+    datadep:
+      - min_additional_unit 25
+      - min_additional_unit 29
+      - min_additional_unit 23
+    controldep:
+      - to_investigate 19
+  left 30:
+    reset: False
+    datadep:
+      - left 5
+      - left 33
+    controldep:
+      - to_investigate 19
+  left 33:
+    datadep:
+      - left 5
+      - left 33
+      - min_additional_unit 25
+      - min_additional_unit 29
+      - min_additional_unit 23
+    controldep:
+      - min_additional_unit 30
+      - left 30
