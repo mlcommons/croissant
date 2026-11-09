@@ -216,7 +216,11 @@ def build_gallery_index(
                 readme_rest = "\n\n".join(paragraphs[1:])
 
     gallery_data = {
-        "generated_at": datetime.datetime.utcnow().isoformat() + "Z",
+        "generated_at": (
+            datetime.datetime.now(datetime.timezone.utc)
+            .isoformat()
+            .replace("+00:00", "Z")
+        ),
         "versions": versions_list,
         "readme_intro": readme_intro,
         "readme_rest": readme_rest,

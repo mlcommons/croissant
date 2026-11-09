@@ -25,6 +25,27 @@ _MAX_PREVIEW_ROWS = 5
 _MAX_PREVIEW_COLS = 10
 
 
+def _write_visualizer_asset(src: pathlib.Path, dst: pathlib.Path) -> None:
+    """Write a visualizer static asset to ``dst``, minifying when available."""
+    try:
+        if src.suffix == ".js":
+            from jsmin import jsmin  # type: ignore[import-untyped]
+
+            dst.write_text(jsmin(src.read_text(encoding="utf-8")), encoding="utf-8")
+            return
+        if src.suffix == ".css":
+            import csscompressor  # type: ignore[import-untyped]
+
+            dst.write_text(
+                csscompressor.compress(src.read_text(encoding="utf-8")),
+                encoding="utf-8",
+            )
+            return
+    except ImportError:
+        pass
+    shutil.copy(src, dst)
+
+
 def _list_archive_entries(file_path: str, encoding_formats: list[str]) -> list[str]:
     """List file entries inside a local archive (tar or zip)."""
     entries = []
@@ -536,7 +557,9 @@ def visualize_js(
     # A simple placeholder replacement keeps this Jinja2-free.
     # The inline <script> sets window.__CROISSANT_DATA__ synchronously,
     # so the page works from file:// with no web server required.
-    output_dir = pathlib.Path(str(output)).parent
+    output_path = pathlib.Path(str(output))
+    output_dir = output_path.parent
+    output_dir.mkdir(parents=True, exist_ok=True)
     data_script = (
         "<script>window.__CROISSANT_DATA__ = "
         + json.dumps(augmented, indent=2, ensure_ascii=False)
@@ -552,16 +575,19 @@ def visualize_js(
     html = template_html.replace("<!-- DATASET_DATA -->", data_script)
     html = html.replace("<!-- GALLERY_URL -->", gallery_script)
     html = html.replace("STATIC_PATH", static_path)
-    pathlib.Path(str(output)).write_text(html, encoding="utf-8")
+    output_path.write_text(html, encoding="utf-8")
     print(f"Wrote visualization to {output}")
 
-    # Copy static assets next to the output file if using default path
+    # Emit static assets matching visualizer.html's .min.* links next to the output.
     if static_path == ".":
-        for asset in ("visualizer.js", "visualizer.css"):
-            src = _STATIC_DIR / asset
-            dst = output_dir / asset
+        for src_name, dst_name in (
+            ("visualizer.js", "visualizer.min.js"),
+            ("visualizer.css", "visualizer.min.css"),
+        ):
+            src = _STATIC_DIR / src_name
+            dst = output_dir / dst_name
             if src.exists():
-                shutil.copy(src, dst)
-                logging.info(f"Copied {src} -> {dst}")
+                _write_visualizer_asset(src, dst)
+                logging.info(f"Wrote {src} -> {dst}")
             else:
                 logging.warning(f"Static asset not found: {src}")
