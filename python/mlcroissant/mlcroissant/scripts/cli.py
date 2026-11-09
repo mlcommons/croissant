@@ -31,4 +31,7 @@ def main():
     if choice not in choices:
         raise ValueError(f"usage: mlcroissant {choices}. Got: `mlcroissant {choice}`")
     module = importlib.import_module(f"mlcroissant.scripts.{choice}")
-    app.run(module.main)
+    if choice == Commands.VISUALIZE:
+        module.main(sys.argv[2:])
+    else:
+        app.run(module.main)
