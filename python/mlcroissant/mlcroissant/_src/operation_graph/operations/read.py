@@ -11,8 +11,10 @@ from typing import Any
 from etils import epath
 import numpy as np
 import pandas as pd
+from rdflib import term
 
 from mlcroissant._src.core.constants import EncodingFormat
+from mlcroissant._src.core.data_types import EXPECTED_DATA_TYPES
 from mlcroissant._src.core.git import download_git_lfs_file
 from mlcroissant._src.core.git import is_git_lfs_file
 from mlcroissant._src.core.optional import deps
@@ -104,6 +106,33 @@ def _get_sampling_rate(
     return next(iter(sampling_rates)) if sampling_rates else None
 
 
+def _string_columns(fields: tuple[Field, ...]) -> dict[str, type]:
+    """Columns read as strings: those of fields declared sc:Text or sc:URL.
+
+    Without this, pandas infers types first, so identifiers such as FIPS or ZIP codes
+    lose their leading zeros ("06073" -> 6073) and a column with an empty cell turns
+    "41740" into 41740.0 before the declared type is applied; joins on such columns
+    then silently fail. The declared type is read from `field.data_types` directly:
+    `field.data_type` records a validation error when no data type is declared, which
+    must not happen while reading. Empty cells still read as missing (pandas'
+    default `keep_default_na=True`), and so do literal strings such as "NA" or "NULL",
+    as before this change.
+    """
+    columns: dict[str, type] = {}
+    for field in fields:
+        source = field.source
+        if field.sub_fields or source is None or not source.extract.column:
+            continue
+        declared = [
+            EXPECTED_DATA_TYPES[term.URIRef(data_type)]
+            for data_type in field.data_types or []
+            if data_type in EXPECTED_DATA_TYPES
+        ]
+        if declared and declared[0] is bytes:
+            columns[source.extract.column] = str
+    return columns
+
+
 def _should_append_line_numbers(fields: tuple[Field, ...]) -> bool:
     """Checks whether at least one field requires listing the line numbers."""
     for field in fields:
@@ -172,9 +201,11 @@ class Read(Operation):
                 if gzipped:
                     read_file = gzip.open(file, "rt", newline="")
                 if encoding_format == EncodingFormat.CSV:
-                    return pd.read_csv(read_file)
+                    return pd.read_csv(read_file, dtype=_string_columns(self.fields))
                 elif encoding_format == EncodingFormat.TSV:
-                    return pd.read_csv(read_file, sep="\t")
+                    return pd.read_csv(
+                        read_file, sep="\t", dtype=_string_columns(self.fields)
+                    )
                 elif encoding_format == EncodingFormat.JSON:
                     json_content = json.load(read_file)
                     if reading_method == ReadingMethod.JSON:
