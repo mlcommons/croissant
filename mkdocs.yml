@@ -42,19 +42,38 @@ plugins:
 
 # Navigation Structure
 nav:
-  # 'README.md' was copied to 'index.md' by our script
+  # 'README.md' was copied to 'index.md' by gen_pages.py
   - Croissant:
       - Overview: index.md
       - Specification:
-          # These files are physically in docs/, so we REMOVE the 'docs/' prefix
-          - 'Croissant v1.1': croissant-spec-1.1.md
+          # Files physically under docs/ omit the 'docs/' prefix in nav
+          - 'Croissant v1.1 (Latest)': croissant-spec-1.1.md
           - 'Croissant v1.0': croissant-spec-1.0.md
       - Extensions:
           - 'Responsible AI (RAI)': croissant-rai-spec.md
+          - 'GeoCroissant': croissant-geo-spec.md
+          - 'Croissant Tasks':
+              - 'Overview': tasks/README.md
+              - 'EveryEvalEver Integration': tasks/docs/e3_croissant_tasks_integration.md
+              - 'Interactive Tasks Visualizer': https://docs.mlcommons.org/croissant/tasks/index.html
+      - 'How-to Guides':
+          - 'Overview': howto/readme.md
+          - 'Specify Splits': howto/specify-splits.md
+          - 'Publish with CKAN': howto/ckan.md
+      - 'Definitions':
+          - 'Overview': definitions/index.md
+          - 'Split': definitions/split.md
+          - 'Training Split': definitions/training_split.md
+          - 'Validation Split': definitions/validation_split.md
+          - 'Testing Split': definitions/testing_split.md
+          - 'Sitemap': definitions/sitemap.md
+      - 'Contributing': CONTRIBUTING.md
+
+  - 'Dataset Gallery': https://docs.mlcommons.org/croissant/datasets/index.html
 
   - Library:
       - 'Python Package': python/mlcroissant/README.md
- 
+
   - Tools:
       - 'Croissant Editor': editor/README.md
       - 'Health Monitor': health/README.md

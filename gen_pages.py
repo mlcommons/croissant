@@ -1,34 +1,82 @@
-# Generates MkDocs pages from various parts of the repo.
-# MKDocs expects all documentation files to be in the 'docs/' directory.
-# This script this called when building mkdocs to copy documentation from 
-# other parts of the repo to a virtual 'docs/' directory.
+"""Generates the virtual MkDocs docs tree from repository Markdown and images."""
+
 from pathlib import Path
 
 import mkdocs_gen_files
 
-# Get the root directory of the repo
-root = Path(__file__).parent
+REPO_ROOT = Path(__file__).parent
+GITHUB_TREE = "https://github.com/mlcommons/croissant/tree/main"
+GITHUB_BLOB = "https://github.com/mlcommons/croissant/blob/main"
+DOC_ASSET_EXTENSIONS = {".md", ".png", ".jpg", ".jpeg", ".svg", ".gif", ".css"}
 
-# 1. Copy the Root README to 'index.md' AND fix image paths
-with open(root / "README.md", "r", encoding="utf-8") as f:
-    content = f.read()
 
-content = content.replace("/docs/images/", "images/")
-content = content.replace("docs/images/", "images/")
+def _copy_doc(src_rel: str, dest_rel: str | None = None, rewrites=()) -> None:
+    """Copy a text doc into the virtual MkDocs tree, applying link rewrites."""
+    src = REPO_ROOT / src_rel
+    if not src.exists():
+        return
+    content = src.read_text(encoding="utf-8")
+    for old, new in rewrites:
+        content = content.replace(old, new)
+    with mkdocs_gen_files.open(dest_rel or src_rel, "w", encoding="utf-8") as dest:
+        dest.write(content)
 
-with mkdocs_gen_files.open("index.md", "w", encoding="utf-8") as dest:
-    dest.write(content)
 
-# 2. List of folders you want to include from the root
-folders_to_include = ["python", "eclair", "editor", "health", "croissant-rdf"]
+# 1. Root README -> index.md, plus repository-level Markdown docs.
+_copy_doc(
+    "README.md",
+    "index.md",
+    rewrites=(
+        ("/docs/images/", "images/"),
+        ("docs/images/", "images/"),
+        ("](datasets/)", f"]({GITHUB_TREE}/datasets)"),
+        (
+            "](python/mlcroissant/recipes)",
+            f"]({GITHUB_TREE}/python/mlcroissant/recipes)",
+        ),
+    ),
+)
+_copy_doc("CONTRIBUTING.md")
+_copy_doc("LICENSE.md")
 
-for folder in folders_to_include:
-    # Recursively copy all files from these folders
-    for path in sorted((root / folder).rglob("*")):
-        if path.is_file():
-            # Calculate the relative path (e.g., python/mlcroissant/README.md)
-            rel_path = path.relative_to(root)
-            # Write it to the virtual docs directory
-            with open(path, "rb") as src:
-                with mkdocs_gen_files.open(rel_path, "wb") as dest:
-                    dest.write(src.read())
+# 2. Subproject READMEs and docs (keeping source-code relative links valid).
+_copy_doc(
+    "python/mlcroissant/README.md",
+    rewrites=(("(./mlcroissant/", f"({GITHUB_TREE}/python/mlcroissant/mlcroissant/"),),
+)
+_copy_doc("editor/README.md")
+_copy_doc("health/README.md")
+_copy_doc("health/croissant-validator-neurips/README.md")
+_copy_doc("health/visualizer/explorer/README.md")
+_copy_doc("croissant-rdf/README.md")
+_copy_doc(
+    "tasks/README.md",
+    rewrites=(
+        ("(croissant-tasks.ttl)", f"({GITHUB_BLOB}/tasks/croissant-tasks.ttl)"),
+        (
+            "(croissant-tasks-shapes.ttl)",
+            f"({GITHUB_BLOB}/tasks/croissant-tasks-shapes.ttl)",
+        ),
+        ("(examples/)", f"({GITHUB_TREE}/tasks/examples)"),
+        ("(docs/", "(tasks/docs/"),
+    ),
+)
+_copy_doc(
+    "tasks/docs/e3_croissant_tasks_integration.md",
+    rewrites=(
+        ("(../croissant-tasks.ttl)", f"({GITHUB_BLOB}/tasks/croissant-tasks.ttl)"),
+        (
+            "(../croissant-tasks-shapes.ttl)",
+            f"({GITHUB_BLOB}/tasks/croissant-tasks-shapes.ttl)",
+        ),
+        ("(../examples/", f"({GITHUB_TREE}/tasks/examples/"),
+    ),
+)
+
+# 3. Eclair documentation and images only (exclude Python code and caches).
+_copy_doc("eclair/README.md")
+for path in sorted((REPO_ROOT / "eclair" / "docs").rglob("*")):
+    if path.is_file() and path.suffix.lower() in DOC_ASSET_EXTENSIONS:
+        rel_path = path.relative_to(REPO_ROOT)
+        with open(path, "rb") as src, mkdocs_gen_files.open(rel_path, "wb") as dest:
+            dest.write(src.read())
