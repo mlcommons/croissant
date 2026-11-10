@@ -1,0 +1,675 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "geocr": "http://mlcommons.org/croissant/geo/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "equivalentProperty": "cr:equivalentProperty",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "nasa-sdo-surya-bench",
+  "description": "Machine learning (ML)-ready solar dataset curated from NASA Solar Dynamics Observatory (SDO) observations (May 13, 2010 \u2013 December 31, 2024). Contains Level-1.5 full-disk 4096x4096 multi-wavelength imagery from the Atmospheric Imaging Assembly (AIA) across 8 EUV channels and magnetic field / Doppler velocity measurements from the Helioseismic and Magnetic Imager (HMI) across 5 channels at 12-minute cadence.",
+  "conformsTo": [
+    "http://mlcommons.org/croissant/1.1",
+    "http://mlcommons.org/croissant/RAI/",
+    "http://mlcommons.org/croissant/geo/"
+  ],
+  "citeAs": "@article{roy2024surya,\n  title={AI Foundation Model for Heliophysics: Applications, Design, and Implementation},\n  author={Roy, Sujit and Singh, Tufan and Freitag, Marcus and Schmude, Johannes and Lal, Rohit and Hegde, Dinesha and Ranjan, Soumya and Lin, Alan and Gaur, Vishal and Vos, Etienne and Ghosal, Rahul},\n  journal={arXiv preprint arXiv:2410.10841},\n  year={2024}\n}",
+  "creator": [
+    {
+      "@type": "sc:Person",
+      "name": "Sujit Roy",
+      "email": "sujit.roy@nasa.gov"
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Hong Lin",
+      "email": "hong.lin@uah.edu"
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Dinesha V Hegde"
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Johannes Schmude"
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Rohit Lal"
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Vishal Gaur"
+    },
+    {
+      "@type": "sc:Organization",
+      "name": "NASA IMPACT"
+    },
+    {
+      "@type": "sc:Organization",
+      "name": "University of Alabama in Huntsville"
+    }
+  ],
+  "datePublished": "2024-10-14",
+  "geocr:bandConfiguration": {
+    "@type": "geocr:BandConfiguration",
+    "geocr:bandNamesList": [
+      "aia94",
+      "aia131",
+      "aia171",
+      "aia193",
+      "aia211",
+      "aia304",
+      "aia335",
+      "aia1600",
+      "hmi_m",
+      "hmi_bx",
+      "hmi_by",
+      "hmi_bz",
+      "hmi_v"
+    ],
+    "geocr:totalBands": 13
+  },
+  "geocr:coordinateReferenceSystem": "Helioprojective-Cartesian",
+  "geocr:multiWavelengthConfiguration": {
+    "@type": "geocr:MultiWavelengthConfiguration",
+    "geocr:channelList": [
+      "94\u00c5",
+      "131\u00c5",
+      "171\u00c5",
+      "193\u00c5",
+      "211\u00c5",
+      "304\u00c5",
+      "335\u00c5",
+      "1600\u00c5",
+      "6173\u00c5"
+    ]
+  },
+  "geocr:solarInstrumentCharacteristics": {
+    "@type": "geocr:SolarInstrumentCharacteristics",
+    "geocr:instrument": "AIA,HMI",
+    "geocr:observatory": "SDO"
+  },
+  "geocr:spatialResolution": {
+    "@type": "sc:QuantitativeValue",
+    "unitText": "arcsec",
+    "value": 0.6
+  },
+  "geocr:spectralBandMetadata": [
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "aia94",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 1.8
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 94.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "aia131",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 2.5
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 131.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "aia171",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 4.4
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 171.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "aia193",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 5.6
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 193.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "aia211",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 6.3
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 211.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "aia304",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 14.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 304.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "aia335",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 18.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 335.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "aia1600",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 28.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 1600.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "hmi_m",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 0.076
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 6173.3
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "hmi_bx",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 0.076
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 6173.3
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "hmi_by",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 0.076
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 6173.3
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "hmi_bz",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 0.076
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 6173.3
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "hmi_v",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 0.076
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "angstrom",
+        "value": 6173.3
+      }
+    }
+  ],
+  "geocr:temporalResolution": {
+    "@type": "sc:QuantitativeValue",
+    "unitText": "min",
+    "value": 12
+  },
+  "keywords": [
+    "SDO",
+    "heliophysics",
+    "solar dynamics observatory",
+    "AIA",
+    "HMI",
+    "space weather",
+    "solar flares",
+    "extreme ultraviolet",
+    "magnetogram",
+    "SuryaBench"
+  ],
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "url": "https://registry.opendata.aws/surya-bench/",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "sdo-level15-nc-20100513-0012",
+      "name": "20100513_0012.nc",
+      "description": "SDO Level-1.5 4096x4096 NetCDF cube for observation 20100513_0012",
+      "contentUrl": "https://nasa-surya-bench.s3.amazonaws.com/2010/05/20100513_0012.nc",
+      "encodingFormat": "application/x-netcdf",
+      "sha256": "077967f6ae9a23a42b3d397c141f46fff15a659a2d3570ce54856d4f21fb4f8b"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "sdo-level15-nc-20100513-0024",
+      "name": "20100513_0024.nc",
+      "description": "SDO Level-1.5 4096x4096 NetCDF cube for observation 20100513_0024",
+      "contentUrl": "https://nasa-surya-bench.s3.amazonaws.com/2010/05/20100513_0024.nc",
+      "encodingFormat": "application/x-netcdf",
+      "sha256": "ba46de99a6f0e1a2fc432400f0cb151aab57b2ebae50902e0fa01ee2667bb1fa"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "sdo-level15-nc-20100513-0036",
+      "name": "20100513_0036.nc",
+      "description": "SDO Level-1.5 4096x4096 NetCDF cube for observation 20100513_0036",
+      "contentUrl": "https://nasa-surya-bench.s3.amazonaws.com/2010/05/20100513_0036.nc",
+      "encodingFormat": "application/x-netcdf",
+      "sha256": "6f7dc092ac22a6dd8e4d558907bd63f77c7ab83b6bacd724ea8eb182ce063e1e"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "observations_index",
+      "name": "observations_index",
+      "description": "Chronological catalog index of SDO observations with remote S3 endpoints",
+      "geocr:timeSeriesIndex": {
+        "@id": "observations_index/datetime"
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "observations_index/observation_id",
+          "name": "observation_id",
+          "description": "Unique observation identifier",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "observations_index/datetime",
+          "name": "datetime",
+          "description": "Observation timestamp (ISO 8601)",
+          "dataType": "sc:Date"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "observations_index/url",
+          "name": "url",
+          "description": "Remote HTTPS download URL on AWS S3",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "observations_index/s3_uri",
+          "name": "s3_uri",
+          "description": "AWS S3 URI for high-throughput direct access",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "observations_index/observation_id": "20100513_0012",
+          "observations_index/datetime": "2010-05-13T00:12:00Z",
+          "observations_index/url": "https://nasa-surya-bench.s3.amazonaws.com/2010/05/20100513_0012.nc",
+          "observations_index/s3_uri": "s3://nasa-surya-bench/2010/05/20100513_0012.nc"
+        },
+        {
+          "observations_index/observation_id": "20100513_0024",
+          "observations_index/datetime": "2010-05-13T00:24:00Z",
+          "observations_index/url": "https://nasa-surya-bench.s3.amazonaws.com/2010/05/20100513_0024.nc",
+          "observations_index/s3_uri": "s3://nasa-surya-bench/2010/05/20100513_0024.nc"
+        },
+        {
+          "observations_index/observation_id": "20100513_0036",
+          "observations_index/datetime": "2010-05-13T00:36:00Z",
+          "observations_index/url": "https://nasa-surya-bench.s3.amazonaws.com/2010/05/20100513_0036.nc",
+          "observations_index/s3_uri": "s3://nasa-surya-bench/2010/05/20100513_0036.nc"
+        },
+        {
+          "observations_index/observation_id": "20100513_0048",
+          "observations_index/datetime": "2010-05-13T00:48:00Z",
+          "observations_index/url": "https://nasa-surya-bench.s3.amazonaws.com/2010/05/20100513_0048.nc",
+          "observations_index/s3_uri": "s3://nasa-surya-bench/2010/05/20100513_0048.nc"
+        },
+        {
+          "observations_index/observation_id": "20100513_0100",
+          "observations_index/datetime": "2010-05-13T01:00:00Z",
+          "observations_index/url": "https://nasa-surya-bench.s3.amazonaws.com/2010/05/20100513_0100.nc",
+          "observations_index/s3_uri": "s3://nasa-surya-bench/2010/05/20100513_0100.nc"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "sdo_observations",
+      "name": "sdo_observations",
+      "description": "Level-1.5 full-disk solar observations across 8 AIA EUV and 5 HMI channels",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/aia94",
+          "name": "aia94",
+          "description": "AIA 94 Angstrom EUV channel (Fe XVIII, ~6.3 MK)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "aia94"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/aia131",
+          "name": "aia131",
+          "description": "AIA 131 Angstrom EUV channel (Fe VIII, XXI, ~0.4 MK & 10 MK)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "aia131"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/aia171",
+          "name": "aia171",
+          "description": "AIA 171 Angstrom EUV channel (Fe IX, ~0.6 MK)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "aia171"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/aia193",
+          "name": "aia193",
+          "description": "AIA 193 Angstrom EUV channel (Fe XII, XXIV, ~1.2 MK & 20 MK)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "aia193"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/aia211",
+          "name": "aia211",
+          "description": "AIA 211 Angstrom EUV channel (Fe XIV, ~2.0 MK)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "aia211"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/aia304",
+          "name": "aia304",
+          "description": "AIA 304 Angstrom EUV channel (He II, ~0.05 MK)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "aia304"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/aia335",
+          "name": "aia335",
+          "description": "AIA 335 Angstrom EUV channel (Fe XVI, ~2.5 MK)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "aia335"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/aia1600",
+          "name": "aia1600",
+          "description": "AIA 1600 Angstrom UV continuum channel (C IV, ~10000 K)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "aia1600"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/hmi_m",
+          "name": "hmi_m",
+          "description": "HMI Line-of-Sight Magnetogram (Fe I 6173.3 Angstrom, Gauss)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "hmi_m"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/hmi_bx",
+          "name": "hmi_bx",
+          "description": "HMI Vector Magnetic Field X-component (Gauss)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "hmi_bx"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/hmi_by",
+          "name": "hmi_by",
+          "description": "HMI Vector Magnetic Field Y-component (Gauss)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "hmi_by"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/hmi_bz",
+          "name": "hmi_bz",
+          "description": "HMI Vector Magnetic Field Z-component (Gauss)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "hmi_bz"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdo_observations/hmi_v",
+          "name": "hmi_v",
+          "description": "HMI Line-of-Sight Doppler Velocity (m/s)",
+          "cr:arrayShape": "4096,4096",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileObject": {
+              "@id": "sdo-level15-nc-20100513-0012"
+            },
+            "extract": {
+              "column": "hmi_v"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

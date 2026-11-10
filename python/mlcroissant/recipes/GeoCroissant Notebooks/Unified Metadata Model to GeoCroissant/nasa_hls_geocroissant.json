@@ -1,0 +1,557 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "geocr": "http://mlcommons.org/croissant/geo/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "equivalentProperty": "cr:equivalentProperty",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "nasa-hls-sentinel2-s30",
+  "description": "The Harmonized Landsat Sentinel-2 (HLS) project provides consistent surface reflectance data from the Operational Land Imager (OLI) aboard the joint NASA/USGS Landsat 8 satellite and the Multi-Spectral Instrument (MSI) aboard Europe\u2019s Copernicus Sentinel-2A, Sentinel-2B, and Sentinel-2C satellites. The combined measurement enables global observations of the land every 1.6 days at 30-meter (m) spatial resolution. The HLS project uses a set of algorithms to obtain seamless products from OLI and MSI that include atmospheric correction, cloud and cloud-shadow masking, spatial co-registration and common gridding, illumination and view angle normalization, and spectral bandpass adjustment. \n\nThe HLSS30 product provides 30-m Nadir Bidirectional Reflectance Distribution Function (BRDF)-Adjusted Reflectance (NBAR) and is derived from Sentinel-2A, Sentinel-2B, and Sentinel-2C MSI data products. The HLSS30 and [HLSL30](https://doi.org/10.5067/HLS/HLSL30.002) products are gridded to the same resolution and Military Grid Reference System ([MGRS](https://hls.gsfc.nasa.gov/products-description/tiling-system/)) tiling system and thus are \u201cstackable\u201d for time series analysis.\n\nThe HLSS30 product is provided in Cloud Optimized GeoTIFF (COG) format, and each band is distributed as a separate COG. There are 13 bands included in the HLSS30 product along with four angle bands and a quality assessment (QA) band. See the User Guide for a more detailed description of the individual bands provided in the HLSS30 product.\n\nThe HLS project is funded by NASA\u2019s Satellite Needs Working Group (SNWG) which provides data products developed to meet the needs of stakeholders from US government agencies.\n\nFor information on [known issues](https://lpdaac.usgs.gov/documents/2435/HLS_v2.0_S30_known_issues_April2026.pdf) see the anomalies link under the Documents and Resources tab.",
+  "conformsTo": [
+    "http://mlcommons.org/croissant/1.1",
+    "http://mlcommons.org/croissant/geo/1.0"
+  ],
+  "citeAs": "@misc{nasa_hls_s30, title={HLS Sentinel-2 Multi-spectral Instrument Surface Reflectance Daily Global 30m v2.0}, DOI={10.5067/HLS/HLSS30.002}, publisher={LP DAAC}, author={NASA}, year={2021}}",
+  "datePublished": "2021-08-20",
+  "geocr:bandConfiguration": {
+    "@type": "geocr:BandConfiguration",
+    "geocr:bandNamesList": [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B8A",
+      "B09",
+      "B10",
+      "B11",
+      "B12"
+    ],
+    "geocr:totalBands": 13
+  },
+  "geocr:coordinateReferenceSystem": "EPSG:32616",
+  "geocr:recordEndpoint": "https://cmr.earthdata.nasa.gov/search/granules.umm_json?collection_concept_id=C2021957295-LPCLOUD",
+  "geocr:spatialResolution": {
+    "@type": "sc:QuantitativeValue",
+    "unitText": "m",
+    "value": 30.0
+  },
+  "geocr:spectralBandMetadata": [
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B01",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 20.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 443.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B02",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 65.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 490.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B03",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 35.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 560.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B04",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 30.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 665.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B05",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 15.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 705.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B06",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 15.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 740.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B07",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 20.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 783.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B08",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 115.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 842.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B8A",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 20.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 865.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B09",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 20.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 945.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B10",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 30.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 1375.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B11",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 90.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 1610.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B12",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 180.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 2190.0
+      }
+    }
+  ],
+  "geocr:temporalResolution": {
+    "@type": "sc:QuantitativeValue",
+    "unitText": "d",
+    "value": 1.0
+  },
+  "keywords": [
+    "remote sensing",
+    "nasa",
+    "cmr",
+    "hls",
+    "sentinel-2",
+    "earth-observation",
+    "geocroissant"
+  ],
+  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "spatialCoverage": {
+    "@type": "Place",
+    "geo": {
+      "@type": "GeoShape",
+      "box": "34.2471 -86.7614 35.2420 -85.7935"
+    }
+  },
+  "url": "https://doi.org/10.5067/HLS/HLSS30.002",
+  "version": "2.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B01",
+      "name": "B01.tif",
+      "description": "Coastal Aerosol (B01) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B01.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "509d9fcc65fc23ea1db3cec81b48172dc97984b5aaee07e26939964487fecd86"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B02",
+      "name": "B02.tif",
+      "description": "Blue (B02) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B02.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "72b23f5c1ed4d18aac771db4cc480904d33fc7aa1c5e61b2a26121dae2d7dc8c"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B03",
+      "name": "B03.tif",
+      "description": "Green (B03) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B03.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "b28358a69f873a89ba2ad26678b05e2c32de14eb88ed103ef793d10ae5582139"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B04",
+      "name": "B04.tif",
+      "description": "Red (B04) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B04.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "bc907f529b983a472e737416dd6b6631e2b70458f28cc10e80a177475e95cf75"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B05",
+      "name": "B05.tif",
+      "description": "Red Edge 1 (B05) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B05.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "c5f1cb568fd5b036467246a06d81a0251bd0639e9ab93fb85ab0928f322dc8cc"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B06",
+      "name": "B06.tif",
+      "description": "Red Edge 2 (B06) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B06.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "d8ed6a699a5a8d47106773406084aea6f08db0aa394156b73747f588d0e5789f"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B07",
+      "name": "B07.tif",
+      "description": "Red Edge 3 (B07) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B07.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "d358634e3d7c2e3ed36c77dd2f4ce74f7800acce530c58adff203125c6836979"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B08",
+      "name": "B08.tif",
+      "description": "NIR Broad (B08) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B08.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "0d3f5c36e8263ba9b5a11d684c04e343982e2ba5868d0007b79f4af44e77c844"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B8A",
+      "name": "B8A.tif",
+      "description": "NIR Narrow (B8A) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B8A.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "0d13e82b0b64d9c8a09520a478ee86ffd28a7ca44079f63f1be2ac70e350f90a"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B09",
+      "name": "B09.tif",
+      "description": "Water Vapour (B09) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B09.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "614bc351fabf7e0e208396a90c487728f6d7a9658625addc4cbfdf8ca598cee9"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B10",
+      "name": "B10.tif",
+      "description": "Cirrus (B10) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B10.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "b78323518feba3c719669579b3d6185b09fc0478b49bebb5fbc5f4677002fb72"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B11",
+      "name": "B11.tif",
+      "description": "SWIR 1 (B11) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B11.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "72c430e3bb54e3cc9795941f4708247baec3e9a8dc17908404566df122d0e4ca"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "HLS.S30.T16SED.2016011T162642.v2.0_B12",
+      "name": "B12.tif",
+      "description": "SWIR 2 (B12) at 30.0m resolution",
+      "contentUrl": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B12.tif",
+      "encodingFormat": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "sha256": "3551fd03c4f50f5c896d9a3ac0aa953c06e6ab9080b001be8f5346bdce98fe22"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "granules",
+      "name": "granules",
+      "description": "NASA HLS Sentinel-2 granules with quality metrics and band URLs",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "granules/granule_ur",
+          "name": "granule_ur",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/datetime",
+          "name": "datetime",
+          "dataType": "sc:Date"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/cloud_cover",
+          "name": "cloud_cover",
+          "dataType": "sc:Float"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/mgrs_tile",
+          "name": "mgrs_tile",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/platform",
+          "name": "platform",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/epsg",
+          "name": "epsg",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b11_url",
+          "name": "b11_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b08_url",
+          "name": "b08_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b01_url",
+          "name": "b01_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b07_url",
+          "name": "b07_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b06_url",
+          "name": "b06_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b03_url",
+          "name": "b03_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b12_url",
+          "name": "b12_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b02_url",
+          "name": "b02_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b10_url",
+          "name": "b10_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b04_url",
+          "name": "b04_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b09_url",
+          "name": "b09_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b05_url",
+          "name": "b05_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "granules/b8a_url",
+          "name": "b8a_url",
+          "dataType": "sc:URL"
+        }
+      ],
+      "data": {
+        "granules/b01_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B01.tif",
+        "granules/b02_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B02.tif",
+        "granules/b03_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B03.tif",
+        "granules/b04_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B04.tif",
+        "granules/b05_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B05.tif",
+        "granules/b06_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B06.tif",
+        "granules/b07_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B07.tif",
+        "granules/b08_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B08.tif",
+        "granules/b09_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B09.tif",
+        "granules/b10_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B10.tif",
+        "granules/b11_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B11.tif",
+        "granules/b12_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B12.tif",
+        "granules/b8a_url": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/HLSS30.020/HLS.S30.T16SED.2016011T162642.v2.0/HLS.S30.T16SED.2016011T162642.v2.0.B8A.tif",
+        "granules/cloud_cover": 3.0,
+        "granules/datetime": "2016-01-11T16:37:13.420Z",
+        "granules/epsg": "EPSG:32616",
+        "granules/granule_ur": "HLS.S30.T16SED.2016011T162642.v2.0",
+        "granules/mgrs_tile": "16SED",
+        "granules/platform": "Sentinel-2A"
+      }
+    }
+  ]
+}
