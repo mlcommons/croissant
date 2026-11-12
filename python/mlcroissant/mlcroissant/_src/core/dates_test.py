@@ -72,13 +72,16 @@ def test_from_datetime_to_str(date: datetime.datetime | None, expected: str):
 @pytest.mark.parametrize("offset_hours", [0, 9, -5.5, -12, 14])
 def test_midnight_with_timezone_round_trips(offset_hours: float):
     date = datetime.datetime(
-        2024, 3, 18,
+        2024,
+        3,
+        18,
         tzinfo=datetime.timezone(datetime.timedelta(hours=offset_hours)),
     )
     serialized = from_datetime_to_str(date)
     issues = Issues()
     restored = from_str_to_datetime(issues, serialized)
     assert not issues.errors
+    assert restored is not None
     assert restored == date
     assert restored.utcoffset() == date.utcoffset()
 
