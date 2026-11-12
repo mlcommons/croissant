@@ -115,11 +115,26 @@ def _add_operations_for_file_object(
                             operation = operation >> ReadLines(
                                 operations=operations, node=successor
                             )
-            operation = (
-                operation
-                >> FilterFiles(operations=operations, node=successor)
-                >> Concatenate(operations=operations, node=successor)
+            operation = operation >> FilterFiles(operations=operations, node=successor)
+            fields = tuple(
+                field
+                for field in successor.recursive_successors
+                if isinstance(field, Field)
+                and field.source
+                and field.source.uuid == successor.uuid
             )
+            if any(
+                field.source.extract.column or field.source.extract.json_path
+                for field in fields
+            ):
+                operation >> Read(
+                    operations=operations,
+                    node=successor,
+                    folder=folder,
+                    fields=fields,
+                )
+            else:
+                operation >> Concatenate(operations=operations, node=successor)
         if node.encoding_formats and not should_extract(node.encoding_formats):
             fields = tuple([
                 field
