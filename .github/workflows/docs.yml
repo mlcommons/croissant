@@ -1,0 +1,160 @@
+name: Documentation Site
+
+on:
+  pull_request:
+    paths:
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - 'LICENSE.md'
+      - 'mkdocs.yml'
+      - 'gen_pages.py'
+      - 'requirements.txt'
+      - 'docs/**'
+      - 'datasets/**'
+      - 'tasks/**'
+      - 'eclair/README.md'
+      - 'eclair/docs/**'
+      - 'editor/README.md'
+      - 'health/**/README.md'
+      - 'croissant-rdf/README.md'
+      - 'python/mlcroissant/README.md'
+      - 'python/mlcroissant/mlcroissant/scripts/**'
+      - '.github/workflows/docs.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'README.md'
+      - 'CONTRIBUTING.md'
+      - 'LICENSE.md'
+      - 'mkdocs.yml'
+      - 'gen_pages.py'
+      - 'requirements.txt'
+      - 'docs/**'
+      - 'datasets/**'
+      - 'tasks/**'
+      - 'eclair/README.md'
+      - 'eclair/docs/**'
+      - 'editor/README.md'
+      - 'health/**/README.md'
+      - 'croissant-rdf/README.md'
+      - 'python/mlcroissant/README.md'
+      - 'python/mlcroissant/mlcroissant/scripts/**'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install documentation and visualizer dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install ./python/mlcroissant csscompressor jsmin
+
+      - name: Build MkDocs site
+        run: mkdocs build --strict --site-dir _site
+
+      - name: Overlay Dataset Gallery, Tasks, and legacy spec URLs
+        run: |
+          python - << 'EOF'
+          import pathlib
+          import shutil
+          import subprocess
+          import sys
+          import textwrap
+
+          site = pathlib.Path("_site")
+
+          # 1. Build fresh Dataset Gallery and per-dataset visualizers into _site/datasets/
+          datasets_dst = site / "datasets"
+          shutil.copytree("datasets", datasets_dst, dirs_exist_ok=True)
+          subprocess.check_call(
+              [
+                  sys.executable,
+                  "python/mlcroissant/mlcroissant/scripts/visualize_all.py",
+                  "--datasets_dir",
+                  str(datasets_dst),
+                  "--force=true",
+              ]
+          )
+
+          # 2. Overlay Tasks Visualizer and ontology examples under _site/tasks/
+          tasks_dst = site / "tasks"
+          tasks_dst.mkdir(parents=True, exist_ok=True)
+          shutil.copy("tasks/index.html", tasks_dst / "index.html")
+          for ttl in pathlib.Path("tasks").glob("*.ttl"):
+              shutil.copy(ttl, tasks_dst / ttl.name)
+          if pathlib.Path("tasks/examples").is_dir():
+              shutil.copytree("tasks/examples", tasks_dst / "examples", dirs_exist_ok=True)
+
+          # 3. Preserve legacy /docs/mlcroissant/*.html and /docs/*.ttl paths
+          docs_mlc = site / "docs" / "mlcroissant"
+          docs_mlc.mkdir(parents=True, exist_ok=True)
+          for html in pathlib.Path("docs/mlcroissant").glob("*.html"):
+              shutil.copy(html, docs_mlc / html.name)
+          for ttl in pathlib.Path("docs").glob("*.ttl"):
+              shutil.copy(ttl, site / "docs" / ttl.name)
+
+          # 4. Preserve legacy /docs/*.html spec URLs (preserving #hash fragments)
+          redirects = {
+              "croissant-spec-1.1.html": "../croissant-spec-1.1/",
+              "croissant-spec-1.0.html": "../croissant-spec-1.0/",
+              "croissant-spec.html": "../croissant-spec-1.0/",
+              "croissant-rai-spec.html": "../croissant-rai-spec/",
+              "croissant-geo-spec.html": "../croissant-geo-spec/",
+          }
+          stub_template = textwrap.dedent("""\
+              <!DOCTYPE html>
+              <html lang="en">
+              <head>
+                <meta charset="utf-8">
+                <title>Redirecting to Croissant Documentation</title>
+                <link rel="canonical" href="{target}">
+                <meta http-equiv="refresh" content="0; url={target}">
+                <script>window.location.replace({target!r} + window.location.hash);</script>
+              </head>
+              <body>
+                <p>Redirecting to <a href="{target}">{target}</a>...</p>
+              </body>
+              </html>
+          """)
+          for filename, target in redirects.items():
+              (site / "docs" / filename).write_text(
+                  stub_template.format(target=target), encoding="utf-8"
+              )
+          EOF
+
+      - name: Upload GitHub Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
