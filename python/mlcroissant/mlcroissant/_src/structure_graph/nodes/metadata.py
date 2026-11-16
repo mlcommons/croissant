@@ -472,7 +472,9 @@ class Metadata(Node):
     def from_file(cls, ctx: Context, file: epath.PathLike) -> Self:
         """Creates the Metadata from a Croissant file."""
         if is_url(file):
-            return cls.from_json(ctx=ctx, json_=requests.get(file).json())
+            resp = requests.get(file)
+            resp.raise_for_status()
+            return cls.from_json(ctx=ctx, json_=resp.json())
         folder, json_ = from_file_to_json(file)
         ctx.folder = folder
         return cls.from_json(ctx=ctx, json_=json_)
