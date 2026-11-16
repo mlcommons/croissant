@@ -1,0 +1,304 @@
+{
+  "type": "Feature",
+  "stac_version": "1.1.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/projection/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/eo/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json"
+  ],
+  "id": "S2A_11SPV_20230907_0_L2A",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -115.902135,
+          35.133016
+        ],
+        [
+          -114.668797,
+          35.133016
+        ],
+        [
+          -114.668797,
+          36.139732
+        ],
+        [
+          -115.902135,
+          36.139732
+        ],
+        [
+          -115.902135,
+          35.133016
+        ]
+      ]
+    ]
+  },
+  "bbox": [
+    -115.902135,
+    35.133016,
+    -114.668797,
+    36.139732
+  ],
+  "properties": {
+    "title": "sentinel-2-las-vegas",
+    "description": "Cloud-free Sentinel-2 Level-2A optical imagery over Las Vegas curated from Element 84 STAC API.",
+    "platform": "sentinel-2a",
+    "constellation": "sentinel-2",
+    "instruments": [
+      "msi"
+    ],
+    "gsd": 10.0,
+    "license": "proprietary",
+    "proj:code": "EPSG:32611",
+    "eo:cloud_cover": 0.016788,
+    "sci:citation": "@article{CopernicusSentinel2,\n  title={Copernicus Sentinel-2 MSI Level-2A},\n  author={European Space Agency},\n  year={2023},\n  url={https://doi.org/10.5270/S2_-742ikth}\n}",
+    "sci:doi": "10.5270/S2_-742ikth",
+    "datetime": "2023-09-07T18:34:32.933000Z"
+  },
+  "links": [
+    {
+      "rel": "license",
+      "href": "https://sentinel.esa.int/documents/247904/690755/Sentinel_Data_Legal_Notice",
+      "title": "License Legal Notice"
+    },
+    {
+      "rel": "via",
+      "href": "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a",
+      "title": "Source Catalog"
+    },
+    {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5270/S2_-742ikth"
+    }
+  ],
+  "assets": {
+    "B01": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/B01.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "B01.tif",
+      "description": "Coastal aerosol (B01) at 60m resolution",
+      "file:checksum": "sha256:0f9ee6981faed187a9fc00fc73c5e150ccf297f356b59a2b09599d5bd61f85bc",
+      "eo:bands": [
+        {
+          "name": "B01",
+          "common_name": "coastal",
+          "center_wavelength": 0.443,
+          "full_width_half_max": 0.027
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "B02": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/B02.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "B02.tif",
+      "description": "Blue (B02) at 10m resolution",
+      "file:checksum": "sha256:cddcd7c6225e84468a33c71bd0a68b275b815e187b2e3e50d32559c90ba04802",
+      "eo:bands": [
+        {
+          "name": "B02",
+          "common_name": "blue",
+          "center_wavelength": 0.49,
+          "full_width_half_max": 0.098
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "B03": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/B03.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "B03.tif",
+      "description": "Green (B03) at 10m resolution",
+      "file:checksum": "sha256:a36fc6318c81a6fc9bfc0c8358e7f0808011736c3906d2c732bc6b37ce18e62f",
+      "eo:bands": [
+        {
+          "name": "B03",
+          "common_name": "green",
+          "center_wavelength": 0.56,
+          "full_width_half_max": 0.045
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "B04": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/B04.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "B04.tif",
+      "description": "Red (B04) at 10m resolution",
+      "file:checksum": "sha256:780cff2cb078c99767bc171130d778f5651fe37e275aafcdf51143bf1d4d5961",
+      "eo:bands": [
+        {
+          "name": "B04",
+          "common_name": "red",
+          "center_wavelength": 0.665,
+          "full_width_half_max": 0.038
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "B05": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/B05.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "B05.tif",
+      "description": "Red Edge 1 (B05) at 20m resolution",
+      "file:checksum": "sha256:e8c7ef53874d5f13332fd8fb5e27e2b769e8e7f333bb79d5e4f78a6d9c61acb7",
+      "eo:bands": [
+        {
+          "name": "B05",
+          "common_name": "rededge",
+          "center_wavelength": 0.704,
+          "full_width_half_max": 0.019
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "B06": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/B06.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "B06.tif",
+      "description": "Red Edge 2 (B06) at 20m resolution",
+      "file:checksum": "sha256:291ffc960729def51686a4f07c2093f411d156e11cb23bf2e40f3b95b84a5a89",
+      "eo:bands": [
+        {
+          "name": "B06",
+          "common_name": "rededge",
+          "center_wavelength": 0.74,
+          "full_width_half_max": 0.018
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "B07": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/B07.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "B07.tif",
+      "description": "Red Edge 3 (B07) at 20m resolution",
+      "file:checksum": "sha256:b1eae3cb1c4acf2c55bc6498ac349b1dfe7d96e5188a5088998eeea49faefb46",
+      "eo:bands": [
+        {
+          "name": "B07",
+          "common_name": "rededge",
+          "center_wavelength": 0.783,
+          "full_width_half_max": 0.028
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "B08": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/B08.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "B08.tif",
+      "description": "NIR 1 (B08) at 10m resolution",
+      "file:checksum": "sha256:8ef46376ad49eb76a3255604dfc663216b215083d674702b6b73adac934ce926",
+      "eo:bands": [
+        {
+          "name": "B08",
+          "common_name": "nir",
+          "center_wavelength": 0.842,
+          "full_width_half_max": 0.145
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "B8A": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/B8A.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "B8A.tif",
+      "description": "NIR 2 (B8A) at 20m resolution",
+      "file:checksum": "sha256:af7d5c85e13e51e94ab18d5237024d5f50d907cb678392fcd3c0884a26aa1f34",
+      "eo:bands": [
+        {
+          "name": "B8A",
+          "common_name": "nir08",
+          "center_wavelength": 0.865,
+          "full_width_half_max": 0.033
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "B09": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/B09.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "B09.tif",
+      "description": "Water vapour (B09) at 60m resolution",
+      "file:checksum": "sha256:6e7290a56a673ced482603b6f2f97689147c84a711289c26d467cf5e278ae44c",
+      "eo:bands": [
+        {
+          "name": "B09",
+          "common_name": "cirrus",
+          "center_wavelength": 0.945,
+          "full_width_half_max": 0.026
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "B11": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/B11.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "B11.tif",
+      "description": "SWIR 1 (B11) at 20m resolution",
+      "file:checksum": "sha256:76bfe0d1b3709c8365b349ba1618f3b04ce7f28d95d4d7828491666ffa3a8d7e",
+      "eo:bands": [
+        {
+          "name": "B11",
+          "common_name": "swir16",
+          "center_wavelength": 1.61,
+          "full_width_half_max": 0.143
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "B12": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/B12.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "B12.tif",
+      "description": "SWIR 2 (B12) at 20m resolution",
+      "file:checksum": "sha256:1e108613754c5d1b730836312d3c3f5e0ace5df3604ba829e189eb589e8ff757",
+      "eo:bands": [
+        {
+          "name": "B12",
+          "common_name": "swir22",
+          "center_wavelength": 2.19,
+          "full_width_half_max": 0.242
+        }
+      ],
+      "roles": [
+        "data"
+      ]
+    },
+    "TCI": {
+      "href": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/11/S/PV/2023/9/S2A_11SPV_20230907_0_L2A/TCI.tif",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "title": "TCI.tif",
+      "description": "True color composite RGB image at 10m resolution",
+      "file:checksum": "sha256:5bfb435463fc69531f2636b76274f27290f5a0a756a04b337aff5f1c94261284",
+      "roles": [
+        "visual",
+        "overview"
+      ]
+    }
+  }
+}

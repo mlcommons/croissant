@@ -1,0 +1,357 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "geocr": "http://mlcommons.org/croissant/geo/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "equivalentProperty": "cr:equivalentProperty",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "naip_geoparquet",
+  "description": "NAIP aerial imagery dataset accessed via STAC and converted to GeoParquet format.",
+  "conformsTo": [
+    "http://mlcommons.org/croissant/1.1",
+    "http://mlcommons.org/croissant/geo/",
+    "http://mlcommons.org/croissant/RAI/"
+  ],
+  "citeAs": "@dataset{naip, title={naip GeoParquet dataset}, publisher={USDA / Microsoft}}",
+  "creator": [
+    {
+      "@type": "sc:Organization",
+      "name": "USDA Farm Service Agency",
+      "url": "https://www.fsa.usda.gov/"
+    },
+    {
+      "@type": "sc:Organization",
+      "name": "Microsoft Planetary Computer",
+      "url": "https://planetarycomputer.microsoft.com/"
+    }
+  ],
+  "datePublished": "2026-11-10",
+  "geocr:bandConfiguration": {
+    "@type": "geocr:BandConfiguration",
+    "geocr:bandNamesList": [
+      "Red",
+      "Green",
+      "Blue",
+      "NIR"
+    ],
+    "geocr:totalBands": 4
+  },
+  "geocr:coordinateReferenceSystem": "EPSG:4326",
+  "geocr:spatialResolution": {
+    "@type": "sc:QuantitativeValue",
+    "unitText": "m",
+    "value": 0.6
+  },
+  "geocr:spectralBandMetadata": [
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "Red",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 60
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 660
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "Green",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 80
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 560
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "Blue",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 100
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 470
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "NIR",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 150
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 825
+      }
+    }
+  ],
+  "keywords": [
+    "NAIP",
+    "GeoParquet",
+    "STAC",
+    "aerial imagery",
+    "remote sensing",
+    "geospatial"
+  ],
+  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "spatialCoverage": {
+    "@type": "Place",
+    "geo": {
+      "@type": "GeoShape",
+      "box": "45.059225 -116.066472 49.065003 -113.182469"
+    }
+  },
+  "url": "https://planetarycomputer.microsoft.com/api/stac/v1/collections/naip",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "naip-parquet",
+      "name": "naip.parquet",
+      "description": "GeoParquet representation of NAIP STAC items with geometry, projection, and asset links",
+      "contentUrl": "./naip.parquet",
+      "encodingFormat": "application/x-parquet",
+      "sha256": "aae4113090efac85c1177d003f418e88de98b6b9179329f6ec9295078d7d80a2"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "naip_items",
+      "name": "naip_items",
+      "description": "STAC items for the naip collection.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "naip_items/id",
+          "name": "id",
+          "description": "STAC item identifier",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "naip-parquet"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "naip_items/datetime",
+          "name": "datetime",
+          "description": "Acquisition timestamp",
+          "dataType": "sc:Date",
+          "source": {
+            "fileObject": {
+              "@id": "naip-parquet"
+            },
+            "extract": {
+              "column": "datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "naip_items/geometry",
+          "name": "geometry",
+          "description": "Item footprint polygon in Well-Known Binary (WKB) format",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "naip-parquet"
+            },
+            "extract": {
+              "column": "geometry"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "naip_items/image_url",
+          "name": "image_url",
+          "description": "Cloud-Optimized GeoTIFF imagery URL",
+          "dataType": "sc:URL",
+          "source": {
+            "fileObject": {
+              "@id": "naip-parquet"
+            },
+            "extract": {
+              "column": "assets"
+            },
+            "transform": {
+              "jsonPath": "$.image.href"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "naip_items/thumbnail_url",
+          "name": "thumbnail_url",
+          "description": "Thumbnail URL for the imagery tile",
+          "dataType": "sc:URL",
+          "source": {
+            "fileObject": {
+              "@id": "naip-parquet"
+            },
+            "extract": {
+              "column": "assets"
+            },
+            "transform": {
+              "jsonPath": "$.thumbnail.href"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "naip_items/gsd",
+          "name": "gsd",
+          "description": "Ground sample distance in metres",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileObject": {
+              "@id": "naip-parquet"
+            },
+            "extract": {
+              "column": "gsd"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "naip_items/proj_code",
+          "name": "proj_code",
+          "description": "Native projected coordinate reference system (EPSG)",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "naip-parquet"
+            },
+            "extract": {
+              "column": "proj:code"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "naip_items/_msft_etag",
+          "name": "naip_items/_msft_etag",
+          "description": "STAC property: _msft:etag",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "naip-parquet"
+            },
+            "extract": {
+              "column": "_msft:etag"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "naip_items/_msft_ts",
+          "name": "naip_items/_msft_ts",
+          "description": "STAC property: _msft:ts",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "naip-parquet"
+            },
+            "extract": {
+              "column": "_msft:ts"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "naip_items/naip_state",
+          "name": "naip_items/naip_state",
+          "description": "STAC property: naip:state",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "naip-parquet"
+            },
+            "extract": {
+              "column": "naip:state"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "naip_items/naip_year",
+          "name": "naip_items/naip_year",
+          "description": "STAC property: naip:year",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "naip-parquet"
+            },
+            "extract": {
+              "column": "naip:year"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "temporalCoverage": "2023-11-17/2023-11-17"
+}

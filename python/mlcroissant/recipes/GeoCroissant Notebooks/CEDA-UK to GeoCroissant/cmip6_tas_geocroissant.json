@@ -1,0 +1,219 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "geocr": "http://mlcommons.org/croissant/geo/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "equivalentProperty": "cr:equivalentProperty",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "cmip6-kiost-esm-ssp585-tas",
+  "description": "Near-Surface Air Temperature (tas) climate simulation from KIOST-ESM under CMIP6 ScenarioMIP ssp585 scenario.",
+  "conformsTo": [
+    "http://mlcommons.org/croissant/1.1",
+    "http://mlcommons.org/croissant/RAI/",
+    "http://mlcommons.org/croissant/geo/"
+  ],
+  "citeAs": "@article{Eyring_2016,\n    author = {Eyring, Veronika and Bony, Sandrine and Meehl, Gerald A. and et al.},\n    doi    = {10.5194/gmd-9-1937-2016},\n    journal = {Geoscientific Model Development},\n    pages  = {1937--1958},\n    title  = {{Overview of the Coupled Model Intercomparison Project Phase 6 (CMIP6)}},\n    volume = {9},\n    year   = {2016}}",
+  "creator": [
+    {
+      "@type": "sc:Organization",
+      "name": "Centre for Environmental Data Analysis (CEDA)"
+    },
+    {
+      "@type": "sc:Organization",
+      "name": "KIOST"
+    }
+  ],
+  "datePublished": "2025-01-24",
+  "geocr:coordinateReferenceSystem": "EPSG:4326",
+  "geocr:recordEndpoint": "https://api.stac.ceda.ac.uk",
+  "geocr:spatialResolution": {
+    "@type": "sc:QuantitativeValue",
+    "unitText": "km",
+    "value": 250
+  },
+  "geocr:temporalResolution": {
+    "@type": "sc:QuantitativeValue",
+    "unitText": "month",
+    "value": 1
+  },
+  "isLiveDataset": true,
+  "keywords": [
+    "CMIP6",
+    "CEDA",
+    "climate simulation",
+    "KIOST-ESM",
+    "ssp585",
+    "tas",
+    "air_temperature",
+    "netcdf",
+    "kerchunk"
+  ],
+  "license": "https://artefacts.ceda.ac.uk/licences/specific_licences/CMIP6_Terms_of_Use.pdf",
+  "spatialCoverage": {
+    "@type": "Place",
+    "geo": {
+      "@type": "GeoShape",
+      "box": "-90.0 -179.0625 90.0 179.0625"
+    }
+  },
+  "temporalCoverage": "2015-01-17T12:00:00Z/2100-12-17T12:00:00Z",
+  "url": "https://api.stac.ceda.ac.uk/collections/cmip6/items/CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "tas-thumbnail",
+      "name": "thumb_CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106.jpg",
+      "description": "Preview thumbnail image for CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106",
+      "contentUrl": "https://dap.ceda.ac.uk/badc/cmip6/metadata/STAC/item_thumbnails/ScenarioMIP/KIOST/KIOST-ESM/thumb_CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106.jpg",
+      "encodingFormat": "image/jpeg"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "tas-reference_file",
+      "name": "CMIP6_ScenarioMIP_KIOST_KIOST-ESM_ssp585_r1i1p1f1_Amon_tas_gr1_v20191106_kr1.0.json",
+      "description": "Kerchunk virtual reference index for CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106",
+      "contentUrl": "https://dap.ceda.ac.uk/badc/cmip6/metadata/kerchunk/pipeline1/ScenarioMIP/KIOST/KIOST-ESM/kr1.0/CMIP6_ScenarioMIP_KIOST_KIOST-ESM_ssp585_r1i1p1f1_Amon_tas_gr1_v20191106_kr1.0.json",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "tas-data0001",
+      "name": "tas_Amon_KIOST-ESM_ssp585_r1i1p1f1_gr1_201501-210012.nc",
+      "description": "NetCDF multidimensional data array for CMIP6.ScenarioMIP.KIOST.KIOST-ESM.ssp585.r1i1p1f1.Amon.tas.gr1.v20191106",
+      "contentUrl": "https://dap.ceda.ac.uk/badc/cmip6/data/CMIP6/ScenarioMIP/KIOST/KIOST-ESM/ssp585/r1i1p1f1/Amon/tas/gr1/v20191106/tas_Amon_KIOST-ESM_ssp585_r1i1p1f1_gr1_201501-210012.nc",
+      "encodingFormat": "application/x-netcdf"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "tas_dataset",
+      "name": "Near-Surface Air Temperature (tas) Dataset",
+      "description": "Near-Surface Air Temperature from KIOST-ESM model",
+      "geocr:spatialResolution": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "km",
+        "value": 250
+      },
+      "geocr:temporalResolution": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "month",
+        "value": 1
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tas_dataset/time",
+          "name": "time",
+          "description": "Time coordinate",
+          "cr:arrayShape": "1032",
+          "cr:isArray": true,
+          "dataType": "sc:Date",
+          "source": {
+            "fileObject": {
+              "@id": "tas-data0001"
+            },
+            "extract": {
+              "column": "time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tas_dataset/latitude",
+          "name": "latitude",
+          "description": "Latitude coordinate",
+          "cr:arrayShape": "96",
+          "cr:isArray": true,
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": {
+              "@id": "tas-data0001"
+            },
+            "extract": {
+              "column": "lat"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tas_dataset/longitude",
+          "name": "longitude",
+          "description": "Longitude coordinate",
+          "cr:arrayShape": "192",
+          "cr:isArray": true,
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": {
+              "@id": "tas-data0001"
+            },
+            "extract": {
+              "column": "lon"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tas_dataset/tas",
+          "name": "tas",
+          "description": "Near-Surface Air Temperature in K",
+          "cr:arrayShape": "1032,96,192",
+          "cr:isArray": true,
+          "dataType": "sc:Float",
+          "source": {
+            "fileObject": {
+              "@id": "tas-data0001"
+            },
+            "extract": {
+              "column": "tas"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

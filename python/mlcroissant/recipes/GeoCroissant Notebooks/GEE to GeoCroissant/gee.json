@@ -1,0 +1,612 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "geocr": "http://mlcommons.org/croissant/geo/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "equivalentProperty": "cr:equivalentProperty",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "name": "gee-sentinel-2-t10seg",
+  "description": "Sentinel-2A Level-1C top-of-atmosphere reflectance image over MGRS tile 10SEG acquired on 2017-04-30 retrieved from Google Earth Engine, converted to GeoCroissant format.",
+  "conformsTo": [
+    "http://mlcommons.org/croissant/1.1",
+    "http://mlcommons.org/croissant/geo/",
+    "http://mlcommons.org/croissant/RAI/"
+  ],
+  "citeAs": "@article{CopernicusSentinel2,\n  title={Copernicus Sentinel-2 MSI Level-1C},\n  author={European Space Agency},\n  year={2017},\n  url={https://doi.org/10.5270/S2_-742ikth}}",
+  "creator": [
+    {
+      "@type": "sc:Organization",
+      "name": "European Space Agency",
+      "url": "https://www.esa.int/"
+    },
+    {
+      "@type": "sc:Organization",
+      "name": "Google Earth Engine",
+      "url": "https://earthengine.google.com/"
+    }
+  ],
+  "datePublished": "2017-04-30",
+  "geocr:bandConfiguration": {
+    "@type": "geocr:BandConfiguration",
+    "geocr:bandNamesList": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6",
+      "B7",
+      "B8",
+      "B8A",
+      "B9",
+      "B10",
+      "B11",
+      "B12",
+      "MSK_CLASSI_OPAQUE",
+      "MSK_CLASSI_CIRRUS",
+      "MSK_CLASSI_SNOW_ICE"
+    ],
+    "geocr:totalBands": 16
+  },
+  "geocr:coordinateReferenceSystem": "EPSG:32610",
+  "geocr:recordEndpoint": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG",
+  "geocr:samplingStrategy": "Single cloud-free acquisition over MGRS tile 10SEG from Earth Engine public catalog.",
+  "geocr:spatialBias": "Localized to UTM Zone 10N covering San Francisco Bay Area and coastal California.",
+  "geocr:spatialResolution": {
+    "@type": "sc:QuantitativeValue",
+    "unitText": "m",
+    "value": 10.0
+  },
+  "geocr:spectralBandMetadata": [
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B1",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 27.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 443.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B2",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 98.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 490.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B3",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 45.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 560.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B4",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 38.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 665.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B5",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 19.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 705.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B6",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 18.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 740.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B7",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 28.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 783.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B8",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 145.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 842.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B8A",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 33.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 865.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B9",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 26.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 940.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B10",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 30.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 1375.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B11",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 143.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 1610.0
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B12",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 242.0
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 2190.0
+      }
+    }
+  ],
+  "isLiveDataset": true,
+  "keywords": [
+    "google-earth-engine",
+    "sentinel-2",
+    "copernicus",
+    "level-1c",
+    "multispectral",
+    "mgrs-10seg",
+    "remote-sensing",
+    "geospatial"
+  ],
+  "license": "https://sentinel.esa.int/documents/247904/690755/Sentinel_Data_Legal_Notice",
+  "spatialCoverage": {
+    "@type": "Place",
+    "geo": {
+      "@type": "GeoShape",
+      "box": "36.951572 -123.000342 37.947680 -121.750759"
+    }
+  },
+  "url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-asset-endpoint",
+      "name": "asset-metadata",
+      "description": "Google Earth Engine REST endpoint for COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG",
+      "encodingFormat": "application/json"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b1",
+      "name": "B1.tif",
+      "description": "Sentinel-2 band B1 for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 60m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B1",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b2",
+      "name": "B2.tif",
+      "description": "Sentinel-2 band B2 for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 10m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B2",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b3",
+      "name": "B3.tif",
+      "description": "Sentinel-2 band B3 for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 10m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B3",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b4",
+      "name": "B4.tif",
+      "description": "Sentinel-2 band B4 for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 10m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B4",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b5",
+      "name": "B5.tif",
+      "description": "Sentinel-2 band B5 for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 20m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B5",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b6",
+      "name": "B6.tif",
+      "description": "Sentinel-2 band B6 for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 20m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B6",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b7",
+      "name": "B7.tif",
+      "description": "Sentinel-2 band B7 for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 20m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B7",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b8",
+      "name": "B8.tif",
+      "description": "Sentinel-2 band B8 for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 10m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B8",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b8a",
+      "name": "B8A.tif",
+      "description": "Sentinel-2 band B8A for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 20m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B8A",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b9",
+      "name": "B9.tif",
+      "description": "Sentinel-2 band B9 for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 60m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B9",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b10",
+      "name": "B10.tif",
+      "description": "Sentinel-2 band B10 for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 60m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B10",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b11",
+      "name": "B11.tif",
+      "description": "Sentinel-2 band B11 for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 20m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B11",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-b12",
+      "name": "B12.tif",
+      "description": "Sentinel-2 band B12 for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 20m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B12",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-msk_classi_opaque",
+      "name": "MSK_CLASSI_OPAQUE.tif",
+      "description": "Sentinel-2 band MSK_CLASSI_OPAQUE for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 60m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/MSK_CLASSI_OPAQUE",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-msk_classi_cirrus",
+      "name": "MSK_CLASSI_CIRRUS.tif",
+      "description": "Sentinel-2 band MSK_CLASSI_CIRRUS for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 60m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/MSK_CLASSI_CIRRUS",
+      "encodingFormat": "image/tiff"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "gee-s2-band-msk_classi_snow_ice",
+      "name": "MSK_CLASSI_SNOW_ICE.tif",
+      "description": "Sentinel-2 band MSK_CLASSI_SNOW_ICE for asset COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG at 60m resolution",
+      "contentUrl": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/MSK_CLASSI_SNOW_ICE",
+      "encodingFormat": "image/tiff"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "scenes",
+      "name": "scenes",
+      "description": "Sentinel-2 Level-1C scene records for COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG with all 16 bands",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/scene_id",
+          "name": "scene_id",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/datetime",
+          "name": "datetime",
+          "dataType": "sc:Date"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/mgrs_tile",
+          "name": "mgrs_tile",
+          "dataType": "sc:Text"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/cloud_cover",
+          "name": "cloud_cover",
+          "dataType": "sc:Float"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/epsg",
+          "name": "epsg",
+          "dataType": "sc:Integer"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/ee_asset_url",
+          "name": "ee_asset_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b1_url",
+          "name": "b1_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b2_url",
+          "name": "b2_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b3_url",
+          "name": "b3_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b4_url",
+          "name": "b4_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b5_url",
+          "name": "b5_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b6_url",
+          "name": "b6_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b7_url",
+          "name": "b7_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b8_url",
+          "name": "b8_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b8a_url",
+          "name": "b8a_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b9_url",
+          "name": "b9_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b10_url",
+          "name": "b10_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b11_url",
+          "name": "b11_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/b12_url",
+          "name": "b12_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/msk_classi_opaque_url",
+          "name": "msk_classi_opaque_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/msk_classi_cirrus_url",
+          "name": "msk_classi_cirrus_url",
+          "dataType": "sc:URL"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scenes/msk_classi_snow_ice_url",
+          "name": "msk_classi_snow_ice_url",
+          "dataType": "sc:URL"
+        }
+      ],
+      "data": {
+        "scenes/b10_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B10",
+        "scenes/b11_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B11",
+        "scenes/b12_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B12",
+        "scenes/b1_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B1",
+        "scenes/b2_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B2",
+        "scenes/b3_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B3",
+        "scenes/b4_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B4",
+        "scenes/b5_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B5",
+        "scenes/b6_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B6",
+        "scenes/b7_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B7",
+        "scenes/b8_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B8",
+        "scenes/b8a_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B8A",
+        "scenes/b9_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/B9",
+        "scenes/cloud_cover": 0.255852831116763,
+        "scenes/datetime": "2017-04-30T19:04:11.415Z",
+        "scenes/ee_asset_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG",
+        "scenes/epsg": 32610,
+        "scenes/mgrs_tile": "10SEG",
+        "scenes/msk_classi_cirrus_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/MSK_CLASSI_CIRRUS",
+        "scenes/msk_classi_opaque_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/MSK_CLASSI_OPAQUE",
+        "scenes/msk_classi_snow_ice_url": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-public/assets/COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG/MSK_CLASSI_SNOW_ICE",
+        "scenes/scene_id": "COPERNICUS/S2/20170430T190351_20170430T190351_T10SEG"
+      }
+    }
+  ]
+}

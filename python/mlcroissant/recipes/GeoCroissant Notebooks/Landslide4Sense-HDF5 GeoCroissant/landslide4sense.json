@@ -1,0 +1,938 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "geocr": "http://mlcommons.org/croissant/geo/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "equivalentProperty": "cr:equivalentProperty",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn"
+  },
+  "@type": "sc:Dataset",
+  "name": "landslide4sense",
+  "description": "Landslide4Sense is a global benchmark dataset for landslide detection from multi-sensor satellite imagery (Sentinel-2 multispectral and ALOS PALSAR slope and elevation data).",
+  "conformsTo": [
+    "http://mlcommons.org/croissant/1.1",
+    "http://mlcommons.org/croissant/RAI/",
+    "http://mlcommons.org/croissant/geo/"
+  ],
+  "citeAs": "@article{L4S-2022,\n  author={Ghorbanzadeh, Omid and Xu, Yonghao and Zhao, Hengwei and Wang, Junjue and Zhong, Yanfei and Zhao, Dong and Zang, Qi and Wang, Shuang and Zhang, Fahong and Shi, Yilei and Zhu, Xiao Xiang and Bai, Lin and Li, Weile and Peng, Weihang and Ghamisi, Pedram},\n  journal={IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing},\n  title={The Outcome of the 2022 Landslide4Sense Competition: Advanced Landslide Detection From Multisource Satellite Imagery},\n  year={2022},\n  volume={15},\n  pages={9927-9942},\n  doi={10.1109/JSTARS.2022.3220845}\n}",
+  "creator": [
+    {
+      "@type": "sc:Person",
+      "name": "Omid Ghorbanzadeh"
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Yonghao Xu"
+    },
+    {
+      "@type": "sc:Person",
+      "name": "Pedram Ghamisi"
+    }
+  ],
+  "datePublished": "2022-10-18",
+  "geocr:bandConfiguration": {
+    "@type": "geocr:BandConfiguration",
+    "geocr:bandNamesList": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6",
+      "B7",
+      "B8",
+      "B9",
+      "B10",
+      "B11",
+      "B12",
+      "Slope",
+      "DEM"
+    ],
+    "geocr:totalBands": 14
+  },
+  "geocr:coordinateReferenceSystem": "EPSG:4326",
+  "geocr:samplingStrategy": "128x128 pixel patches centered on landslide events worldwide from 2015 to 2021, resampled to 10m resolution.",
+  "geocr:spatialBias": "Globally distributed across mountainous, seismically active, and heavy rainfall regions (e.g., Japan and other landslide-prone zones).",
+  "geocr:spatialResolution": {
+    "@type": "sc:QuantitativeValue",
+    "unitText": "m",
+    "value": 10
+  },
+  "geocr:spectralBandMetadata": [
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B1",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 20
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 443
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B2",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 65
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 490
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B3",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 35
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 560
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B4",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 30
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 665
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B5",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 15
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 705
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B6",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 15
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 740
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B7",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 20
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 783
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B8",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 115
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 842
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B9",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 20
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 945
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B10",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 30
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 1375
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B11",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 90
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 1610
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "B12",
+      "geocr:bandwidth": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 180
+      },
+      "geocr:centerWavelength": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "nm",
+        "value": 2190
+      }
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "Slope"
+    },
+    {
+      "@type": "geocr:SpectralBand",
+      "name": "DEM"
+    }
+  ],
+  "geocr:temporalResolution": {
+    "@type": "sc:QuantitativeValue",
+    "unitText": "years",
+    "value": 1
+  },
+  "keywords": [
+    "landslide4sense",
+    "landslide detection",
+    "remote sensing",
+    "satellite imagery",
+    "Sentinel-2",
+    "ALOS PALSAR",
+    "geospatial",
+    "HDF5",
+    "semantic segmentation"
+  ],
+  "license": "CC-BY-4.0",
+  "spatialCoverage": {
+    "@type": "Place",
+    "geo": {
+      "@type": "GeoShape",
+      "box": "-90.0 -180.0 90.0 180.0"
+    }
+  },
+  "url": "https://huggingface.co/datasets/ibm-nasa-geospatial/Landslide4sense",
+  "version": "1.0.0",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "landslide4sense-repo",
+      "name": "landslide4sense-repo",
+      "description": "Hugging Face dataset repository for ibm-nasa-geospatial/Landslide4sense containing HDF5 multi-sensor satellite imagery and annotations.",
+      "contentUrl": "https://huggingface.co/datasets/ibm-nasa-geospatial/Landslide4sense",
+      "encodingFormat": "git+https",
+      "sha256": "main"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "train-images",
+      "name": "train-images",
+      "description": "Training satellite image patches (14 bands, HDF5 format)",
+      "containedIn": {
+        "@id": "landslide4sense-repo"
+      },
+      "encodingFormat": "application/x-hdf5",
+      "includes": "images/train/*.h5"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "train-masks",
+      "name": "train-masks",
+      "description": "Training binary landslide masks (HDF5 format)",
+      "containedIn": {
+        "@id": "landslide4sense-repo"
+      },
+      "encodingFormat": "application/x-hdf5",
+      "includes": "annotations/train/*.h5"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "valid-images",
+      "name": "valid-images",
+      "description": "Validation satellite image patches (14 bands, HDF5 format)",
+      "containedIn": {
+        "@id": "landslide4sense-repo"
+      },
+      "encodingFormat": "application/x-hdf5",
+      "includes": "images/validation/*.h5"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "valid-masks",
+      "name": "valid-masks",
+      "description": "Validation binary landslide masks (HDF5 format)",
+      "containedIn": {
+        "@id": "landslide4sense-repo"
+      },
+      "encodingFormat": "application/x-hdf5",
+      "includes": "annotations/validation/*.h5"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "test-images",
+      "name": "test-images",
+      "description": "Test satellite image patches (14 bands, HDF5 format)",
+      "containedIn": {
+        "@id": "landslide4sense-repo"
+      },
+      "encodingFormat": "application/x-hdf5",
+      "includes": "images/test/*.h5"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "test-masks",
+      "name": "test-masks",
+      "description": "Test binary landslide masks (HDF5 format)",
+      "containedIn": {
+        "@id": "landslide4sense-repo"
+      },
+      "encodingFormat": "application/x-hdf5",
+      "includes": "annotations/test/*.h5"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "train_images",
+      "name": "train images",
+      "geocr:spatialResolution": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "m",
+        "value": 10
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "train/filename",
+          "name": "filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "train-images"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train/image",
+          "name": "image",
+          "cr:arrayShape": "128,128,14",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": [
+              "B1",
+              "B2",
+              "B3",
+              "B4",
+              "B5",
+              "B6",
+              "B7",
+              "B8",
+              "B9",
+              "B10",
+              "B11",
+              "B12",
+              "Slope",
+              "DEM"
+            ],
+            "geocr:totalBands": 14
+          },
+          "source": {
+            "fileSet": {
+              "@id": "train-images"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "train_masks",
+      "name": "train masks",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "train/mask_filename",
+          "name": "mask_filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "train-masks"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train/mask",
+          "name": "mask",
+          "cr:arrayShape": "128,128,1",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": "mask",
+            "geocr:totalBands": 1
+          },
+          "source": {
+            "fileSet": {
+              "@id": "train-masks"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "train_examples",
+      "name": "train examples",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "train_examples/patch_id",
+          "name": "patch_id",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "train/mask_filename"
+            },
+            "transform": {
+              "regex": "^mask_(\\d+)\\.h5$"
+            }
+          },
+          "source": {
+            "field": {
+              "@id": "train/filename"
+            },
+            "transform": {
+              "regex": "^image_(\\d+)\\.h5$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train_examples/image",
+          "name": "image",
+          "cr:arrayShape": "128,128,14",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": [
+              "B1",
+              "B2",
+              "B3",
+              "B4",
+              "B5",
+              "B6",
+              "B7",
+              "B8",
+              "B9",
+              "B10",
+              "B11",
+              "B12",
+              "Slope",
+              "DEM"
+            ],
+            "geocr:totalBands": 14
+          },
+          "source": {
+            "field": {
+              "@id": "train/image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train_examples/mask",
+          "name": "mask",
+          "cr:arrayShape": "128,128,1",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": "mask",
+            "geocr:totalBands": 1
+          },
+          "source": {
+            "field": {
+              "@id": "train/mask"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "valid_images",
+      "name": "valid images",
+      "geocr:spatialResolution": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "m",
+        "value": 10
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "valid/filename",
+          "name": "filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "valid-images"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "valid/image",
+          "name": "image",
+          "cr:arrayShape": "128,128,14",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": [
+              "B1",
+              "B2",
+              "B3",
+              "B4",
+              "B5",
+              "B6",
+              "B7",
+              "B8",
+              "B9",
+              "B10",
+              "B11",
+              "B12",
+              "Slope",
+              "DEM"
+            ],
+            "geocr:totalBands": 14
+          },
+          "source": {
+            "fileSet": {
+              "@id": "valid-images"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "valid_masks",
+      "name": "valid masks",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "valid/mask_filename",
+          "name": "mask_filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "valid-masks"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "valid/mask",
+          "name": "mask",
+          "cr:arrayShape": "128,128,1",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": "mask",
+            "geocr:totalBands": 1
+          },
+          "source": {
+            "fileSet": {
+              "@id": "valid-masks"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "valid_examples",
+      "name": "valid examples",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "valid_examples/patch_id",
+          "name": "patch_id",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "valid/mask_filename"
+            },
+            "transform": {
+              "regex": "^mask_(\\d+)\\.h5$"
+            }
+          },
+          "source": {
+            "field": {
+              "@id": "valid/filename"
+            },
+            "transform": {
+              "regex": "^image_(\\d+)\\.h5$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "valid_examples/image",
+          "name": "image",
+          "cr:arrayShape": "128,128,14",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": [
+              "B1",
+              "B2",
+              "B3",
+              "B4",
+              "B5",
+              "B6",
+              "B7",
+              "B8",
+              "B9",
+              "B10",
+              "B11",
+              "B12",
+              "Slope",
+              "DEM"
+            ],
+            "geocr:totalBands": 14
+          },
+          "source": {
+            "field": {
+              "@id": "valid/image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "valid_examples/mask",
+          "name": "mask",
+          "cr:arrayShape": "128,128,1",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": "mask",
+            "geocr:totalBands": 1
+          },
+          "source": {
+            "field": {
+              "@id": "valid/mask"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "test_images",
+      "name": "test images",
+      "geocr:spatialResolution": {
+        "@type": "sc:QuantitativeValue",
+        "unitText": "m",
+        "value": 10
+      },
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test/filename",
+          "name": "filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "test-images"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/image",
+          "name": "image",
+          "cr:arrayShape": "128,128,14",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": [
+              "B1",
+              "B2",
+              "B3",
+              "B4",
+              "B5",
+              "B6",
+              "B7",
+              "B8",
+              "B9",
+              "B10",
+              "B11",
+              "B12",
+              "Slope",
+              "DEM"
+            ],
+            "geocr:totalBands": 14
+          },
+          "source": {
+            "fileSet": {
+              "@id": "test-images"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "test_masks",
+      "name": "test masks",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test/mask_filename",
+          "name": "mask_filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "test-masks"
+            },
+            "extract": {
+              "fileProperty": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/mask",
+          "name": "mask",
+          "cr:arrayShape": "128,128,1",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": "mask",
+            "geocr:totalBands": 1
+          },
+          "source": {
+            "fileSet": {
+              "@id": "test-masks"
+            },
+            "extract": {
+              "fileProperty": "content"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "test_examples",
+      "name": "test examples",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_examples/patch_id",
+          "name": "patch_id",
+          "dataType": "sc:Text",
+          "references": {
+            "field": {
+              "@id": "test/mask_filename"
+            },
+            "transform": {
+              "regex": "^mask_(\\d+)\\.h5$"
+            }
+          },
+          "source": {
+            "field": {
+              "@id": "test/filename"
+            },
+            "transform": {
+              "regex": "^image_(\\d+)\\.h5$"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_examples/image",
+          "name": "image",
+          "cr:arrayShape": "128,128,14",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": [
+              "B1",
+              "B2",
+              "B3",
+              "B4",
+              "B5",
+              "B6",
+              "B7",
+              "B8",
+              "B9",
+              "B10",
+              "B11",
+              "B12",
+              "Slope",
+              "DEM"
+            ],
+            "geocr:totalBands": 14
+          },
+          "source": {
+            "field": {
+              "@id": "test/image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_examples/mask",
+          "name": "mask",
+          "cr:arrayShape": "128,128,1",
+          "cr:isArray": true,
+          "dataType": "sc:ImageObject",
+          "geocr:bandConfiguration": {
+            "@type": "geocr:BandConfiguration",
+            "geocr:bandNamesList": "mask",
+            "geocr:totalBands": 1
+          },
+          "source": {
+            "field": {
+              "@id": "test/mask"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
