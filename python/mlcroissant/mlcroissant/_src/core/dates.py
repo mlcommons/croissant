@@ -29,10 +29,10 @@ def from_str_to_datetime(issues: Issues, date: str | None) -> datetime.datetime 
 
 
 def from_datetime_to_str(date: datetime.datetime | None) -> str | None:
-    """Converts a datetime to https://schema.org/Date (ISO 8601 date format)."""
+    """Converts a datetime to an ISO 8601 Date or DateTime string."""
     if date is None:
         return None
-    elif date.time() == datetime.time.min:
+    elif date.time() == datetime.time.min and date.utcoffset() is None:
         return date.strftime("%Y-%m-%d")
     return date.isoformat().replace("+00:00", "Z")
 
