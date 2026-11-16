@@ -150,9 +150,31 @@ def box_singleton_list(element: Any) -> list[Any] | None:
 
 
 def recursively_populate_jsonld(
-    entry_node: Json, id_to_node: dict[str, Json], context: dict[str, Json]
+    entry_node: Json,
+    id_to_node: dict[str, Json],
+    context: dict[str, Json],
+    expanding: frozenset[str] = frozenset(),
 ) -> Any:
-    """Changes in place `entry_node` with its children."""
+    """Rebuilds the nesting of a node from the flattened, expanded JSON-LD, in place.
+
+    The input is the output of RDFLib's JSON-LD serialization: a flat list of nodes,
+    one per subject, in expanded form. Keys and types are full IRIs, every value is a
+    list, literals are `{"@value": ...}` objects and nested nodes are replaced by
+    references (`{"@id": ...}`). Each reference is replaced by the node it refers to,
+    whose properties are populated in turn.
+
+    Args:
+        entry_node: A node (a dict with an `@id` and properties), a reference, a
+            literal or a plain value.
+        id_to_node: All the nodes of the flattened JSON-LD, by `@id`.
+        context: The `@context` of the original JSON-LD, for its `@language`.
+        expanding: The `@id` of the nodes being populated, from the entry node of the
+            dataset to `entry_node`. A reference to one of them is kept as a reference:
+            populating it would loop.
+
+    Returns:
+        The populated node, or the value of a literal or a plain value.
+    """
     if isinstance(entry_node, dict) and "@value" in entry_node:
         if entry_node.get("@type") == namespace.RDF.JSON:
             # Stringified JSON is loaded as a dict.
@@ -162,9 +184,11 @@ def recursively_populate_jsonld(
             return entry_node["@value"]
     elif isinstance(entry_node, dict) and len(entry_node) == 1 and "@id" in entry_node:
         node_id = entry_node["@id"]
-        if node_id in id_to_node:
+        if node_id in id_to_node and node_id not in expanding:
             entry_node = id_to_node[node_id]
-            return recursively_populate_jsonld(entry_node, id_to_node, context)
+            return recursively_populate_jsonld(
+                entry_node, id_to_node, context, expanding
+            )
         else:
             return entry_node
     elif isinstance(entry_node, (str, float, int, bool)):
@@ -174,6 +198,8 @@ def recursively_populate_jsonld(
             "Unsupported type for entry_node. Please, open an issue on GitHub to"
             f" handle: {type(entry_node)}"
         )
+    if "@id" in entry_node:
+        expanding = expanding | {entry_node["@id"]}
     for key, value in entry_node.copy().items():
         if key == "@type" and isinstance(value, list):
             entry_node[key] = term.URIRef(value[0])
@@ -193,7 +219,7 @@ def recursively_populate_jsonld(
                 entry_node[term.URIRef(key)] = value
                 continue
             value = [
-                recursively_populate_jsonld(child, id_to_node, context)
+                recursively_populate_jsonld(child, id_to_node, context, expanding)
                 for child in value
             ]
             node_type = entry_node.get("@type", "")
