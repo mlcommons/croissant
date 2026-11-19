@@ -19,6 +19,10 @@ pytest:
 pytest-fast:
 	pytest . -m "not nonhermetic"
 
+# Run only non-hermetic tests (require internet access).
+pytest-nonhermetic:
+	pytest . -m nonhermetic
+
 pytype:
 	pytype \
 		--jobs="$$(if [ -f /proc/cpuinfo ]; then grep -c ^processor /proc/cpuinfo; \

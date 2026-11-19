@@ -32,8 +32,8 @@ jobs:
     - name: Install library
       run: sudo apt-get install -y libgraphviz-dev git-lfs && pip install .[dev]
 
-    - name: PyTest
-      run: make pytest
+    - name: PyTest (hermetic)
+      run: make pytest-fast
 
     # Pylint is not compatible with Apache Beam in Python 3.11:
     # https://github.com/pylint-dev/pylint/blob/02616372282fd84862636d58071e6f3c62b53559/pyproject.toml#L38

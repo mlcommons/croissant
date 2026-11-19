@@ -17,16 +17,19 @@ from mlcroissant._src.tests.versions import parametrize_version
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records"],
     [
-        [
-            "flores-200/metadata.json",
-            "language_translations_train_data_with_metadata",
-            10,
-        ],
-        [
-            "flores-200/metadata.json",
-            "language_translations_test_data_with_metadata",
-            10,
-        ],
+        # Upstream facebookresearch/flores is unmaintained, Hugging Face mirrors are
+        # gated, and dl.fbaipublicfiles.com causes recurring external CI failures
+        # (e.g., expired TLS cert in Nov 2026; previously broken tinyurl in #1034).
+        # [
+        #     "flores-200/metadata.json",
+        #     "language_translations_train_data_with_metadata",
+        #     10,
+        # ],
+        # [
+        #     "flores-200/metadata.json",
+        #     "language_translations_test_data_with_metadata",
+        #     10,
+        # ],
         ["gpt-3/metadata.json", "default", 10],
         ["huggingface-mnist/metadata.json", "default", 10],
         ["titanic/metadata.json", "passengers", -1],
@@ -64,6 +67,7 @@ def test_nonhermetic_loading_1_0(dataset_name, record_set_name, num_records, fil
 
 
 # Non-hermetic test cases for croissant >=1.1 only.
+@pytest.mark.nonhermetic
 @pytest.mark.parametrize(
     ["dataset_name", "record_set_name", "num_records", "filters"],
     [
