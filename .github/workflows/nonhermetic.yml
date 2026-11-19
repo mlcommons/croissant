@@ -1,0 +1,32 @@
+name: Non-Hermetic Tests - mlcroissant
+
+on:
+  schedule:
+    # Weekly check to catch regressions against live external dataset hosts.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  nonhermetic-test:
+    name: Non-Hermetic Tests / Python ${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.11']
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python/mlcroissant
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install library
+        run: sudo apt-get install -y libgraphviz-dev git-lfs && pip install .[dev]
+
+      - name: PyTest (non-hermetic)
+        run: make pytest-nonhermetic
