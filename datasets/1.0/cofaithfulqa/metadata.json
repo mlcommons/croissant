@@ -1,0 +1,620 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "equivalentProperty": "cr:equivalentProperty",
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "samplingRate": "cr:samplingRate",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform"
+  },
+  "@type": "sc:Dataset",
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "CoFaithfulQA",
+  "description": "CoFaithfulQA evaluates whether a question-answering model adopts an accurate passage when its answer from memory disagrees. Each record set preserves one of the six source QA datasets and its original JSON Lines file. A record includes the original question, passage, accepted answers, a closed-book model answer and its frequency. The public files contain 8,529 rows before deduplication.",
+  "url": "https://huggingface.co/datasets/chengpingan/CoFaithfulQA",
+  "version": "ee0f08be4dda757ea871dc822c12f573cf454f90",
+  "creator": {
+    "@type": "Person",
+    "name": "Pengcheng Huang",
+    "url": "https://huggingface.co/chengpingan"
+  },
+  "license": "https://huggingface.co/datasets/chengpingan/CoFaithfulQA/blob/ee0f08be4dda757ea871dc822c12f573cf454f90/README.md",
+  "citation": "https://doi.org/10.52202/085713-3356",
+  "citeAs": "@inproceedings{huang2025parammute,\n  title     = {{ParamMute}: Suppressing Knowledge-Critical {FFN}s for Faithful Retrieval-Augmented Generation},\n  author    = {Huang, Pengcheng and Liu, Zhenghao and Yan, Yukun and Zhao, Haiyan and Yi, Xiaoyuan and Chen, Hao and Liu, Zhiyuan and Sun, Maosong and Xiao, Tong and Yu, Ge and Xiong, Chenyan},\n  booktitle = {Advances in Neural Information Processing Systems},\n  volume    = {38},\n  year      = {2025},\n  doi       = {10.52202/085713-3356},\n  url       = {https://proceedings.neurips.cc/paper_files/paper/2025/hash/90d1e515d74686ad148b469a3cecbbaa-Abstract-Conference.html}\n}",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "hotpotqa_file",
+      "name": "hotpotq_kc.jsonl",
+      "encodingFormat": "application/jsonlines",
+      "contentUrl": "https://huggingface.co/datasets/chengpingan/CoFaithfulQA/resolve/ee0f08be4dda757ea871dc822c12f573cf454f90/hotpotq_kc.jsonl",
+      "sha256": "d6c52effc8af6b61d378558b5a977a7a49df072e955331a361dc9c8169eb7284"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "newsqa_file",
+      "name": "NewsQA_kc.jsonl",
+      "encodingFormat": "application/jsonlines",
+      "contentUrl": "https://huggingface.co/datasets/chengpingan/CoFaithfulQA/resolve/ee0f08be4dda757ea871dc822c12f573cf454f90/NewsQA_kc.jsonl",
+      "sha256": "50d35981dcdb46a4de54a740dd39db2c51f0b7cf80a1cdff98a57ccec22386fd"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "natural_questions_file",
+      "name": "NaturalQuestionsShort_kc.jsonl",
+      "encodingFormat": "application/jsonlines",
+      "contentUrl": "https://huggingface.co/datasets/chengpingan/CoFaithfulQA/resolve/ee0f08be4dda757ea871dc822c12f573cf454f90/NaturalQuestionsShort_kc.jsonl",
+      "sha256": "f1be5970e3d5702c64c6a5316f3c1459321308f1c14471e423c4deaffe2f5bbf"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "searchqa_file",
+      "name": "SearchQA_kc.jsonl",
+      "encodingFormat": "application/jsonlines",
+      "contentUrl": "https://huggingface.co/datasets/chengpingan/CoFaithfulQA/resolve/ee0f08be4dda757ea871dc822c12f573cf454f90/SearchQA_kc.jsonl",
+      "sha256": "10a3db9f7f223d5f94626070c957fcbb7c1b387a41167c0836a844b8ad8f513c"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "squad_file",
+      "name": "SQuAD_kc.jsonl",
+      "encodingFormat": "application/jsonlines",
+      "contentUrl": "https://huggingface.co/datasets/chengpingan/CoFaithfulQA/resolve/ee0f08be4dda757ea871dc822c12f573cf454f90/SQuAD_kc.jsonl",
+      "sha256": "854a0f6c23f0a5c2fb0dcc980c2b34eb15a434fa16a20ba7a19225f6bfab3fd0"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "triviaqa_file",
+      "name": "TriviaQA-web_kc.jsonl",
+      "encodingFormat": "application/jsonlines",
+      "contentUrl": "https://huggingface.co/datasets/chengpingan/CoFaithfulQA/resolve/ee0f08be4dda757ea871dc822c12f573cf454f90/TriviaQA-web_kc.jsonl",
+      "sha256": "5e016736a986a7d23b3e85d0e7e272677be691a7c183cb1da8c3af6afafc7d71"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "hotpotqa",
+      "name": "hotpotqa",
+      "description": "HotpotQA source subset of CoFaithfulQA (1,476 raw rows).",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hotpotqa/question",
+          "name": "question",
+          "description": "Question from the source QA dataset.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "hotpotqa_file"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hotpotqa/context",
+          "name": "context",
+          "description": "Original passage supporting the reference answer.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "hotpotqa_file"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hotpotqa/answers",
+          "name": "answers",
+          "description": "List of accepted reference answers.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "hotpotqa_file"
+            },
+            "extract": {
+              "column": "answers"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hotpotqa/parametric_answer",
+          "name": "parametric_answer",
+          "description": "Closed-book answer produced by the model used during benchmark construction.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "hotpotqa_file"
+            },
+            "extract": {
+              "column": "parametric_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hotpotqa/parametric_answer_freq",
+          "name": "parametric_answer_freq",
+          "description": "Number of occurrences of that answer across repeated closed-book generations.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "hotpotqa_file"
+            },
+            "extract": {
+              "column": "parametric_answer_freq"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "newsqa",
+      "name": "newsqa",
+      "description": "NewsQA source subset of CoFaithfulQA (934 raw rows).",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "newsqa/question",
+          "name": "question",
+          "description": "Question from the source QA dataset.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "newsqa_file"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "newsqa/context",
+          "name": "context",
+          "description": "Original passage supporting the reference answer.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "newsqa_file"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "newsqa/answers",
+          "name": "answers",
+          "description": "List of accepted reference answers.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "newsqa_file"
+            },
+            "extract": {
+              "column": "answers"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "newsqa/parametric_answer",
+          "name": "parametric_answer",
+          "description": "Closed-book answer produced by the model used during benchmark construction.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "newsqa_file"
+            },
+            "extract": {
+              "column": "parametric_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "newsqa/parametric_answer_freq",
+          "name": "parametric_answer_freq",
+          "description": "Number of occurrences of that answer across repeated closed-book generations.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "newsqa_file"
+            },
+            "extract": {
+              "column": "parametric_answer_freq"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "natural_questions",
+      "name": "natural_questions",
+      "description": "Natural Questions source subset of CoFaithfulQA (1,479 raw rows).",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "natural_questions/question",
+          "name": "question",
+          "description": "Question from the source QA dataset.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "natural_questions_file"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "natural_questions/context",
+          "name": "context",
+          "description": "Original passage supporting the reference answer.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "natural_questions_file"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "natural_questions/answers",
+          "name": "answers",
+          "description": "List of accepted reference answers.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "natural_questions_file"
+            },
+            "extract": {
+              "column": "answers"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "natural_questions/parametric_answer",
+          "name": "parametric_answer",
+          "description": "Closed-book answer produced by the model used during benchmark construction.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "natural_questions_file"
+            },
+            "extract": {
+              "column": "parametric_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "natural_questions/parametric_answer_freq",
+          "name": "parametric_answer_freq",
+          "description": "Number of occurrences of that answer across repeated closed-book generations.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "natural_questions_file"
+            },
+            "extract": {
+              "column": "parametric_answer_freq"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "searchqa",
+      "name": "searchqa",
+      "description": "SearchQA source subset of CoFaithfulQA (1,497 raw rows).",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "searchqa/question",
+          "name": "question",
+          "description": "Question from the source QA dataset.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "searchqa_file"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "searchqa/context",
+          "name": "context",
+          "description": "Original passage supporting the reference answer.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "searchqa_file"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "searchqa/answers",
+          "name": "answers",
+          "description": "List of accepted reference answers.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "searchqa_file"
+            },
+            "extract": {
+              "column": "answers"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "searchqa/parametric_answer",
+          "name": "parametric_answer",
+          "description": "Closed-book answer produced by the model used during benchmark construction.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "searchqa_file"
+            },
+            "extract": {
+              "column": "parametric_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "searchqa/parametric_answer_freq",
+          "name": "parametric_answer_freq",
+          "description": "Number of occurrences of that answer across repeated closed-book generations.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "searchqa_file"
+            },
+            "extract": {
+              "column": "parametric_answer_freq"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "squad",
+      "name": "squad",
+      "description": "SQuAD source subset of CoFaithfulQA (2,351 raw rows).",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "squad/question",
+          "name": "question",
+          "description": "Question from the source QA dataset.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "squad_file"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "squad/context",
+          "name": "context",
+          "description": "Original passage supporting the reference answer.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "squad_file"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "squad/answers",
+          "name": "answers",
+          "description": "List of accepted reference answers.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "squad_file"
+            },
+            "extract": {
+              "column": "answers"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "squad/parametric_answer",
+          "name": "parametric_answer",
+          "description": "Closed-book answer produced by the model used during benchmark construction.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "squad_file"
+            },
+            "extract": {
+              "column": "parametric_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "squad/parametric_answer_freq",
+          "name": "parametric_answer_freq",
+          "description": "Number of occurrences of that answer across repeated closed-book generations.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "squad_file"
+            },
+            "extract": {
+              "column": "parametric_answer_freq"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "triviaqa",
+      "name": "triviaqa",
+      "description": "TriviaQA source subset of CoFaithfulQA (792 raw rows).",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "triviaqa/question",
+          "name": "question",
+          "description": "Question from the source QA dataset.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "triviaqa_file"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "triviaqa/context",
+          "name": "context",
+          "description": "Original passage supporting the reference answer.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "triviaqa_file"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "triviaqa/answers",
+          "name": "answers",
+          "description": "List of accepted reference answers.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "triviaqa_file"
+            },
+            "extract": {
+              "column": "answers"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "triviaqa/parametric_answer",
+          "name": "parametric_answer",
+          "description": "Closed-book answer produced by the model used during benchmark construction.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileObject": {
+              "@id": "triviaqa_file"
+            },
+            "extract": {
+              "column": "parametric_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "triviaqa/parametric_answer_freq",
+          "name": "parametric_answer_freq",
+          "description": "Number of occurrences of that answer across repeated closed-book generations.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileObject": {
+              "@id": "triviaqa_file"
+            },
+            "extract": {
+              "column": "parametric_answer_freq"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "datePublished": "2025-02-24"
+}
